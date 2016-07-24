@@ -9,25 +9,48 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Navigator
 } from 'react-native';
+
+let OragnanizationalCard = require('./components/organizationalCard').default;
 
 class WeVoteReactNative extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <Navigator
+        initialRoute = {{
+          id: 'First'
+        }}
+        renderScene={
+          this.navigatorRenderScene
+        }
+      />
     );
+  }
+
+  navigatorRenderScene(route, navigator){
+    _navigator = navigator;
+    switch(route.id){
+      case 'First':
+        return(
+          <View style={styles.container}>
+            <OragnanizationalCard title='Civil Liberties Union'
+                                  imageUrl='https://facebook.github.io/react/img/logo_og.png'
+                                  content='The ACLU is a nonprofit, nonpartisan, public interest law firm and advocacy organization devoted to protecting the basic civil liberties of everyone in America'/>
+            <OragnanizationalCard title='American Civil Liberties Union'
+                                  imageUrl='https://facebook.github.io/react/img/logo_og.png'
+                                  content='The ACLU is a nonprofit, nonpartisan, public interest law firm and advocacy organization devoted to protecting the basic civil liberties of everyone in America'/>
+          </View>
+        )
+
+      case 'Second':
+        return(
+          <View style={styles.container}>
+            <Second navigator={navigator}  />
+          </View>
+        )
+    }
   }
 }
 
@@ -48,6 +71,14 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  card: {
+    justifyContent: 'space-between',
+    flexDirection: 'column'
+  },
+  button:{
+    backgroundColor: 'powderblue',
+    fontSize:20
+  }
 });
 
 AppRegistry.registerComponent('WeVoteReactNative', () => WeVoteReactNative);
