@@ -16,10 +16,9 @@ export default class oragnanizationalCard extends Component {
   }
   render() {
     return (
-      <View style={styles.card,{flexDirection: 'row'}}>
-        <View style={styles.card_photo}>
-            <Image source={{uri: this.props.imageUrl}}
-              style={{width: 80, height: 80}} />
+      <View style={styles.card}>
+        <View>
+            <Image style={styles.card_photo} source={{uri: this.props.imageUrl}}/>
         </View>
         <View style={styles.card_details}>
             <Text style={styles.card_details_header}>{this.props.title}</Text>
@@ -32,20 +31,27 @@ export default class oragnanizationalCard extends Component {
 
 const styles = StyleSheet.create({
   card:{
-    margin:0
+    margin:0,
+    width:350,
+    marginTop:20,
+    flexDirection: 'row'
   },
   card_photo:{
     width:100,
-    height:100
+    height:80,
+    marginLeft:20
   },
   card_details:{
     height:150
   },
   card_details_header:{
-    fontSize:20
+    fontSize:18,
+    marginLeft:5,
+    fontWeight:'bold'
   },
   card_details_content:{
-    width:250
+    width:220,
+    marginLeft:5
   },
   button:{
     backgroundColor: 'powderblue',
