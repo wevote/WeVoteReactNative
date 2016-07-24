@@ -1,15 +1,17 @@
-import React, { Component } from 'react';
-import { AppRegistry,StyleSheet,TouchableHighlight, Image,View,Text } from 'react-native';
+import React, { Component,PropTypes } from 'react';
+import { AppRegistry,StyleSheet,Navigator,TouchableHighlight, Image,View,Text } from 'react-native';
 
 export default class ListCard extends Component {
+  static propTypes = {
+    update: PropTypes.func.isRequired
+  };
+
   constructor(props){
     super();
 
   }
-  onButtonPress(){
-    this.props.navigator.push({
-      id:'Second'
-    })
+  _onPressButton(we_vote_id){
+    this.props.update(we_vote_id);
   }
   render() {
     let upVoteIcon = require('../assets/icons/up-arrow-color-icon@2x.png');
@@ -19,7 +21,7 @@ export default class ListCard extends Component {
     let no_image = require('../assets/no-image.png');
 
     return (
-      <TouchableHighlight>
+      <TouchableHighlight onPress={()=> this._onPressButton(this.props.ballot_item_we_vote_id)}>
         <View style={styles.list}>
           <View>
               <Image style={styles.list_no_image} source={no_image}>
