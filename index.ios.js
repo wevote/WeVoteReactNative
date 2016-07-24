@@ -36,8 +36,8 @@ class WeVoteReactNative extends Component {
   }
 
   componentWillMount () {
-    this.organizationRetrieve("wv02org204");
-    //this.candidateRetrieve("wv02cand2092");
+    //this.organizationRetrieve("wv02org204");
+    this.candidateRetrieve("wv02cand2092");
   }
 
   async candidateRetrieve(we_vote_id) {
@@ -60,6 +60,7 @@ class WeVoteReactNative extends Component {
       // Put the contents of the organization JSON into the state so the app can react
       console.log("responseJson: ", responseJson);
       this.setState({candidate: responseJson});
+
     } catch(error) {
       console.error(error);
     }
@@ -100,15 +101,15 @@ class WeVoteReactNative extends Component {
     return (
       <Navigator
         initialRoute = {{
-          id: 'Organization',
-          //id: 'Candidate',
-          organization_name: this.state.organization.organization_name,
-          organization_photo_url: this.state.organization.organization_photo_url,
-          twitter_description: this.state.organization.twitter_description,
-          position_list: this.state.position_list,
-          // ballot_item_display_name: this.state.candidate.ballot_item_display_name,
-          // candidate_photo_url: this.state.candidate.candidate_photo_url,
-          // twitter_description: this.state.candidate.twitter_description,
+          //id: 'Organization',
+          id: 'Candidate',
+          // organization_name: this.state.organization.organization_name,
+          // organization_photo_url: this.state.organization.organization_photo_url,
+          // twitter_description: this.state.organization.twitter_description,
+          // position_list: this.state.position_list,
+          ballot_item_display_name: this.state.candidate.ballot_item_display_name,
+          candidate_photo_url: this.state.candidate.candidate_photo_url,
+          twitter_description: this.state.candidate.twitter_description,
         }}
         renderScene={
           this.navigatorRenderScene
@@ -120,7 +121,7 @@ class WeVoteReactNative extends Component {
   navigatorRenderScene(route, navigator) {
     _navigator = navigator;
     console.log("In navigatorRenderScene, route: ", route);
-    var twitter_description = ""
+    var twitter_description = "";
     switch(route.id){
       case 'Candidate':
         var ballot_item_display_name = (route.ballot_item_display_name === undefined) ? "" : route.ballot_item_display_name;
@@ -130,7 +131,27 @@ class WeVoteReactNative extends Component {
         return <View style={styles.container}>
             <CandidateCard ballot_item_display_name={ ballot_item_display_name }
                                   candidate_photo_url={ candidate_photo_url }
-                                  twitter_description={ twitter_description } />
+                                  twitter_description={ twitter_description }
+
+              // Function to call when a new scene should be displayed
+              onForward={ () => {
+                const nextIndex = route.index + 1;
+                navigator.push({
+                  id: 'Candidate',
+                  ballot_item_display_name: ballot_item_display_name,
+                  candidate_photo_url: candidate_photo_url,
+                  twitter_description: twitter_description,
+                  index: nextIndex,
+                });
+              }}
+
+              // Function to call to go back to the previous scene
+              onBack={() => {
+                if (route.index > 0) {
+                  navigator.pop();
+                }
+              }}
+            />
           </View>;
 
       case 'Organization':
