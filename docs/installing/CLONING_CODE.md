@@ -21,7 +21,7 @@
 
 7.`pbcopy < ~/.ssh/id_rsa.pub` OR `pbcopy < ~/.ssh/github_rsa.pub`
 
-8.Go paste your keys into Github, under SSH Keys for your account.  
+8.Go paste your keys into http://github.com, under SSH Keys for your account.  
 
 9.Set up a git client where origin is a fork of the repository (e.g.
   pertrai1/WebApp), and upstream is the real deal (e.g. wevote/WebApp) 
