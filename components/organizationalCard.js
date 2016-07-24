@@ -1,12 +1,16 @@
-import React, { Component } from 'react';
-import { AppRegistry,StyleSheet,TouchableHighlight, Image,View,Text } from 'react-native';
+import React, { Component, PropTypes } from 'react';
+import { AppRegistry, StyleSheet, TouchableHighlight, Image, View, Text } from 'react-native';
 
-export default class oragnanizationalCard extends Component {
-  constructor(props){
-    super();
+export default class organizationalCard extends Component {
+  static propTypes = {
+    organization_name: PropTypes.string.isRequired,
+    organization_photo_url: PropTypes.string.isRequired,
+    twitter_description: PropTypes.string.isRequired,
+  };
 
+  constructor (props){
+    super(props);
     this.state={
-      imageUrl:'https://pbs.twimg.com/profile_images/705877503504568320/irplaegC_bigger.jpg'
     };
   }
   onButtonPress(){
@@ -18,11 +22,11 @@ export default class oragnanizationalCard extends Component {
     return (
       <View style={styles.card}>
         <View>
-            <Image style={styles.card_photo} source={{uri: this.props.imageUrl}}/>
+            <Image style={styles.card_photo} source={{uri: this.props.organization_photo_url}}/>
         </View>
         <View style={styles.card_details}>
-            <Text style={styles.card_details_header}>{this.props.title}</Text>
-            <Text style={styles.card_details_content}>{this.props.content}</Text>
+            <Text style={styles.card_details_header}>{this.props.organization_name}</Text>
+            <Text style={styles.card_details_content}>{this.props.twitter_description}</Text>
         </View>
       </View>
     );
