@@ -17,7 +17,7 @@ import {
 import Position_list from './assets/stubs/position_list'
 
 let CandidateCard = require('./components/candidateCard').default;
-let ListCard = require('./components/listCard').default;
+let ListCandidateCard = require('./components/listCard').default;
 let OrganizationalCard = require('./components/organizationalCard').default;
 
 
@@ -34,7 +34,8 @@ class WeVoteReactNative extends Component {
     this.organizationRetrieve=this.organizationRetrieve.bind(this);
     this.candidateRetrieve=this.candidateRetrieve.bind(this);
     this.state={
-      "position_list":Position_list,
+      "candidates_on_organization_scene": Position_list
+      // "organizations_on_candidate_scene": Position_list
     };
   }
 
@@ -61,7 +62,7 @@ class WeVoteReactNative extends Component {
       let responseJson = await response.json();
 
       // Put the contents of the organization JSON into the state so the app can react
-      // console.log("responseJson: ", responseJson);
+      console.log("responseJson: ", responseJson);
       this.setState({candidate: responseJson});
 
     } catch(error) {
@@ -87,7 +88,7 @@ class WeVoteReactNative extends Component {
       let responseJson = await response.json();
 
       // Put the contents of the organization JSON into the state so the app can react
-      // console.log("responseJson: ", responseJson);
+      console.log("responseJson: ", responseJson);
       this.setState({organization: responseJson});
     } catch(error) {
       console.error(error);
@@ -108,28 +109,29 @@ class WeVoteReactNative extends Component {
         update_candidate,
         organization_name,
         organization_photo_url,
-        twitter_description,
-        position_list,
+        candidates_on_organization_scene,
+        organizations_on_candidate_scene,
         update_organization;
 
 
     if(!this.state.organization){
-        id ='Candidate'
-        ballot_item_display_name= this.state.candidate.ballot_item_display_name,
-        candidate_photo_url= this.state.candidate.candidate_photo_url,
-        twitter_description= this.state.candidate.twitter_description,
-        update_candidate= this.updateCandidate
-        update_organization= this.updateOrganization
+        id = 'Candidate';
+        ballot_item_display_name = this.state.candidate.ballot_item_display_name;
+        candidate_photo_url = this.state.candidate.candidate_photo_url;
+        twitter_description = this.state.candidate.twitter_description;
+        organizations_on_candidate_scene = this.state.organizations_on_candidate_scene;
+        update_candidate = this.updateCandidate;
+        update_organization = this.updateOrganization;
     }
 
     if(!this.state.candidate){
-        id ='Organization'
-        organization_name= this.state.organization.organization_name,
-        organization_photo_url= this.state.organization.organization_photo_url,
-        twitter_description= this.state.organization.twitter_description,
-        position_list= this.state.position_list,
-        update_candidate= this.updateCandidate
-        update_organization= this.updateOrganization
+        id = 'Organization';
+        organization_name = this.state.organization.organization_name;
+        organization_photo_url = this.state.organization.organization_photo_url;
+        twitter_description = this.state.organization.twitter_description;
+        candidates_on_organization_scene = this.state.candidates_on_organization_scene;
+        update_candidate = this.updateCandidate;
+        update_organization = this.updateOrganization;
     }
 
 
@@ -138,15 +140,15 @@ class WeVoteReactNative extends Component {
         initialRoute = {{
           id: id,
           index:0,
-          organization_name:organization_name,
-          organization_photo_url:organization_photo_url,
-          twitter_description:twitter_description,
-          position_list:position_list,
-          update_organization:update_organization,
-          ballot_item_display_name:ballot_item_display_name,
-          candidate_photo_url:candidate_photo_url,
-          twitter_description:twitter_description,
-          update_candidate:update_candidate
+          organization_name:                organization_name,
+          organization_photo_url:           organization_photo_url,
+          twitter_description:              twitter_description,
+          candidates_on_organization_scene: candidates_on_organization_scene,
+          organizations_on_candidate_scene: organizations_on_candidate_scene,
+          update_organization:              update_organization,
+          ballot_item_display_name:         ballot_item_display_name,
+          candidate_photo_url:              candidate_photo_url,
+          update_candidate:                 update_candidate
         }}
         renderScene={
           this.navigatorRenderScene
@@ -174,22 +176,25 @@ class WeVoteReactNative extends Component {
         var candidate_photo_url = "https://static.votesmart.org/canphoto/26732_lg.jpg"
         twitter_description = (route.twitter_description === undefined) ? "" : route.twitter_description;
 
-        return <View style={styles.container}>
+        return <ScrollView>
+          <View style={styles.container}>
             <CandidateCard ballot_item_display_name={ ballot_item_display_name }
                                   candidate_photo_url={ candidate_photo_url }
                                   twitter_description={ twitter_description }
                                   update={route.update_organization}
             />
-          </View>;
+          </View>
+        </ScrollView>;
 
       case 'Organization':
         var organization_name = (route.organization_name === undefined) ? "" : route.organization_name;
         var organization_photo_url = (route.organization_photo_url === undefined) ? "" : route.organization_photo_url;
         twitter_description = (route.twitter_description === undefined) ? "" : route.twitter_description;
 
-        const rows = (route.position_list === undefined) ? {} : route.position_list.map((card,i) => {
-          //Add props to your LiComponent just as you would normally.
-          return <ListCard key={i} ballot_item_display_name={card.ballot_item_display_name}
+        const candidate_rows = (route.candidates_on_organization_scene === undefined) ? {} :
+            route.candidates_on_organization_scene.map((card,i) => {
+          //Add props to your ListCandidateCard just as you would normally.
+          return <ListCandidateCard key={i} ballot_item_display_name={card.ballot_item_display_name}
                            ballot_item_image_url_https={card.ballot_item_image_url_https}
                            is_positive_rating={card.is_positive_rating}
                            vote_smart_rating={card.vote_smart_rating}
@@ -205,11 +210,11 @@ class WeVoteReactNative extends Component {
                                 organization_photo_url={ organization_photo_url }
                                 twitter_description={ twitter_description }
             />
-              <View>
-                {rows}
-              </View>
+            <View>
+              {candidate_rows}
+            </View>
           </View>
-          </ScrollView>;
+        </ScrollView>;
 
       case 'Second':
         return(
@@ -226,7 +231,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F5FCFF'
   },
   loading_screen: {
     flex: 1,
@@ -242,7 +247,7 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    margin: 10
   },
   image: {
         width: 40,
@@ -252,7 +257,7 @@ const styles = StyleSheet.create({
   instructions: {
     textAlign: 'center',
     color: '#333333',
-    marginBottom: 5,
+    marginBottom: 5
   },
   card: {
     justifyContent: 'space-between',
