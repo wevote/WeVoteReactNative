@@ -1,4 +1,5 @@
 # Preparing the Environment on Your Machine
+[Go back to Readme Home](../../README.md)
 
 ## Install nodeenv ("Node Env")
 
@@ -38,7 +39,42 @@ IF you find that your node or npm versions are below that, run this command:
     (WebAppEnv) $ brew unlink node
     (WebAppEnv) $ brew install node
 
-## Set up your environment
+
+
+Many of the instructions below come from the React Native 
+[Getting Started](https://facebook.github.io/react-native/docs/getting-started.html) page. 
+We recommend referencing starting there. The notes that follow here are to supplement the Getting Started page.
+
+## iOS
+
+### Install Xcode
+
+The easiest way to install Xcode is via the 
+<a href="https://itunes.apple.com/us/app/xcode/id497799835?mt=12" target="_blank">Mac App Store</a>.
+
+### Node, Watchman, React Native command line interface
+
+We recommend installing node and watchman via Homebrew.
+
+    brew install node
+    brew install watchman
+    
+Node comes with npm, which lets you install the React Native command line interface.
+
+    npm install -g react-native-cli
+    
+If you get a permission error, try with sudo: `sudo npm install -g react-native-cli`.
+
+## Android
+
+Go to [Facebook React Native Getting Started](https://facebook.github.io/react-native/docs/getting-started.html) and 
+click on the "Android" button. Steps described include:
+
+- Downloading the latest Java SE Development Kit
+- Install Android Studio
+
+
+## Get ready to retrieve WeVoteReactNative code
 
 Create a place to put all of the code from Github:
 

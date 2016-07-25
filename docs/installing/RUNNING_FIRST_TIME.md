@@ -1,4 +1,5 @@
 # Running WeVoteReactNative for the First Time
+[Go back to Readme Home](../../README.md)
 
 Please make sure you have read:
 
@@ -6,28 +7,31 @@ Please make sure you have read:
 
 * [Bringing Code to Your Machine](CLONING_CODE.md)
 
+## iOS 
 
-## Install and start emulator
-
+### Method 1 - Quick
 
     (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative
-    (WebAppEnv) $ npm -g install gulp-cli      // try sudo if it does not work
-    (WebAppEnv) $ npm install
-    (WebAppEnv) $ gulp
-    (WebAppEnv) $ npm rebuild node-sass
+    (WebAppEnv) $ react-native run-ios
 
-You should be able to visit WebApp here.
+This opens the iOS simulator.
 
-## Using We Vote API server Locally: OPTIONAL
+## Method 2 - Preferred
 
-The default configuration connections to our live API server at: https://api.wevoteusa.org, so this step is optional.
+I recommend this method because then you have easier access to the XCode console log.
 
-IFF you would like to install the We Vote API server locally, start by reading the instructions 
-[install WeVoteServer](https://github.com/wevote/WeVoteServer/blob/master/README_API_INSTALL.md)
+1. Open XCode.
+
+2. From within XCode, open this project:
+
+
+    /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcodeproj
+
+3. Click the "Play" (sideways triangle button), and this opens the iOS Simulator.
 
 
 ---
 
-Next: [Working with WeVoteReactNative Day-to-Day](../working/README_WORKING_WITH_WEB_APP.md)
+Next: [Working with WeVoteReactNative Day-to-Day](../working/README_WORKING_WITH_REACT_NATIVE.md)
 
 [Go back to Readme Home](../../README.md)
