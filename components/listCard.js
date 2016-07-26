@@ -1,3 +1,9 @@
+/**
+ * These are organizational positions on specific candidates for display on the Organization's page
+ * https://github.com/wevote/WeVoteReactNative
+ * @WeVote
+ */
+
 import React, { Component,PropTypes } from 'react';
 import { AppRegistry,StyleSheet,Navigator,TouchableHighlight, Image,View,Text } from 'react-native';
 
