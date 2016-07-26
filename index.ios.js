@@ -14,7 +14,9 @@ import {
   View,
   Navigator
 } from 'react-native';
-import Position_list from './assets/stubs/position_list'
+import Position_list from './assets/stubs/position_list';
+import Header from './components/Header';
+import Loading from './components/Loading';
 
 let CandidateCard = require('./components/candidateCard').default;
 let ListCard = require('./components/listCard').default;
@@ -59,11 +61,11 @@ class WeVoteReactNative extends Component {
         },
       });
       let responseJson = await response.json();
-
+    
       // Put the contents of the organization JSON into the state so the app can react
       // console.log("responseJson: ", responseJson);
       this.setState({candidate: responseJson});
-
+  
     } catch(error) {
       console.error(error);
     }
@@ -96,10 +98,9 @@ class WeVoteReactNative extends Component {
 
   render() {
     // If neither organization nor candidate have data, show loading screen
-    if (!this.state.organization && !this.state.candidate)
-      return <View style={styles.loading_screen}>
-          <Text style={styles.loading_text}>We Vote</Text>
-        </View>;
+    if (!this.state.organization && !this.state.candidate) {
+      return <Loading>We Vote USA</Loading>;
+    }
 
     var id,
         ballot_item_display_name,
@@ -200,6 +201,7 @@ class WeVoteReactNative extends Component {
         });
 
         return <ScrollView>
+          <Header></Header>
           <View style={styles.container}>
             <OrganizationalCard organization_name={ organization_name }
                                 organization_photo_url={ organization_photo_url }
@@ -227,17 +229,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
-  },
-  loading_screen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#337ec9',
-  },
-  loading_text: {
-    textAlign: 'center',
-    color: '#fff',
-    fontSize:60
   },
   welcome: {
     fontSize: 20,
