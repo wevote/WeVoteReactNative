@@ -14,7 +14,8 @@ import {
   View,
   Navigator
 } from 'react-native';
-import Position_list from './assets/stubs/position_list'
+import Position_list from './assets/stubs/position_list';
+import Header from './components/header';
 
 let CandidateCard = require('./components/candidateCard').default;
 let ListCandidateCard = require('./components/listCard').default;
@@ -60,11 +61,11 @@ class WeVoteReactNative extends Component {
         },
       });
       let responseJson = await response.json();
-
+    
       // Put the contents of the organization JSON into the state so the app can react
       console.log("responseJson: ", responseJson);
       this.setState({candidate: responseJson});
-
+  
     } catch(error) {
       console.error(error);
     }
@@ -205,6 +206,7 @@ class WeVoteReactNative extends Component {
         });
 
         return <ScrollView>
+          <Header></Header>
           <View style={styles.container}>
             <OrganizationalCard organization_name={ organization_name }
                                 organization_photo_url={ organization_photo_url }
