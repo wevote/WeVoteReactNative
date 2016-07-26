@@ -15,7 +15,8 @@ import {
   Navigator
 } from 'react-native';
 import Position_list from './assets/stubs/position_list';
-import Header from './components/header';
+import Header from './components/Header';
+import Loading from './components/Loading';
 
 let CandidateCard = require('./components/candidateCard').default;
 let ListCandidateCard = require('./components/listCard').default;
@@ -98,10 +99,9 @@ class WeVoteReactNative extends Component {
 
   render() {
     // If neither organization nor candidate have data, show loading screen
-    if (!this.state.organization && !this.state.candidate)
-      return <View style={styles.loading_screen}>
-          <Text style={styles.loading_text}>We Vote</Text>
-        </View>;
+    if (!this.state.organization && !this.state.candidate) {
+      return <Loading>We Vote USA</Loading>;
+    }
 
     var id,
         ballot_item_display_name,
@@ -234,17 +234,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF'
-  },
-  loading_screen: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#337ec9',
-  },
-  loading_text: {
-    textAlign: 'center',
-    color: '#fff',
-    fontSize:60
   },
   welcome: {
     fontSize: 20,
