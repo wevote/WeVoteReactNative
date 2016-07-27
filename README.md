@@ -1,65 +1,44 @@
-# We Vote React Native - README Home
+#  MyApplication
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
-This repository contains We Vote's iOS and Android versions built with ReactNative. It is being built based on 
- specifications created and tested in the [We Vote WebApp](https://github.com/wevote/WebApp) Using data we have 
- gathered in our [API Server](https://api.wevoteusa.org/apis/v1/docs/) from
- Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project. 
-We give voters a social way to interact with ballot data.
+* Standard compliant React Native App Utilizing [Ignite](https://github.com/infinitered/ignite)
 
-Interested in volunteering? [Starting presentation here](https://prezi.com/5v4drd74pt6n/we-vote-introduction-strategic-landscape/). Please also [read about our values](https://wevote.hackpad.com/Community-Rules-C0sn7DhZhDt) and [see our Code of Conduct](CODE_OF_CONDUCT.md)
+## :arrow_up: How to Setup
 
-You can see our current wireframe mockup for a San Francisco ballot here:
-http://start.wevoteusa.org/
+**Step 1:** git clone this repo:
 
-And finally, the current live demo version of the mobile website version is here: https://wevote.me 
-(Our iPhone and Android versions are not available to the public yet.)
+**Step 2:** cd to the cloned repo:
 
-## Learn about React Native
-
-Some articles to orient you:
-
-<a href="https://www.infoq.com/articles/react-native-introduction" target="_blank">Writing Cross-Platform Apps with React Native</a>
-
-Our commentary: If you know ReactJS, the transition to React Native is very logical -- BUT we are finding that all rendering
-is new code, and we are not able to bring over too much from our wevote/WebApp repo. We believe that we will be able to use the same data Store and Action code.
-
-These are some videos we suggest to get you started.
-
-<a href="https://www.youtube.com/watch?v=KVZ-P-ZI6W4" target="_blank">React.js Conf 2015 Keynote - Introducing React Native</a> (32 minutes)
-
-<a href="https://www.youtube.com/watch?v=7rDsRXj9-cU" target="_blank">React.js Conf 2015 Keynote 2 - A Deep Dive into React Native</a> (30 minutes)
+**Step 3:** Install the Application with `npm install`
 
 
-## Installing WeVoteReactNative
+## :arrow_forward: How to Run App
 
-1. [Preparing the Environment on Your Machine](docs/installing/ENVIRONMENT.md)
+1. cd to the repo
+2. Run Build for either OS
+  * for iOS
+    * run `react-native run-ios`
+  * for Android
+    * Run Genymotion
+    * run `react-native run-android`
 
-2. [Bringing Code to Your Machine](docs/installing/CLONING_CODE.md)
+## :no_entry_sign: Standard Compliant
 
-3. [Running WeVoteReactNative for the First Time](docs/installing/RUNNING_FIRST_TIME.md)
+[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
+This project adheres to Standard.  Our CI enforces this, so we suggest you enable linting to keep your project compliant during development.
 
-## Working with WeVoteReactNative
-1. [Working with WeVoteReactNative Day-to-Day](docs/working/README_WORKING_WITH_REACT_NATIVE.md)
+**To Lint on Commit**
 
-2. [Debugging Tools and Tips](docs/working/DEBUGGING_TOOLS.md)
+1. Install git-hooks => On a Mac `brew install git-hooks` - [Other](https://github.com/icefox/git-hooks/)
+2. Setup on Repo => `git hooks --install`
 
-3. [Issues and Reporting Bugs](docs/working/ISSUES.md)
+**Bypass Lint**
 
-## Contributing to the Project
-Please read the following before you start contributing to the project. Thank you!
+If you have to bypass lint for a special commit that you will come back and clean (pushing something to a branch etc.) then you can bypass git hooks with adding `--no-verify` to your commit command.
 
-[Coding Standards and Best Practices](docs/contributing/CONTRIBUTING_STANDARDS.md)
+**Understanding Linting Errors**
 
-## How to Submit Code / Pull Requests
-1. [What the Heck is a Pull Request?](docs/contributing/PULL_REQUEST_BACKGROUND.md)
+The linting rules are from JS Standard and React-Standard.  [Regular JS errors can be found with descriptions here](http://eslint.org/docs/rules/), while [React errors and descriptions can be found here](https://github.com/yannickcr/eslint-plugin-react).
 
-2. [Before Your First Pull Request](docs/contributing/PULL_REQUEST_SETUP.md)
-
-3. [Creating a Pull Request](docs/contributing/CREATING_PULL_REQUEST.md)
-
-4. [Pull Request Advanced Tips & Tricks](docs/contributing/PULL_REQUEST_ADVANCED.md)
-
-5. [Troubleshooting Pull Request Problems](docs/contributing/PULL_REQUEST_TROUBLESHOOTING.md)
-
-6. [Approving Pull Requests](docs/contributing/APPROVING_PULL_REQUESTS.md)
-
+## :open_file_folder: Related Articles
+Ignite Documentation - [Ignite Wiki https://github.com/infinitered/ignite/wiki](https://github.com/infinitered/ignite/wiki)
