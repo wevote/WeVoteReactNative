@@ -17,6 +17,8 @@ export default class ListCard extends Component {
 
   }
   _onPressButton(we_vote_id){
+    console.log("In onPressButton,", we_vote_id);
+    console.log("this.props.update:", this.props.update);
     this.props.update(we_vote_id);
   }
   render() {
@@ -56,8 +58,7 @@ export default class ListCard extends Component {
 const styles = StyleSheet.create({
   list:{
     backgroundColor: '#F5F4F1',
-    width:350,
-    height:100,
+    flex: 1,
     borderTopColor: '#eee',
     borderBottomColor: '#eee',
     borderTopWidth: 1,
@@ -75,7 +76,9 @@ const styles = StyleSheet.create({
     marginTop:20
   },
   card_details:{
-    height:150
+    height:150,
+    margin: 10
+
   },
   card_details_header:{
     fontSize:20,

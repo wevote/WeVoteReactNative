@@ -13,11 +13,12 @@ export default class candidateCard extends Component {
     this.state={
     };
   }
-  onButtonPress(){
-    this.props.update_organization(we_vote_id);
+  onButtonPress(we_vote_id){
+    console.log("In candidateCard onButtonPress", we_vote_id);
+    this.props.update(we_vote_id);
   }
   render() {
-    return <TouchableHighlight onPress={()=> this._onPressButton(this.props.ballot_item_we_vote_id)}>
+    return <TouchableHighlight onPress={() => this.onButtonPress(this.props.ballot_item_we_vote_id)}>
         <View>
           <View style={styles.card, {flexDirection: 'row'}}>
             <View style={styles.card_photo}>
