@@ -2,26 +2,27 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   app: {
-    backgroundColor: 'black',
+    backgroundColor: '#F5F4F1',
     flex: 1
   },
   photo:{
     width:60,
     height: 60
-
   },
   header:{
-
       fontWeight: 'bold',
       fontSize:20,
-      color: '#83bfeb'
+      color: '#337ab7'
   },
-  listItem: {
+  itemContainer: {
       backgroundColor:'white',
       marginTop: 5,
-      borderRadius: 10,
-      shadowColor: 'gray',
-      shadowOffset: {width: 10, height: 10}
+      borderRadius: 2,
+      borderColor: '#ffffff',
+      borderWidth: 1,
+      shadowColor: 'rgba(0, 0, 0, 0.12)',
+      elevation: 2,
+      paddingBottom: 5
     },
   ballotItemInfo: {
       paddingTop:4,
@@ -64,6 +65,23 @@ const styles = StyleSheet.create({
      height:25,
      padding:10
 
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF'
+  },
+  loading_screen: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#337ec9',
+  },
+  loading_text: {
+    textAlign: 'center',
+    color: '#fff',
+    fontSize:60
   }
 
 

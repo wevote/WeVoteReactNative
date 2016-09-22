@@ -1,16 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { AppRegistry, StyleSheet, TouchableNativeFeedback, Image, View, Text } from 'react-native';
-let BallotChoiceInfo = require('./BallotChoiceInfo').default;
+import { AppRegistry, StyleSheet,Image, View, Text } from 'react-native';
+let BallotChoiceInfo = require('./BallotChoiceInfo');
 let BallotChoiceButtons = require('./BallotChoiceButtons').default;
-export default class BallotChoices extends Component {
 
-  render() {
-    console.log("In BallotChoices");
+const BallotChoice = (props) => <View>
+                                <BallotChoiceInfo img={props.choice.candidate_photo_url} twitter={props.choice.twitter_followers_count} party={props.choice.party} name={(props.choice.measure_subtitle === undefined) ? props.choice.ballot_item_display_name: props.choice.measure_subtitle}/>
+                                </View>;
 
-    return ( <TouchableNativeFeedback  background={TouchableNativeFeedback.SelectableBackground()}><View><BallotChoiceInfo img={this.props.choice.candidate_photo_url} twitter={this.props.choice.twitter_followers_count} party={this.props.choice.party} name={(this.props.choice.measure_subtitle === undefined) ? this.props.choice.ballot_item_display_name: this.props.choice.measure_subtitle}/>
-             <BallotChoiceButtons/></View></TouchableNativeFeedback>
-            );
-  }
-
-
-}
+module.exports = BallotChoice;

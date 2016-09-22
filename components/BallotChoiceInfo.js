@@ -2,39 +2,26 @@ import React, { Component, PropTypes } from 'react';
 import { AppRegistry, StyleSheet, TouchableHighlight, Image, View, Text } from 'react-native';
 import styles from '../assets/styles/style';
 
-export default class BallotChoiceInfo extends Component {
-
-
-
-  constructor(props) {
-    super(props);
-    this.state = {saved: this.props.saved};
-  }
-
-
-
-
-  render() {
+const BallotChoiceInfo = (props) => {
     let no_image = require('../assets/no-image.png');
     let twitter = require('../assets/icons/twitter.png');
 
-    console.log("In BallotChoiceINfo");
-        console.log("Image", this.props.img);
-    return ( <View style={styles.ballotItemInfo}>
+    info = (props.img) ? <View><Text>{props.party}</Text><View style={styles.twitterInfo}><Image source={twitter}/>
+                                  <Text>{props.twitter}</Text></View></View> : undefined;
+
+    return (
+                <View style={styles.ballotItemInfo}>
 
 
                 <View style={styles.photoContainer}>
-                  <Image style={styles.photo} source={(this.props.img == "") ? no_image : {uri: this.props.img}}></Image>
+                  <Image style={styles.photo} source={(props.img == "") ? no_image : {uri: props.img}}></Image>
                 </View>
 
                 <View style={styles.candidateTextInfo}>
 
-                  <Text numberOfLines={1}>{this.props.name}</Text>
+                  <Text>{props.name}</Text>
+                    {info}
 
-                  <Text>{this.props.party} </Text>
-
-                    <View style={styles.twitterInfo}><Image source={twitter}/>
-                    <Text>{this.props.twitter}</Text></View>
                 </View>
 
 
@@ -43,7 +30,6 @@ export default class BallotChoiceInfo extends Component {
             );
 
 
-  }
+  };
 
-
-}
+module.exports = BallotChoiceInfo;

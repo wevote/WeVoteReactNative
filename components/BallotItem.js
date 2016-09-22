@@ -1,22 +1,18 @@
 import React, { Component, PropTypes } from 'react';
-import { AppRegistry, StyleSheet, TouchableHighlight, Image, View, Text } from 'react-native';
-let BallotChoice = require('./BallotChoice').default;
+import { AppRegistry, StyleSheet, TouchableNativeFeedback, Image, View, Text } from 'react-native';
+let BallotChoice = require('./BallotChoice');
 let BallotItemHeader = require('./BallotItemHeader').default;
 import styles from '../assets/styles/style';
 
-export default class BallotItem extends Component {
-
-  render() {
-    console.log("In BallotItem");
+const BallotItem = (props) => {
     choiceView = {};
-    if(this.props.ballotItem.kind_of_ballot_item == "MEASURE") {
-       choiceView = <BallotChoice choice={this.props.ballotItem}/>;
+    if(props.ballotItem.kind_of_ballot_item == "MEASURE") {
+       choiceView = <BallotChoice choice={props.ballotItem}/>;
      } else {
-       choiceView = this.props.ballotItem.candidate_list.map((choice, i) =>{return <BallotChoice key={i} choice={choice}/>});
+       choiceView = props.ballotItem.candidate_list.map((choice, i) =>{return <BallotChoice key={i} choice={choice}/>});
      }
-    return ( <View style={styles.listItem}><BallotItemHeader title={this.props.ballotItem.ballot_item_display_name}/><View>{choiceView}</View></View>);
+    return ( <TouchableNativeFeedback onPress={props.onClick}  background={TouchableNativeFeedback.SelectableBackground()}><View style={styles.itemContainer}><BallotItemHeader title={props.ballotItem.ballot_item_display_name}/><View>{choiceView}</View></View></TouchableNativeFeedback>);
 
   }
 
-
-}
+module.exports = BallotItem;
