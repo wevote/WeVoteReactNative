@@ -11,7 +11,7 @@ const BallotItem = (props) => {
      } else {
        choiceView = props.ballotItem.candidate_list.map((choice, i) =>{return <BallotChoice key={i} choice={choice}/>});
      }
-    return ( <TouchableNativeFeedback onPress={props.onClick}  background={TouchableNativeFeedback.SelectableBackground()}><View style={styles.itemContainer}><BallotItemHeader title={props.ballotItem.ballot_item_display_name}/><View>{choiceView}</View></View></TouchableNativeFeedback>);
+    return ( <TouchableNativeFeedback onPress={props.onClick}  background={TouchableNativeFeedback.SelectableBackground()}><View style={styles.itemContainer}><BallotItemHeader title={props.ballotItem.ballot_item_display_name} isStarred={props.isStarred} onClick={props.onStarClick}/><View>{choiceView}</View></View></TouchableNativeFeedback>);
 
   }
 

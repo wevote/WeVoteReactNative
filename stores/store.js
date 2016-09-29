@@ -10,7 +10,7 @@ export default function configureStore(preloadedState) {
     app,
     applyMiddleware(
       thunkMiddleware,
-      loggerMiddleware
+      //loggerMiddleware
     )
   )
 }

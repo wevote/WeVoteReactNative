@@ -6,15 +6,15 @@ export default class BallotItemHeader extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {saved: this.props.saved};
+    this.state = {starred: this.props.isStarred};
   }
   render() {
     let bookmark = require('../assets/icons/bookmark-icon-filled.png');
     let notBookmark = require('../assets/icons/bookmark-icon-empty.png');
-
+    console.log("HEADER",this.state.starred);
     return ( <View style={styles.headerRow}><Text style={styles.header}>{this.props.title}</Text>
-            <TouchableNativeFeedback onPress={() => {this.setState({saved: !this.state.saved})}}>
-            <View><Image source={this.state.saved?bookmark:notBookmark}/></View></TouchableNativeFeedback></View>);
+            <TouchableNativeFeedback onPress={() => this.props.onClick()}>
+            <View><Image source={this.state.starred?bookmark:notBookmark}/></View></TouchableNativeFeedback></View>);
 
   }
 

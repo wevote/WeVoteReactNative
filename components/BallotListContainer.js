@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, {Component, PropTypes} from 'react';
 import {View, Text, ScrollView} from 'react-native';
-import {requestBallotIfNeeded} from '../actions/actions'
+import {requestBallotIfNeeded, setStarredStatus} from '../actions/actions'
 import BallotItem from './BallotItem'
 import styles from '../assets/styles/style';
 import Header from './Header'
@@ -13,24 +13,34 @@ class Ballot extends Component {
   }
 
   componentDidMount() {
-    const {dispatch} = this.props;
-
-    console.log("componentDidMount");
-    dispatch(requestBallotIfNeeded());
+    const {requestBallot} = this.props;
+    requestBallot();
   }
 
  onBallotItemClick(item) {
    const {ballot, navigator} = this.props;
-  navigator.push({id: 'BallotItemInfo', ballotItem: item.we_vote_id});
+   navigator.push({id: 'BallotItemInfo', ballotItem: item.we_vote_id});
 }
 
 
   render() {
 
     const {ballot} = this.props;
-    ballotItems = ballot.map((ballotItem, i) => {console.log(ballotItem); return <BallotItem key={i} ballotItem={ballotItem.info} onClick={this.onBallotItemClick.bind(this,ballotItem.info)}/>});
+    const {ballotItems} = ballot;
+    const {starred} = ballot;
 
-    content = ballot != undefined ? ballotItems : <Text> No Ballot Available </Text> ;
+    items = [];
+    ind = 0;
+    for(item in ballotItems) {
+      var isStarred = false;
+
+      //console.log("STARRED", starred[item]);
+      isStarred = (starred == undefined || starred[item] == undefined) ? false: starred[item].isStarred;
+
+      console.log(isStarred);
+      items[ind++] = <BallotItem key = {ind} ballotItem={ballotItems[item].item} isStarred={isStarred} onStarClick={this.props.onStarClick.bind(this, ballotItems[item].item, isStarred)} onClick={this.onBallotItemClick.bind(this,ballotItems[item].item)}/>;
+    }
+    content = ballotItems != undefined ? items : <Text> No Ballot Available </Text> ;
     return  <View style={styles.app}><Header/><ScrollView>
             {content}
           </ScrollView>
@@ -41,20 +51,36 @@ class Ballot extends Component {
 
 
 Ballot.propTypes = {
-  ballot: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired
+  ballot: PropTypes.object.isRequired
 }
 
 
 const mapStateToProps = (state) => {
   const{ballotList} = state;
   const{ballots} = ballotList;
+
   return {
     ballot: ballots
   }
 
 }
 
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onStarClick: (item, isStarred) => {
+      console.log("CLCIKED")
+      console.log(item);
+      dispatch(setStarredStatus(item, isStarred))
+    },
+
+    requestBallot: () => {
+      dispatch(requestBallotIfNeeded())
+    }
+  }
+}
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Ballot);
