@@ -1,5 +1,5 @@
 import React, { Component, } from 'react'
-import { StyleSheet, Text, View, ActivityIndicatorIOS } from 'react-native'
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 
 class Loading extends Component {
 
@@ -17,7 +17,7 @@ class Loading extends Component {
       <View style={styles.container}>
         <View style={[styles.loading_screen]}>
           <Text style={styles.loading_text}>Loading {this.props.children}</Text>
-          <ActivityIndicatorIOS style={{alignSelf: 'center'}} />
+          <ActivityIndicator style={{alignSelf: 'center'}} />
         </View>
       </View>
     )
