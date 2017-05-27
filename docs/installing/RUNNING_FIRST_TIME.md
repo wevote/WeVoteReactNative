@@ -54,6 +54,9 @@ Find line: `SecRandomCopyBytes(kSecRandomDefault, keyBytes.length, keyBytes.muta
 
 Change to: `(void)SecRandomCopyBytes(kSecRandomDefault, keyBytes.length, keyBytes.mutableBytes);`
 
+### Missing requirements
+
+Since we're using external packages like `react-native-elements`, some dependency issues may arise. The work-around for this is to identify which dependencies are required by doing `npm install` and then adding the missing dependencies by `npm install --save <pkg_name>@<pkg_version>`
 
 ---
 
