@@ -27,7 +27,7 @@ react-native run-ios
 To run on android:
 
 ```
-react=native run-android
+react-native run-android
 ```
 
 
