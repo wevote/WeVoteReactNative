@@ -1,53 +1,64 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+  StackNavigator, TabNavigator
+} from 'react-navigation';
+import {AppRegistry} from 'react-native';
+import {Provider} from 'react-redux';
+import LoadingScreen from './components/LoadingScreen/LoadingScreen';
+import Ballot from './components/Ballot/Ballot';
+import BallotDetails from './components/BallotDetails/BallotDetails'
+import Organizations from './components/Organizations/Organizations'
+import Friends from './components/Friends/Friends'
+import About from './components/About/About'
+import configureStore from './stores/store'
 
-class WeVoteReactNative extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
-    );
-  }
-}
+let store = configureStore();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+const BallotStack = StackNavigator({
+  Ballot: {screen: Ballot},
+  BallotDetails: {screen: BallotDetails, navigationOptions: ({navigation}) => ({
+      title: `${navigation.state.params.title}`
+    })}
+})
+
+const OrganizationStack = StackNavigator({
+  Organizations: {screen: Organizations}
+})
+
+const FriendsStack = StackNavigator({
+  Friends: {screen: Friends}
+})
+
+const AdminStack = StackNavigator({
+  About: {screen: About}
+})
+
+const Tabs = TabNavigator({
+  BallotStack: {screen: BallotStack, navigationOptions: {
+    header: null,
+  }},
+  OrganizationStack: {screen: OrganizationStack, navigationOptions: {
+    header: null,
+  }},
+  FriendsStack: {screen: FriendsStack, navigationOptions: {
+    header: null,
+  }},
+  AdminStack: {screen: AdminStack, navigationOptions: {
+    header: null,
+  }},
+},
+  {
+    tabBarOptions: { activeTintColor: '#e91e63',},
+  });
+
+
+let AppStack = StackNavigator({
+  Loading: {screen: LoadingScreen},
+  Tabs: {screen: Tabs},
 });
 
-AppRegistry.registerComponent('WeVoteReactNative', () => WeVoteReactNative);
+App = () => (<Provider store={store}><AppStack/></Provider>);
+
+
+
+AppRegistry.registerComponent('WeVoteReactNative', () => App);
