@@ -1,3 +1,41 @@
+To run the app:
+
+I'm using yarn to manage the dependencies so you need to install it.
+
+On Macs run:
+
+'''
+brew install yarn
+'''
+
+Clone the project and switch to app branch.
+
+Run:
+
+'''
+yarn install
+'''
+
+This will add all of the dependencies.
+
+To run on iOS:
+
+'''
+react-native run-ios
+'''
+
+To run on android:
+
+'''
+react=native run-android
+'''
+
+
+
+
+
+
+
 # We Vote React Native - README Home
 
 This repository contains We Vote's iOS and Android versions built with ReactNative. It is being built based on 
