@@ -1,16 +1,20 @@
-import {createStore, applyMiddleware} from 'redux'
+import {compose, createStore, applyMiddleware} from 'redux'
+import {AsyncStorage} from 'react-native'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
-import app from '../reducers/reducers'
+import reducers from '../reducers/reducers'
+import {persistStore, autoRehydrate} from 'redux-persist';
 
-const loggerMiddleware = createLogger()
+const loggerMiddleware = createLogger();
 
 export default function configureStore(preloadedState) {
-  return createStore(
-    app,
-    applyMiddleware(
+  let store = createStore(
+    reducers,
+    compose(applyMiddleware(
       thunkMiddleware,
-      //loggerMiddleware
-    )
+      loggerMiddleware
+    ),autoRehydrate())
   )
+  persistStore(store, {storage: AsyncStorage});
+  return store;
 }

@@ -10,19 +10,25 @@
     "flux": "^2.1.1",
     "isomorphic-fetch": "^2.2.1",
     "keymirror": "^0.1.1",
-    "react": "15.2.1",
-    "react-native": "0.30.0",
+    "react": "16.0.0-alpha.6",
+    "react-native": "^0.44.2",
     "react-native-bootstrap": "^0.1.0",
     "react-native-navbar": "^1.5.0",
     "react-native-vector-icons": "^2.1.0",
+    "react-navigation": "^1.0.0-beta.11",
     "react-redux": "^4.4.5",
     "redux": "^3.6.0",
     "redux-logger": "^2.6.1",
+    "redux-persist": "^4.8.0",
     "redux-thunk": "^2.1.0",
     "superagent": "^2.2.0",
     "url": "^0.11.0"
   },
   "devDependencies": {
     "redux-devtools": "^3.3.1"
-  }
+  },
+  "main": "index.js",
+  "repository": "git@github.com:aayalah/WeVoteReactNative.git",
+  "author": "Alejandro <amayalah@alumni.stanford.edu>",
+  "license": "MIT"
 }
