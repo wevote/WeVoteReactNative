@@ -1,10 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {View, Text, ScrollView} from 'react-native';
-import globalStyle from '../../assets/styles/style'
+import globalStyle from '../../../css/styles/style'
 import BallotItem from './BallotItem'
 import saveAddress from '../../actions/UserActions'
-import BallotService from '../../services/BallotService'
+import BallotService from '../../../services/BallotService'
 
 export class Ballot extends Component {
   static navigationOptions = {

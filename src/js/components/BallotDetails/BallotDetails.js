@@ -4,7 +4,7 @@ import {StyleSheet, View, Text, Button, TextInput} from 'react-native';
 import Comment from './Comment';
 import CommentInput from './CommentInput';
 import fetchBallotItemInfo from '../../actions/BallotActions'
-import globalStyle from '../../assets/styles/style'
+import globalStyle from '../../../css/styles/style'
 
 export class BallotDetails extends Component {
   constructor(props) {

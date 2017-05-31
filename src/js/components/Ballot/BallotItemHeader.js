@@ -7,8 +7,8 @@ export default class BallotItemHeader extends Component {
   }
 
   render() {
-    let bookmark = require('../../assets/icons/bookmark-icon-filled.png');
-    let notBookmark = require('../../assets/icons/bookmark-icon-empty.png');
+    let bookmark = require('../../../img/global/icons/bookmark-icon-filled.png');
+    let notBookmark = require('../../../img/global/icons/bookmark-icon-empty.png');
     const {title} = this.props;
     return (
       <View style={styles.header}>

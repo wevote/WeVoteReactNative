@@ -1,4 +1,4 @@
-import BallotService from '../services/BallotService'
+import BallotService from '../../services/BallotService'
 export const RECEIVE_BALLOT = "RECEIVE_BALLOT";
 export const RECEIVE_BALLOT_ITEM_INFO = "RECEIVE_BALLOT_ITEM_INFO";
 
