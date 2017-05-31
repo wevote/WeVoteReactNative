@@ -4,13 +4,13 @@ import {
 } from 'react-navigation';
 import {AppRegistry} from 'react-native';
 import {Provider} from 'react-redux';
-import LoadingScreen from './components/LoadingScreen/LoadingScreen';
-import Ballot from './components/Ballot/Ballot';
-import BallotDetails from './components/BallotDetails/BallotDetails'
-import Organizations from './components/Organizations/Organizations'
-import Friends from './components/Friends/Friends'
-import About from './components/About/About'
-import configureStore from './stores/store'
+import LoadingScreen from './src/js/components/LoadingScreen/LoadingScreen';
+import Ballot from './src/js/components/Ballot/Ballot';
+import BallotDetails from './src/js/components/BallotDetails/BallotDetails'
+import Organizations from './src/js/components/Organizations/Organizations'
+import Friends from './src/js/components/Friends/Friends'
+import About from './src/js/components/About/About'
+import configureStore from './src/js/stores/store'
 
 let store = configureStore();
 

@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { AppRegistry, StyleSheet, TouchableHighlight, Image, View, Text } from 'react-native';
-import  MeasureInfo from './MeasureInfo';
-import  BallotItemHeader from './BallotItemHeader';
+import MeasureInfo from './MeasureInfo';
+import BallotItemHeader from './BallotItemHeader';
 import CandidateInfo from './CandidateInfo';
-import BallotService from '../../services/BallotService';
+import BallotService from '../../../services/BallotService'
 
 
 export default BallotItem = (props) => {

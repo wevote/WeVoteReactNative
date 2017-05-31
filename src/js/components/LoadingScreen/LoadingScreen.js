@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import React, {Component, PropTypes} from 'react'
 import {View, Text, StyleSheet, Button} from 'react-native';
-import globalStyle from '../../assets/styles/style'
-import UserService from '../../services/UserService'
-import AuthService from '../../services/AuthService'
+import globalStyle from '../../../css/styles/style'
+import UserService from '../../../services/UserService'
+import AuthService from '../../../services/AuthService'
 import {createUser} from '../../actions/UserActions'
 
 export class LoadingScreen extends Component {
