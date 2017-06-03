@@ -57,6 +57,15 @@ const AppStack = StackNavigator({
   Tabs: {screen: Tabs},
 });
 
-App = () => (<Provider store={store}><AppStack/></Provider>);
+class App extends Component{
+  render(){
+    return(
+      <Provider 
+        store={store}>
+        <AppStack/>
+      </Provider>
+      );
+  }
+}
 
 export default App;
