@@ -13,6 +13,7 @@
     "react-navigation": "^1.0.0-beta.11",
     "react-player": "^0.18.0",
     "react-redux": "^4.4.5",
+    "react-router-native": "^4.1.1",
     "redux": "^3.6.0",
     "redux-logger": "^2.6.1",
     "redux-persist": "^4.8.0",
