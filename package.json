@@ -11,6 +11,7 @@
     "react-native": "^0.44.2",
     "react-native-vector-icons": "^2.1.0",
     "react-navigation": "^1.0.0-beta.11",
+    "react-player": "^0.18.0",
     "react-redux": "^4.4.5",
     "redux": "^3.6.0",
     "redux-logger": "^2.6.1",
@@ -18,9 +19,7 @@
     "redux-thunk": "^2.1.0",
     "url": "^0.11.0"
   },
-  "devDependencies": {
-    "redux-devtools": "^3.3.1"
-  },
+  "devDependencies": {},
   "main": "index.js",
   "repository": "git@github.com:aayalah/WeVoteReactNative.git",
   "author": "Alejandro <amayalah@alumni.stanford.edu>",

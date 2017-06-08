@@ -5,7 +5,7 @@ import {
 import {AppRegistry} from 'react-native';
 import {Provider} from 'react-redux';
 import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
-import Ballot from '../../components/Ballot/Ballot';
+import Ballot from '../../scenes/Ballot/Ballot';
 import BallotDetails from '../../components/BallotDetails/BallotDetails'
 import Organizations from '../../components/Organizations/Organizations'
 import Friends from '../../components/Friends/Friends'
