@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
+import {Modal, Slider} from 'react-native';
 //import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
-//import { browserHistory, Link } from "react-router";
+import { browserHistory, Link } from "react-router-native";
 import AddressBox from "../../components/AddressBox";
 import BallotActions from "../../actions/BallotActions";
 import BallotElectionList from "../../components/Ballot/BallotElectionList";
