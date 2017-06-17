@@ -6,7 +6,7 @@ export default class VoterEmailAddressEntry extends Component {
   render(){
     return(
       <View>
-      <Text>Hello</Text>
+      <Text>VoterEmailAddressEntryForm</Text>
       </View>
       );
   }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet, Text, View} from 'react-native'
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native'
 //import Helmet from "react-helmet";
 import { browserHistory } from "react-router-native";
 //import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
@@ -119,7 +119,7 @@ class SignIn extends Component {
 
 
   render () {
-    var { voter} = this.state;
+    var voter = this.state;
 
     var FormField = t.struct({
       name: t.String,
@@ -151,47 +151,40 @@ class SignIn extends Component {
       }
     }
 
-    return <View className="">
-      <Text>"Sign In - We Vote" </Text>
-      <View className="card">
-        <View className="card-main">
-          {voter.is_signed_in ?
-            <View className="card">
-              <Text className="h3">Your Account</Text>
-              
-            <View style={styles.container}>
-                    {/* display */}
-                    <Form
-                      ref="form"
-                      type={FormField}
-                    />
-                    <TouchableHighlight style={styles.button} onPress={this.onPress} underlayColor='#99d9f4'>
-                      <Text style={styles.buttonText}>Save</Text>
-                    </TouchableHighlight>
-                  </View>              
-              
-              <Text className="pull-right u-gray-mid">{this.state.name_saved_status}</Text>
-            </View> :null
+    return( 
+    <View>
+      <View >
+      <View >
+        {voter.is_signed_in ?
+          <View >
+            <Text >Your Account</Text>
+              <View style={styles.container}>
+                <Form
+                ref="form"
+                type={FormField}
+                />
+                <TouchableOpacity style={styles.button} onPress={this.onPress} >
+                  <Text style={styles.buttonText}>Save</Text>
+                </TouchableOpacity>
+              </View>              
+                <Text>{this.state.name_saved_status}</Text>
+          </View> :null
           }
-          
+
           <View>
               <View>
-                <Text className="h3">Currently Signed In</Text>
-                <Text className="account-edit-action" tabIndex="0" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
-                  <TouchableHighlight style = {styles.button} onPress={VoterSessionActions.voterSignOut}>
-                    <Text style = {styles.buttonText}>Sign Out</Text>
-                  </TouchableHighlight>
-                </Text>
-                
-                
-              </View> 
+                <Text >Currently Signed In</Text>
 
-          
-          </View>      
+                <TouchableOpacity style = {styles.button} onPress={VoterSessionActions.voterSignOut}>
+                  <Text style = {styles.buttonText}>Sign Out</Text>
+                </TouchableOpacity>
+                </View> 
+              </View>      
             <VoterEmailAddressEntry />
-        </View>
+          </View>
       </View>
-    </View>;
+    </View>
+    );
   }
 }
 
