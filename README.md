@@ -1,22 +1,21 @@
-To run the app:
+# Running the app:
 
-I'm using yarn to manage the dependencies so you need to install it.
+From within the root directory after cloning,
 
-On Macs run:
-
-```
-brew install yarn
-```
-
-Clone the project and switch to app branch.
 
 Run:
 
 ```
-yarn install
+npm install
 ```
 
-This will add all of the dependencies.
+This will add all required dependencies from package.json
+
+Alternatively, if you use yarn, run:
+
+```
+yarn install
+```
 
 To run on iOS:
 
@@ -30,11 +29,9 @@ To run on android:
 react-native run-android
 ```
 
+# Contributing Guidelines:
 
-
-
-
-
+Please read the [wiki](https://github.com/wevote/WeVoteReactNative/wiki)
 
 # We Vote React Native - README Home
 
@@ -61,7 +58,9 @@ Some articles to orient you:
 Our commentary: If you know ReactJS, the transition to React Native is very logical -- BUT we are finding that all rendering
 is new code, and we are not able to bring over too much from our wevote/WebApp repo. We believe that we will be able to use the same data Store and Action code.
 
-These are some videos we suggest to get you started.
+The React Native documentation is a great place to start.
+
+These are some videos which'll give you a brief overview of React Native.
 
 <a href="https://www.youtube.com/watch?v=KVZ-P-ZI6W4" target="_blank">React.js Conf 2015 Keynote - Introducing React Native</a> (32 minutes)
 
