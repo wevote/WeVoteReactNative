@@ -204,7 +204,7 @@ export default class Ballot extends Component {
   }
 
   getBallot (props){
-    let ballot_type = props.location.query ? props.location.query.type : "all";
+    let ballot_type = "all";
     switch (ballot_type) {
       case "filterRemaining":
         return BallotStore.ballot_remaining_choices;
