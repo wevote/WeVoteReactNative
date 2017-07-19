@@ -38,7 +38,25 @@ export function $ajax (options) {
   options.error = options.error || defaults.error;
   options.url = url.resolve(defaults.baseUrl, options.endpoint) + "/";
 
-  return window.$.ajax(options);
+  if(options.data) {
+    options.url += (options.url.indexOf('?') === -1 ? '?' : '&') + queryParams(options.data);
+  }
+  return fetch(options.url)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      //console.log("response", responseJson);
+      return responseJson;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  //return window.$.ajax(options);
+}
+
+function queryParams(params) {
+  return Object.keys(params)
+  .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+  .join('&');
 }
 
 export function get (options) {

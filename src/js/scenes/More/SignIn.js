@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native'
+import {StyleSheet, Text, View, TouchableOpacity, TextInput, Dimensions} from 'react-native';
 //import Helmet from "react-helmet";
 import { browserHistory } from "react-router-native";
 //import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
@@ -126,6 +126,7 @@ class SignIn extends Component {
       surname: t.String,
       rememberMe: t.Boolean
     });
+    var {height, width} = Dimensions.get('window');
 
     if (!voter){
       return LoadingWheel;
@@ -151,25 +152,41 @@ class SignIn extends Component {
       }
     }
 
-    return( 
-    <View>
-      <View >
-      <View >
-        {voter.is_signed_in ?
-          <View >
-            <Text >Your Account</Text>
-              <View style={styles.container}>
-                <Form
-                ref="form"
-                type={FormField}
-                />
-                <TouchableOpacity style={styles.button} onPress={this.onPress} >
-                  <Text style={styles.buttonText}>Save</Text>
-                </TouchableOpacity>
-              </View>              
-                <Text>{this.state.name_saved_status}</Text>
-          </View> :null
-          }
+	return(
+	<View>
+	  <View >
+	  <View >
+		{voter.is_signed_in ?
+		  <View >
+			<Text style={styles.title}>Your Account</Text>
+			<View style={styles.container}>
+				<Form
+				ref="form"
+				type={FormField}
+			/>
+			<Text style={styles.titleText}>First Name</Text>
+			<TextInput style={{height: 40, width: width-100, borderColor: 'lightgray', borderWidth: 0.3}}
+				placeholder={"First Name"}
+				onChangeText={(value) => this.setState({first_name: value,
+										   name_saved_status: "Saving First Name..."})}
+				onSubmitEditing={this.handleKeyPress}
+				value={this.state.first_name}
+			/>
+			<Text style={styles.titleText}>Last Name</Text>
+			<TextInput style={{height: 40, width: width-100, borderColor: 'lightgray', borderWidth: 0.3}}
+				placeholder={"Last Name"}
+				onChangeText={(value) => this.setState({last_name: value,
+											name_saved_status: "Saving Last Name..."})}
+				onSubmitEditing={this.handleKeyPress}
+				value={this.state.last_name}
+			/>
+			<Text>{this.state.name_saved_status}</Text>
+			<TouchableOpacity style={styles.button} onPress={this.onPress} >
+			  <Text style={styles.buttonText}>Save</Text>
+			</TouchableOpacity>
+			</View>
+		  </View> :null
+		}
 
           <View>
               <View>
@@ -178,8 +195,8 @@ class SignIn extends Component {
                 <TouchableOpacity style = {styles.button} onPress={VoterSessionActions.voterSignOut}>
                   <Text style = {styles.buttonText}>Sign Out</Text>
                 </TouchableOpacity>
-                </View> 
-              </View>      
+                </View>
+              </View>
             <VoterEmailAddressEntry />
           </View>
       </View>
@@ -196,9 +213,18 @@ var styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#ffffff',
   },
+  baseText: {
+	  fontFamily: 'sans-serif',
+  },
+  titleText: {
+	fontFamily: 'sans-serif',
+	fontSize: 20,
+	fontWeight: 'bold',
+	//marginBottom: 10
+  },
   title: {
     fontSize: 30,
-    alignSelf: 'center',
+    //alignSelf: 'center',
     marginBottom: 30
   },
   buttonText: {
