@@ -35,10 +35,10 @@ Please read the [wiki](https://github.com/wevote/WeVoteReactNative/wiki)
 
 # We Vote React Native - README Home
 
-This repository contains We Vote's iOS and Android versions built with ReactNative. It is being built based on 
- specifications created and tested in the [We Vote WebApp](https://github.com/wevote/WebApp) Using data we have 
+This repository contains We Vote's iOS and Android versions built with ReactNative. It is being built based on
+ specifications created and tested in the [We Vote WebApp](https://github.com/wevote/WebApp) Using data we have
  gathered in our [API Server](https://api.wevoteusa.org/apis/v1/docs/) from
- Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project. 
+ Google Civic API, Vote Smart, MapLight, TheUnitedStates.io and the Voting Information Project.
 We give voters a social way to interact with ballot data.
 
 Interested in volunteering? [Starting presentation here](https://prezi.com/5v4drd74pt6n/we-vote-introduction-strategic-landscape/). Please also [read about our values](https://wevote.hackpad.com/Community-Rules-C0sn7DhZhDt) and [see our Code of Conduct](CODE_OF_CONDUCT.md)
@@ -46,7 +46,7 @@ Interested in volunteering? [Starting presentation here](https://prezi.com/5v4dr
 You can see our current wireframe mockup for a San Francisco ballot here:
 http://start.wevoteusa.org/
 
-And finally, the current live demo version of the mobile website version is here: https://wevote.me 
+And finally, the current live demo version of the mobile website version is here: https://wevote.me
 (Our iPhone and Android versions are not available to the public yet.)
 
 ## Learn about React Native
@@ -68,6 +68,9 @@ These are some videos which'll give you a brief overview of React Native.
 
 
 ## Installing WeVoteReactNative
+
+*NOTE: For developing on macOS the environment installation will likely need
+10-15gb of drive space.  Android SDK and Android Studio installation and emulation will likely require approximately 40gb of drive space.*
 
 1. [Preparing the Environment on Your Machine](docs/installing/ENVIRONMENT.md)
 
@@ -99,4 +102,3 @@ Please read the following before you start contributing to the project. Thank yo
 5. [Troubleshooting Pull Request Problems](docs/contributing/PULL_REQUEST_TROUBLESHOOTING.md)
 
 6. [Approving Pull Requests](docs/contributing/APPROVING_PULL_REQUESTS.md)
-

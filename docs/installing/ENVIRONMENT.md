@@ -31,7 +31,7 @@ Confirm the versions of your main packages are >= to these versions:
 
     (WebAppEnv) $ npm -v
     3.10.5
-    
+
 IF you find that your node or npm versions are below that, run this command:
 
     (WebAppEnv) $ sudo npm install -g npm
@@ -41,15 +41,15 @@ IF you find that your node or npm versions are below that, run this command:
 
 
 
-Many of the instructions below come from the React Native 
-[Getting Started](https://facebook.github.io/react-native/docs/getting-started.html) page. 
+Many of the instructions below come from the React Native
+[Getting Started](https://facebook.github.io/react-native/docs/getting-started.html) page.
 We recommend referencing starting there. The notes that follow here are to supplement the Getting Started page.
 
 ## iOS
 
 ### Install Xcode
 
-The easiest way to install Xcode is via the 
+The easiest way to install Xcode is via the
 <a href="https://itunes.apple.com/us/app/xcode/id497799835?mt=12" target="_blank">Mac App Store</a>.
 
 ### Node, Watchman, React Native command line interface
@@ -58,20 +58,26 @@ We recommend installing node and watchman via Homebrew.
 
     brew install node
     brew install watchman
-    
+
 Node comes with npm, which lets you install the React Native command line interface.
 
     npm install -g react-native-cli
-    
+
 If you get a permission error, try with sudo: `sudo npm install -g react-native-cli`.
 
 ## Android
 
-Go to [Facebook React Native Getting Started](https://facebook.github.io/react-native/docs/getting-started.html) and 
+Go to [Facebook React Native Getting Started](https://facebook.github.io/react-native/docs/getting-started.html) and
 click on the "Android" button. Steps described include:
 
 - Downloading the latest Java SE Development Kit
 - Install Android Studio
+
+  *NOTE: Android Studio can take a significant amount of hard drive space. The amount ranges
+  but it appears to be common for the SDK and Studio to take up 20-30gb.  On top of this, running the emulator can
+  also consume a great deal of hard drive and memory resources.  It appears that one should try to have 40gb free
+  drive space in order to successfully install and emulate a project. This [post](https://stackoverflow.com/questions/30796230/android-sdk-folder-taking-a-lot-of-disk-space-do-we-need-to-keep-all-of-the-sys)
+  has some advice on how to mitigate the problem but would require emulation through a connected Android mobile device.*
 
 
 ## Get ready to retrieve WeVoteReactNative code
@@ -86,4 +92,3 @@ Create a place to put all of the code from Github:
 Next: [Bringing Code to Your Machine](CLONING_CODE.md)
 
 [Go back to Readme Home](../../README.md)
-
