@@ -11,8 +11,9 @@ const url = require("url");
 const assign = require("object-assign");
 const webAppConfig = require("../config");
 const cookies = require("./cookies");
-
+import {Linking, WebView} from 'react-native';
 import * as request from "superagent";
+var Dispatcher = require("flux/lib/Dispatcher");
 
 const defaults = {
   dataType: "json",
@@ -44,13 +45,43 @@ export function $ajax (options) {
   return fetch(options.url)
     .then((response) => response.json())
     .then((responseJson) => {
-      //console.log("response", responseJson);
-      return responseJson;
+        //console.log("responseJson", options.endpoint, responseJson);
+        const res = responseJson
+        this.dispatch({ type: options.endpoint, res });
     })
     .catch((error) => {
-      console.error(error);
+      console.error(error, options.endpoint);
+      this.dispatch({type: "error-" + options.endpoint, error});
     });
   //return window.$.ajax(options);
+}
+
+export function $ajax_twitter_sign_in (options) {
+  if (!options.endpoint) throw new Error("$ajax missing endpoint option");
+  options.data = assign({}, defaults.data(), options.data || {});
+  options.crossDomain = true;
+  options.success = options.success || defaults.success;
+  options.error = options.error || defaults.error;
+  options.url = url.resolve(defaults.baseUrl, options.endpoint) + "/";
+
+  if(options.data) {
+    options.url += (options.url.indexOf('?') === -1 ? '?' : '&') + queryParams(options.data);
+  }
+  return fetch(options.url)
+    .then((response) => response.json())
+    .then((responseJson) => {
+        const res = responseJson
+        if (res.twitter_redirect_url) {
+          Linking.openURL(res.twitter_redirect_url).catch(err => console.error('An error occurred', err));
+        } else {
+          console.log("twitterSignInStart ERROR res: ", res);
+          Linking.openURL("").catch(err => console.error('An error occurred', err));
+        }
+    })
+    .catch((error) => {
+      console.error(error, options.endpoint);
+      Linking.openURL("").catch(err => console.error('An error occurred', err));
+    });
 }
 
 function queryParams(params) {

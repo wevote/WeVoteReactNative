@@ -120,6 +120,22 @@ class VoterStore extends FluxMapStore {
     return interfaceStatusFlags & flag;
   }
 
+  getNotificationSettingsFlagState (flag) {
+    // Look in js/Constants/VoterConstants.js for list of flag constant definitions
+    let notificationSettingsFlags = this.getState().voter.notification_settings_flags || 0;
+    result = notificationSettingsFlags & flag
+    if (result) {
+        return true;
+    } else {
+        return false;
+    }
+    // return True if bit specified by the flag is also set
+    //  in notificationSettingsFlags (voter.notification_settings_flags)
+    // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
+    // so for value of flag = 1 and 4, we return a positive integer,
+    // but, the bit representing 2 and 8 are not set, so for flag = 2 and 8, we return zero
+  }
+
   isVoterFound () {
     return this.getState().voter_found;
   }
@@ -322,6 +338,7 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterRetrieve":
+        console.log("voterRetrieve", action.res);
         if (!action.res.voter_found) {
           // This voter_device_id is no good, so delete it.
           cookies.setItem("voter_device_id", "", -1, "/");
@@ -373,7 +390,8 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterUpdate":
-        const {first_name, last_name, email, interface_status_flags} = action.res;
+        const {first_name, last_name, email, interface_status_flags, notification_settings_flags} = action.res;
+        VoterActions.voterRetrieve();
         return {
           ...state,
           voter: {...state.voter,
@@ -381,6 +399,7 @@ class VoterStore extends FluxMapStore {
             last_name: last_name ? last_name : state.voter.last_name,
             facebook_email: email ? email : state.voter.email,
             interface_status_flags: interface_status_flags ? interface_status_flags : state.voter.interface_status_flags,
+            notification_settings_flags: notification_settings_flags ? notification_settings_flags : state.voter.notification_settings_flags,
           }
         };
 

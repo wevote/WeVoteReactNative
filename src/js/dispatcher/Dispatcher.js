@@ -8,8 +8,8 @@ Dispatcher.prototype.loadEndpoint = function (endpoint, data = {}) {
   this.$ajax({
     endpoint,
     data: data,
-    success: (res) => this.dispatch({ type: endpoint, res }),
-    error: (err) => this.dispatch({ type: "error-" + endpoint, err })
+//    success: (res) => this.dispatch({ type: endpoint, res }),
+//    error: (err) => this.dispatch({ type: "error-" + endpoint, err })
   });
 };
 
