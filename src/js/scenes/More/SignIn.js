@@ -1,5 +1,16 @@
 import React, { Component } from "react";
-import {StyleSheet, Switch, Text, View, TouchableOpacity, TextInput, Dimensions} from 'react-native';
+import {
+  StyleSheet,
+  Switch, 
+  ScrollView,
+  Text, 
+  View, 
+  TouchableOpacity, 
+  TextInput, 
+  Dimensions,
+  Platform,
+} 
+from 'react-native';
 //import Helmet from "react-helmet";
 import { browserHistory } from "react-router-native";
 //import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
@@ -14,9 +25,7 @@ import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
 import VoterConstants from "../../constants/VoterConstants";
-
-var t = require('tcomb-form-native');
-var Form = t.form.Form;
+import HeaderTitle from "../../components/Header/Header"
 
 const debug_mode = false;
 const delay_before_user_name_update_api_call = 1200;
@@ -144,12 +153,6 @@ class SignIn extends Component {
     if (!this.state.voter){
         return LoadingWheel;
     }
-    var FormField = t.struct({
-      name: t.String,
-      surname: t.String,
-      rememberMe: t.Boolean
-    });
-    var {height, width} = Dimensions.get('window');
 
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
     if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
@@ -175,17 +178,17 @@ class SignIn extends Component {
 
 	return(
 	  <View>
-		<View >
+		<View>
 		    {this.state.voter.signed_in_twitter && this.state.voter.signed_in_facebook ?
               null :
-              <Text style={styles.title}>{your_account_title}</Text>
+              <HeaderTitle headerText = {your_account_title} />
             }
             {this.state.voter.is_signed_in ?
               <Text>{your_account_explanation}</Text> :
               <Text>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post anything automatically.</Text>
             }
             {!this.state.voter.signed_in_twitter || !this.state.voter.signed_in_facebook ?
-              <View>
+              <View >
                 {this.state.voter.signed_in_twitter ?
                   null :
                  <TwitterSignIn />
