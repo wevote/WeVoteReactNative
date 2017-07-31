@@ -148,6 +148,15 @@ module.exports = {
       });
   },
 
+  voterUpdateNotificationSettingsFlags: function (flag_integer_to_set, flag_integer_to_unset = "") {
+    Dispatcher.loadEndpoint("voterUpdate",
+      {
+        notification_flag_integer_to_set: flag_integer_to_set,
+        notification_flag_integer_to_unset: flag_integer_to_unset,
+      });
+  },
+
+
   voterRetrieve: function () {
     Dispatcher.loadEndpoint("voterRetrieve");
   },
