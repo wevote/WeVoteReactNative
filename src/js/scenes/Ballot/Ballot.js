@@ -1,19 +1,35 @@
 import React, { Component, PropTypes } from "react";
-import {Text,View, Modal, Slider} from 'react-native';
+import {
+  StyleSheet,
+  Switch,
+  ScrollView,
+  Text,
+  Modal,
+  Slider,
+  Button,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Dimensions,
+  Platform,
+} from 'react-native';
+import { styles } from "../More/SignIn";
 //import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { browserHistory, Link } from "react-router-native";
 //import AddressBox from "../../components/AddressBox";
 import BallotActions from "../../actions/BallotActions";
 //import BallotElectionList from "../../components/Ballot/BallotElectionList";
 //import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
-//import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
+import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
 //import BallotIntroMission from "../../components/Ballot/BallotIntroMission";
 //import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
 //import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
 //import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionBar";
 import BallotStore from "../../stores/BallotStore";
-//import BallotFilter from "../../components/Navigation/BallotFilter";
+import BallotFilter from "../../components/Navigation/BallotFilter";
 //import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
+import EditAddress from "../../components/Widgets/EditAddress";
 import GuideActions from "../../actions/GuideActions";
 //import GuideList from "../../components/VoterGuide/GuideList";
 import GuideStore from "../../stores/GuideStore";
@@ -32,60 +48,64 @@ const web_app_config = require("../../config");
 
 export default class Ballot extends Component {
   static propTypes = {
-      location: PropTypes.object
+    location: PropTypes.object
   };
 
   constructor (props){
     super(props);
     this.state = {
       candidate_for_modal: {
-        guides_to_follow_list: [],
+        voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: []
       },
       measure_for_modal: {
-        guides_to_follow_list: [],
+        voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: []
       },
+      showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
       showCandidateModal: false,
-      showBallotIntroModal: false,
       showMeasureModal: false,
       showSelectBallotModal: false,
       showSelectAddressModal: false,
-      ballot_election_list: [],
+      showBallotSummaryModal: false,
+      ballotElectionList: [],
+      mounted: false,
     };
+
+    this._toggleBallotIntroModal = this._toggleBallotIntroModal.bind(this);
+    this._toggleCandidateModal = this._toggleCandidateModal.bind(this);
+    this._toggleMeasureModal = this._toggleMeasureModal.bind(this);
+    this._toggleSelectBallotModal = this._toggleSelectBallotModal.bind(this);
+    this._toggleSelectAddressModal = this._toggleSelectAddressModal.bind(this);
+    this._toggleBallotSummaryModal = this._toggleBallotSummaryModal.bind(this);
   }
 
   componentDidMount () {
+    this.setState({mounted: true});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       browserHistory.push("settings/location");
     } else {
-      //if ballot is found
       let ballot = this.getBallot(this.props);
-      // console.log(ballot);
-      if (ballot != undefined) {
-        let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
+      if (ballot !== undefined) {
+        let ballot_type = "all";
         this.setState({ballot: ballot, ballot_type: ballot_type});
       }
-
       // We need a ballotStoreListener here because we want the ballot to display before positions are received
       this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
       // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
       // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
-      this._toggleCandidateModal = this._toggleCandidateModal.bind(this);
-      this._toggleMeasureModal = this._toggleMeasureModal.bind(this);
-      this._toggleSelectBallotModal = this._toggleSelectBallotModal.bind(this);
-      this._toggleSelectAddressModal = this._toggleSelectAddressModal.bind(this);
-      this._next = this._next.bind(this);
       SupportActions.voterAllPositionsRetrieve();
       SupportActions.positionsCountForAllBallotItems();
       BallotActions.voterBallotListRetrieve();
       this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
       this.supportStoreListener = SupportStore.addListener(this._onBallotStoreChange.bind(this));
+      this._onVoterStoreChange(); // We call this to properly set showBallotIntroModal
       this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     }
   }
 
   componentWillUnmount (){
+    this.setState({mounted: false});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){
       // No ballot found
     } else {
@@ -97,25 +117,18 @@ export default class Ballot extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    let ballot_type = nextProps.location.query ? nextProps.location.query.type : "all";
+    let ballot_type = "all";
     this.setState({ballot: this.getBallot(nextProps), ballot_type: ballot_type });
   }
 
-  _onVoterStoreChange () {
-    this.setState({
-      voter: VoterStore.getVoter(),
-      showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
-    });
-  }
-
-  _toggleCandidateModal (candidateForModal) {
-    if (candidateForModal) {
-      GuideActions.retrieveGuidesToFollowByBallotItem(candidateForModal.we_vote_id, "CANDIDATE");
-      candidateForModal.guides_to_follow_list = GuideStore.toFollowListForBallotItemById(candidateForModal.we_vote_id);
+  _toggleCandidateModal (candidate_for_modal) {
+    if (candidate_for_modal) {
+      GuideActions.retrieveGuidesToFollowByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
+      candidate_for_modal.voter_guides_to_follow_for_latest_ballot_item = GuideStore.getVoterGuidesToFollowForBallotItemId(candidate_for_modal.we_vote_id);
     }
 
     this.setState({
-      candidate_for_modal: candidateForModal,
+      candidate_for_modal: candidate_for_modal,
       showCandidateModal: !this.state.showCandidateModal
     });
   }
@@ -123,7 +136,10 @@ export default class Ballot extends Component {
   _toggleBallotIntroModal () {
     if (this.state.showBallotIntroModal) {
       // Saved to the voter record that the ballot introduction has been seen
-      VoterActions.voterUpdateStatusFlags(VoterConstants.BALLOT_INTRO_MODAL_SHOWN);
+      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BALLOT_INTRO_MODAL_SHOWN);
+    } else {
+      // Clear out any # from anchors in the URL
+      this.props.navigator.redirect("/ballot");
     }
     this.setState({ showBallotIntroModal: !this.state.showBallotIntroModal });
   }
@@ -145,20 +161,41 @@ export default class Ballot extends Component {
   }
 
   _toggleSelectAddressModal () {
+    // Clear out any # from anchors in the URL
+    //if (!this.state.showSelectAddressModal)
+    //  browserHistory.push("/ballot");
+
     this.setState({
       showSelectAddressModal: !this.state.showSelectAddressModal
     });
   }
 
-  _onBallotStoreChange (){
-    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0){ // Ballot is found but ballot is empty
-      browserHistory.push("ballot/empty");
-      console.log("_onBallotStoreChange: ballot is empty");
-    } else {
-      let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
-      this.setState({ballot: this.getBallot(this.props), ballot_type: ballot_type });
+  _toggleBallotSummaryModal () {
+    this.setState({
+      showBallotSummaryModal: !this.state.showBallotSummaryModal
+    });
+  }
+
+  _onVoterStoreChange () {
+    if (this.state.mounted) {
+      this.setState({
+        voter: VoterStore.getVoter(),
+        showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
+      });
     }
-    this.setState({ ballot_election_list: BallotStore.ballotList() });
+  }
+
+  _onBallotStoreChange (){
+    if (this.state.mounted) {
+      if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) { // Ballot is found but ballot is empty
+        browserHistory.push("ballot/empty");
+      } else {
+        //let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
+        let ballot_type = "all";
+        this.setState({ballot: this.getBallot(this.props), ballot_type: ballot_type});
+      }
+      this.setState({ballotElectionList: BallotStore.ballotList()});
+    }
   }
 
   _onGuideStoreChange (){
@@ -167,28 +204,24 @@ export default class Ballot extends Component {
       this.setState({
         candidate_for_modal: {
           ...this.state.candidate_for_modal,
-          guides_to_follow_list: GuideStore.toFollowListForBallotItem()
+          voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem()
         }
       });
     } else if (this.state.measure_for_modal) {
       this.setState({
         measure_for_modal: {
           ...this.state.measure_for_modal,
-          guides_to_follow_list: GuideStore.toFollowListForBallotItem()
+          voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem()
         }
       });
     }
   }
 
-  _next () {
-    this.refs.slider.slickNext();
-  }
+//  componentDidUpdate (){
+//    this.hashLinkScroll();
+//  }
 
-  componentDidUpdate (){
-    this.hashLinkScroll();
-  }
-
-  //Needed to scroll to anchor tags based on hash in url(as done for bookmarks)
+  // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)
   hashLinkScroll () {
     const { hash } = window.location;
     if (hash !== "") {
@@ -196,7 +229,7 @@ export default class Ballot extends Component {
       // this is required when navigating from a different page so that
       // the element is rendered on the page before trying to getElementById.
       setTimeout(() => {
-        var id = hash.replace("#", "");
+        let id = hash.replace("#", "");
         const element = document.getElementById(id);
         if (element) element.scrollIntoView();
       }, 0);
@@ -255,40 +288,20 @@ export default class Ballot extends Component {
   }
 
   render () {
-    var settings = {
-      dots: true,
-      infinite: false,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      swipe: true,
-      accessibility: true,
-      //react-slick default left & right nav arrows
-      arrows: true,
-    };
-
-/*
-    // This Modal is shown to the user, when user visits the ballot page for first time only
-    const BallotIntroModal = <Modal show={this.state.showBallotIntroModal} onHide={()=>{this._toggleBallotIntroModal(null);}}>
-      <Modal.Header closeButton />
-      <Modal.Body>
-        <Slider ref="slider" {...settings}>
-          <View key={1}><BallotIntroMission next={this._next}/></View>
-          <View key={2}><BallotIntroFollowIssues next={this._next}/></View>
-          <View key={3}><BallotIntroFollowAdvisers next={this._next}/></View>
-          <View key={4}><BallotIntroPositionBar next={this._next}/></View>
-        </Slider>
-      </Modal.Body>
-    </Modal>;
-*/
+    if (!this.state.mounted) {
+        return null;
+    }
 
     let ballot = this.state.ballot;
-    var voter_address = VoterStore.getAddress();
+    let text_for_map_search = VoterStore.getTextForMapSearch();
+    let voter_address_object = VoterStore.getAddressObject();
+
     if (!ballot) {
-      if (voter_address.length === 0) {
+      if (text_for_map_search.length === 0) {
         return <View className="ballot">
+
           <View className="ballot__header">
-            
+
             <Text>
               Your ballot could not be found. Please change your address.
             </Text>
@@ -306,7 +319,9 @@ export default class Ballot extends Component {
           </View>;
       }
     }
-    const missing_address = this.props.location === null;
+
+    const missing_address = false;
+    //const missing_address = this.props.location === null;
     // const ballot_caveat = BallotStore.ballot_properties.ballot_caveat;
     const election_name = BallotStore.currentBallotElectionName;
     const election_date = BallotStore.currentBallotElectionDate;
@@ -314,12 +329,13 @@ export default class Ballot extends Component {
     let ballot_returned_admin_edit_url = web_app_config.WE_VOTE_SERVER_ROOT_URL + "b/" + polling_location_we_vote_id_source + "/list_edit_by_polling_location/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     const emptyBallotButton = this.getFilterType() !== "none" && !missing_address ?
-        <Text>
-            <Button>View Full Ballot</Button>
-        </Text> :
-        <Text>
-              <Button>Enter a Different Address</Button>
-        </Text>;
+        <TouchableOpacity onPress={browserHistory.push('/ballot')}>
+          <Text style = {styles.buttonText}>View Full Ballot</Text>
+        </TouchableOpacity> :
+        <Link to="/settings/location">Enter a Different Address</Link>;
+        /*<TouchableOpacity onPress={browserHistory.push('/settings/location')}>
+          <Text style = {styles.buttonText}>Enter a Different Address</Text>
+        </TouchableOpacity>;*/
 
     const emptyBallot = ballot.length === 0 ?
       <View className="container-fluid well u-stack--md u-inset--md">
@@ -327,48 +343,63 @@ export default class Ballot extends Component {
       </View> :
       null;
 
-    const electionTooltip = election_date ? <Text> Tooltip to election Date</Text> : <Text />;
+    const electionTooltip = election_date ?
+        <View style={{position: 'absolute'}}>
+            <Text>Ballot for {election_date}</Text>
+        </View> : <Text />;
 
-    let in_ready_to_vote_mode = this.getFilterType() === "filterReadyToVote";
+    //let in_ready_to_vote_mode = this.getFilterType() === "filterReadyToVote";
+    let in_ready_to_vote_mode = true;
 
-    return <View className="ballot">
-      { this.state.showBallotIntroModal ? BallotIntroModal : null }
-      { this.state.showMeasureModal ? MeasureModal : null }
-      { this.state.showCandidateModal ? CandidateModal : null }
-      { this.state.showSelectBallotModal ? SelectBallotModal : null }
-      { this.state.showSelectAddressModal ? SelectAddressModal : null }
-      <View className="ballot__heading u-stack--lg">
-        <Text>
-        OverlayTrigger
-        </Text>
-        <View className="ballot__date_location">
-          {voter_address}
-          <Text className="hidden-print"> (<TouchableOpacity> onPress={this._toggleSelectAddressModal}</TouchableOpacity>)</Text>
-        </View>
-        <View className="ballot__filter hidden-print"><BallotFilter ballot_type={this.getBallotType()} /></View>
+    return <View>
+      <View className="ballot">
+        { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this._toggleBallotIntroModal} /> : null }
+        { this.state.showMeasureModal ? <MeasureModal show={this.state.showMeasureModal} toggleFunction={this._toggleMeasureModal} measure={this.state.measure_for_modal}/> : null }
+        { this.state.showCandidateModal ? <CandidateModal show={this.state.showCandidateModal} toggleFunction={this._toggleCandidateModal} candidate={this.state.candidate_for_modal}/> : null }
+        { this.state.showSelectBallotModal ? <SelectBallotModal show={this.state.showSelectBallotModal} toggleFunction={this._toggleSelectBallotModal} ballotElectionList={this.state.ballotElectionList} /> : null }
+        { this.state.showSelectAddressModal ? <SelectAddressModal show={this.state.showSelectAddressModal} toggleFunction={this._toggleSelectAddressModal} /> : null }
+        { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this._toggleBallotSummaryModal} /> : null }
       </View>
-      {/* TO BE DISCUSSED ballot_caveat !== "" ?
-        <View className="alert alert alert-info alert-dismissible" role="alert">n
-          <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          {ballot_caveat}
-        </View> : null
-      */}
+
+      <View className="ballot__heading u-stack--lg">
+        { election_name ?
+          /*<OverlayTrigger placement="top" overlay={electionTooltip} >*/
+            <View>
+               <Text style={styles.title}> {election_name} </Text>
+               {this.state.ballotElectionList.length > 1 ? <Image source={require("../../../img/global/icons/gear-icon.png")}/> : null}
+          </View> :
+          null }
+
+        <View>
+        <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
+        </View>
+        {text_for_map_search ?
+            <BallotFilter ballot_type={this.getBallotType()} _toggleBallotIntroModal={this._toggleBallotIntroModal} /> :
+          null
+        }
+        <View className="visible-xs-block hidden-print">
+          <View className="BallotItemsSummary">
+            <Text style = {{fontSize: 15, color: '#48BBEC'}} onPress={this._toggleBallotSummaryModal}>Summary of Ballot Items</Text>
+          </View>
+        </View>
+      </View>
       {emptyBallot}
         <View className="BallotList">
         { in_ready_to_vote_mode ?
-          ballot.map( (item) => <BallotItemReadyToVote key={item.we_vote_id} {...item} />) :
-          ballot.map( (item) => <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
+          ballot.map( (item) => <View>
+            <BallotItemReadyToVote key={item.we_vote_id} {...item} />
+          </View>) : null
+          /*ballot.map( (item) => <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
                                                       _toggleMeasureModal={this._toggleMeasureModal}
                                                       key={item.we_vote_id}
-                                                      {...item} />)
+                                                      {...item} />)*/
         }
+        {/* in_ready_to_vote_mode ?
+          ballot.map( (item) => <Text> {item.ballot_item_display_name}</Text> ) : null
+        */}
+
         </View>
-        {/* Show links to this candidate in the admin tools */}
-        { this.state.voter && polling_location_we_vote_id_source && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ?
-          <Text>Admin: 
-              Ballot copied from polling location </Text> :
-          null
-        }
-      </View>;
+
+    </View>;
   }
 }

@@ -14,12 +14,15 @@ class VoterStore extends FluxMapStore {
 
   getInitialState () {
     return {
-      voter: {},
+      voter: {
+        interface_status_flags: 0,
+      },
       address: {},
       email_address_status: {},
       email_sign_in_status: {},
       facebook_sign_in_status: {},
       voter_found: false,
+      voter_donation_history_list: {},
     };
   }
 
@@ -31,8 +34,12 @@ class VoterStore extends FluxMapStore {
     return this.getState().address.google_civic_election_id;
   }
 
-  getAddress (){
+  getTextForMapSearch (){
     return this.getState().address.text_for_map_search || "";
+  }
+
+  getAddressObject (){
+    return this.getState().address || {};
   }
 
   getEmailAddressList (){
@@ -48,7 +55,7 @@ class VoterStore extends FluxMapStore {
   }
 
   getFacebookPhoto (){
-    return this.getState().voter.facebook_profile_image_url_https;
+    return this.getState().voter.facebook_profile_image_url_https || "";
   }
 
   getFacebookSignInStatus (){
@@ -56,15 +63,15 @@ class VoterStore extends FluxMapStore {
   }
 
   getFirstName (){
-    return this.getState().voter.first_name;
+    return this.getState().voter.first_name || "";
   }
 
   getLastName (){
-    return this.getState().voter.last_name;
+    return this.getState().voter.last_name || "";
   }
 
   getFullName (){
-    return this.getState().voter.full_name;
+    return this.getState().voter.full_name || "";
   }
 
   getTwitterHandle (){
@@ -73,17 +80,17 @@ class VoterStore extends FluxMapStore {
 
   // Could be either Facebook photo or Twitter photo
   getVoterPhotoUrlLarge (){
-    return this.getState().voter.voter_photo_url_large;
+    return this.getState().voter.voter_photo_url_large || "";
   }
 
     // Could be either Facebook photo or Twitter photo
   getVoterPhotoUrlMedium (){
-    return this.getState().voter.voter_photo_url_medium;
+    return this.getState().voter.voter_photo_url_medium || "";
   }
 
   // Could be either Facebook photo or Twitter photo
   getVoterPhotoUrlTiny (){
-    return this.getState().voter.voter_photo_url_tiny;
+    return this.getState().voter.voter_photo_url_tiny || "";
   }
 
   // Voter's donation history
@@ -96,6 +103,8 @@ class VoterStore extends FluxMapStore {
   }
 
   setVoterDeviceIdCookie (id){
+    cookies.removeItem("voter_device_id");
+    cookies.removeItem("voter_device_id", "/");
     cookies.setItem("voter_device_id", id, Infinity, "/");
   }
 
@@ -112,8 +121,8 @@ class VoterStore extends FluxMapStore {
 
   getInterfaceFlagState (flag) {
     // Look in js/Constants/VoterConstants.js for list of flag constant definitions
-    let interfaceStatusFlags = this.getState().voter.interface_status_flags;
-    // return if bit specified by the flag is also set in interfaceStatusFlags
+    let interfaceStatusFlags = this.getState().voter.interface_status_flags || 0;
+    // return True if bit specified by the flag is also set in interfaceStatusFlags (voter.interface_status_flags)
     // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
     // so for value of flag = 1 and 4, we return a positive integer,
     // but, the bit representing 2 and 8 are not set, so for flag = 2 and 8, we return zero
@@ -229,6 +238,7 @@ class VoterStore extends FluxMapStore {
           };
         } else {
           BallotActions.voterBallotItemsRetrieve();
+          SupportActions.positionsCountForAllBallotItems(action.res.google_civic_election_id);
           return {
             ...state,
             address: {
@@ -395,11 +405,13 @@ class VoterStore extends FluxMapStore {
         return {
           ...state,
           voter: {...state.voter,
+            // With this we are only updating the values we change with a voterUpdate call.
             first_name: first_name ? first_name : state.voter.first_name,
             last_name: last_name ? last_name : state.voter.last_name,
             facebook_email: email ? email : state.voter.email,
             interface_status_flags: interface_status_flags ? interface_status_flags : state.voter.interface_status_flags,
             notification_settings_flags: notification_settings_flags ? notification_settings_flags : state.voter.notification_settings_flags,
+            voter_donation_history_list: voter_donation_history_list ? voter_donation_history_list : state.voter.voter_donation_history_list,
           }
         };
 

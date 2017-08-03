@@ -1,5 +1,7 @@
 /* global google */
 import React, { Component, PropTypes } from "react";
+import { Text, View, TouchableOpacity } from 'react-native';
+import { FormInput } from 'react-native-elements'
 //import { Button } from "react-bootstrap";
 //import { browserHistory } from "react-router";
 import LoadingWheel from "../components/LoadingWheel";
@@ -89,27 +91,19 @@ export default class AddressBox extends Component {
     if (this.state.loading){
       return LoadingWheel;
     }
-    return <div>
-        <form onSubmit={this.voterAddressSave}>
-        <input
-          type="text"
+    return <View>
+        <FormInput style={{height: 40, width: width-100, borderColor: 'lightgray', borderWidth: 0.3}}
+          onChangeText={(value) => this.setState({voter_address: value})}
+          onSubmitEditing={this.voterAddressSave}
           value={this.state.voter_address}
-          onKeyDown={this.handleKeyPress}
-          onChange={this.updateVoterAddress}
-          name="address"
-          className="form-control"
           ref="autocomplete"
-          placeholder="Enter address where you are registered to vote"
-        />
-        </form>
+          placeholder="Enter address where you are registered to vote"/>
 
-        <div>
-          <Button
-            className="pull-right"
-            onClick={this.voterAddressSave}
-            bsStyle="primary">
-            Save</Button>
-        </div>
-      </div>;
+        <View>
+          <TouchableOpacity onPress={this.voterAddressSave}>
+            <Text> Save </Text>
+          </TouchableOpacity>
+        </View>
+      </View>;
   }
 }

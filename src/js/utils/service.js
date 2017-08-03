@@ -45,7 +45,7 @@ export function $ajax (options) {
   return fetch(options.url)
     .then((response) => response.json())
     .then((responseJson) => {
-        //console.log("responseJson", options.endpoint, responseJson);
+        console.log("responseJson", options.endpoint, responseJson);
         const res = responseJson
         this.dispatch({ type: options.endpoint, res });
     })

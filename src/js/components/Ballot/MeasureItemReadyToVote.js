@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
-//import { Link } from "react-router";
+import { Link } from "react-router-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import GuideStore from "../../stores/GuideStore";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
@@ -44,6 +45,7 @@ export default class MeasureItemReadyToVote extends Component {
   _onSupportStoreChange () {
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
   }
+
   render () {
     const { supportProps } = this.state;
 
@@ -53,61 +55,77 @@ export default class MeasureItemReadyToVote extends Component {
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    return <div className="card-main measure-card">
-
-      <div className="card-main__content">
-        <div className="u-flex u-items-center">
-
-        <div className="u-flex-auto u-cursor--pointer">
-          <h2 className="card-main__display-name">
-            { this.props.link_to_ballot_item_page ?
-              <Link to={measureLink}>{ballot_item_display_name}</Link> :
-                ballot_item_display_name
-            }
-          </h2>
-        </div>
+    return <View style={styles.container} className="card-main measure-card">
+      <View style = {{flexDirection: 'row', justifyContent:'space-between'}}>
+        <View className="u-flex-auto u-cursor--pointer">
+          { this.props.link_to_ballot_item_page ?
+            <Link to={measureLink}><Text style={styles.titleText}>{ballot_item_display_name}</Text></Link> :
+              <Text style={styles.titleText}>{ballot_item_display_name}</Text>
+          }
+        </View>
 
         {
           supportProps && supportProps.is_support ?
-         <div className="u-flex-none u-justify-end">
-           <span className="u-inline--xs">Supported by you</span>
-           <img src="/img/global/svg-icons/thumbs-up-color-icon.svg" width="24" height="24" />
-         </div> :
+         <View style={{flexDirection: 'row', alignSelf: 'flex-end'}} className="u-flex-none u-justify-end">
+           <Text className="u-inline--xs">Supported by you</Text>
+           <Image source={require("../../../img/global/icons/thumbs-up-color-icon.png")} style={{width:24, height:24}} />
+         </View> :
           null
         }
         {
           supportProps && supportProps.is_oppose ?
-            <div className="u-flex-none u-justify-end">
-              <span className="u-inline--xs">Opposed by you</span>
-              <img src="/img/global/svg-icons/thumbs-down-color-icon.svg" width="24" height="24" />
-            </div> :
+            <View style={{flexDirection: 'row', alignSelf: 'flex-end'}} className="u-flex-none u-justify-end">
+              <Text className="u-inline--xs">Opposed by you</Text>
+              <Image source={require("../../../img/global/icons/thumbs-down-color-icon.png")} style={{width:24, height:24}} />
+            </View> :
               null
         }
         {
           supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count > supportProps.oppose_count ?
-          <div className="u-flex-none u-justify-end">
-            <span className="u-inline--xs">Your network supports</span>
-            <img src= "/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" />
-          </div> :
+          <View style={{flexDirection: 'row', alignSelf: 'flex-end'}} className="u-flex-none u-justify-end">
+            <Text className="u-inline--xs">Your network supports</Text>
+            <Image source={require("../../../img/global/icons/up-arrow-color-icon.svg")} className="network-positions__support-icon" style={{width:20, height:20}} />
+          </View> :
           null
         }
         {
           supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count < supportProps.oppose_count ?
-          <div className="u-flex-none u-justify-end">
-             <span className="u-inline--xs">Your network opposes</span>
-             <img src= "/img/global/icons/down-arrow-color-icon.svg" className="network-positions__oppose-icon" width="20" height="20" />
-           </div> :
+          <View style={{flexDirection: 'row', alignSelf: 'flex-end'}} className="u-flex-none u-justify-end">
+             <Text className="u-inline--xs">Your network opposes</Text>
+             <Image source={require("../../../img/global/icons/down-arrow-color-icon.svg")} className="network-positions__oppose-icon" style={{width:20, height:20}} />
+           </View> :
           null
         }
         {
           supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count === supportProps.oppose_count ?
-          <div className="u-flex-none u-justify-end">Your network is undecided</div> :
+          <View className="u-flex-none u-justify-end">
+            <Text>Your network is undecided</Text>
+          </View> :
           null
         }
 
         {/* This is the area *under* the measure title */}
-      </div>
-      </div> {/* END .card-main__content */}
-    </div>;
+      {/* END .card-main__content */}
+      </View>
+    </View>;
   }
 }
+
+export var styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    marginTop: 10,
+    padding: 20,
+    backgroundColor: '#ffffff',
+  },
+  titleText: {
+	fontFamily: 'sans-serif',
+	fontSize: 15,
+	fontWeight: 'bold',
+	color: '#48BBEC',
+  },
+  candidate_name: {
+    fontSize: 15,
+	fontFamily: 'sans-serif',
+  },
+});

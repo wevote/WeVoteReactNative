@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from "react";
 //import { Link, browserHistory } from "react-router";
+import { Link } from "react-router-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import GuideStore from "../../stores/GuideStore";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
@@ -96,64 +98,78 @@ export default class OfficeItemReadyToVote extends Component {
       });
     }
 
-    return <div className="card-main office-item">
-      <div className="card-main__content">
-        <h2 className="card-main__display-name">
-          { this.props.link_to_ballot_item_page ?
-            <Link to={officeLink}>{ballot_item_display_name}</Link> :
-              ballot_item_display_name
-          }
-        </h2>
+    return <View style={styles.container} className="card-main office-item">
+      <View className="card-main__content">
+        { this.props.link_to_ballot_item_page ?
+          <Link to={officeLink}><Text style={styles.titleText}>{ballot_item_display_name}</Text></Link> :
+            <Text style={styles.titleText}>{ballot_item_display_name}</Text>
+        }
 
-      <div className={ this.props.link_to_ballot_item_page ?
+        <View style={{flexDirection: 'row', justifyContent:'space-between'}} className={ this.props.link_to_ballot_item_page ?
                 "u-cursor--pointer" : null } >
           { this.props.candidate_list.map( (one_candidate) =>
-            <div key={one_candidate.we_vote_id}>
+            <View style={{flexDirection: 'row', justifyContent:'space-between'}} key={one_candidate.we_vote_id}>
               {/* *** Candidate name *** */}
               { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ?
-                <div className="u-flex u-items-center">
-                  <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
+                <View style={{flexDirection: 'row'}} className="u-flex u-items-center">
+                  <View style={{alignSelf: 'flex-start'}} className="u-flex-auto u-cursor--pointer" onPress={ this.props.link_to_ballot_item_page ?
                   goToOfficeLink : null }>
-                    <h2 className="h5">
-                    {one_candidate.ballot_item_display_name}
-                    </h2>
-                  </div>
+                    <Text> {one_candidate.ballot_item_display_name} </Text>
+                  </View>
 
-                  <div className="u-flex-none u-justify-end">
-                    <span className="u-inline--xs">Supported by you</span>
-                    <img src="/img/global/svg-icons/thumbs-up-color-icon.svg" width="24" height="24" />
-                  </div>
-                </div> :
+                  <View style={{flexDirection: 'row', alignSelf: 'flex-end'}} className="u-flex-none u-justify-end">
+                    <Text className="u-inline--xs">Supported by you</Text>
+                    <Image source={require("../../../img/global/icons/thumbs-up-color-icon.png")} style={{width:24, height:24}} />
+                  </View>
+                </View> :
 
                   candidate_with_most_support === one_candidate.ballot_item_display_name ?
 
-                <div className="u-flex u-items-center">
-                  <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
+                <View style={{flexDirection: 'row', justifyContent:'space-between'}} className="u-flex u-items-center">
+                  <View style={{flexDirection: 'row'}} className="u-flex-auto u-cursor--pointer" onPress={ this.props.link_to_ballot_item_page ?
                     goToOfficeLink : null }>
-                    <h2 className="h5">
+                    <Text>
                       {one_candidate.ballot_item_display_name}
-                    </h2>
-                  </div>
-                  <div className="u-flex-none u-justify-end">
-                    <span className="u-inline--xs">Your network supports</span>
-                    <img src="/img/global/icons/up-arrow-color-icon.svg" className="network-positions__support-icon" width="20" height="20" />
-                  </div>
-                </div> :
+                    </Text>
+                  </View>
+                  <View style={{flexDirection: 'row', alignSelf: 'flex-end' }} className="u-flex-none u-justify-end">
+                    <Text className="u-inline--xs">Your network supports</Text>
+                    <Image source={require("../../../img/global/icons/up-arrow-color-icon.png")} className="network-positions__support-icon" style={{width:20, height:20}} />
+                  </View>
+                </View> :
                   is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name && !voter_supports_at_least_one_candidate ?
-                  <div className="u-flex-none u-justify-end">Your network is undecided</div> :
+                  <View className="u-flex-none u-justify-end"><Text>Your network is undecided</Text></View> :
                     null}
               {/* *** "Positions in your Network" bar OR items you can follow *** */}
-          </div>)
+          </View>)
           }
-          { voter_supports_at_least_one_candidate ?
-            null :
-            <span>
-              { at_least_one_candidate_chosen ?
-                null :
-                <div className="u-tr">Your network is undecided</div> }
-            </span> }
-        </div>
-      </div>
-    </div>;
+          { voter_supports_at_least_one_candidate ? null :
+              <View>
+              { at_least_one_candidate_chosen ? null :
+                <Text className="u-tr">Your network is undecided</Text>
+              }
+              </View>
+          }
+        </View>
+      </View>
+    </View>;
   }
 }
+export var styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    marginTop: 10,
+    padding: 20,
+    backgroundColor: '#ffffff',
+  },
+  titleText: {
+	fontFamily: 'sans-serif',
+	fontSize: 15,
+	fontWeight: 'bold',
+	color: '#48BBEC',
+  },
+  candidate_name: {
+    fontSize: 15,
+	fontFamily: 'sans-serif',
+  },
+});

@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import {
   StackNavigator, TabNavigator
 } from 'react-navigation';
-import {AppRegistry} from 'react-native';
+import { Text, View} from 'react-native';
+//import {nativeHistory, Router } from "react-router-native";
+//import routes from "./Root";
 //import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
 import Ballot from '../../scenes/Ballot/Ballot';
 //import BallotDetails from '../../components/BallotDetails/BallotDetails'
