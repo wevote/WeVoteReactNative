@@ -7,6 +7,14 @@ import SupportStore from "../stores/SupportStore";
 const assign = require("object-assign");
 
 class BallotStore extends FluxMapStore {
+  getInitialState () {
+    return {
+      ballots: {},
+      ballotCaveat: "",
+      ballot_found: false,
+      ballot_election_list: [],
+    };
+  }
 
   isLoaded (){
     let civicId = VoterStore.election_id();
@@ -53,6 +61,10 @@ class BallotStore extends FluxMapStore {
     if (!this.isLoaded()){ return undefined; }
     let civicId = VoterStore.election_id();
     return this.getState().ballots[civicId].polling_location_we_vote_id_source;
+  }
+
+  getBallotCaveat () {
+    return this.getState().ballotCaveat || "";
   }
 
   get bookmarks (){
@@ -130,6 +142,7 @@ class BallotStore extends FluxMapStore {
 
     let key;
     let newBallot = {};
+    let ballotCaveat = "";
 
     switch (action.type) {
 
@@ -141,8 +154,8 @@ class BallotStore extends FluxMapStore {
         key = action.res.google_civic_election_id;
         newBallot[key] = action.res;
 
-        // console.log("BallotStore, voterBallotItemsRetrieve, state.ballots " + state.ballots);
-        // console.log("BallotStore, voterBallotItemsRetrieve, newBallot " + newBallot);
+        //console.log("BallotStore, voterBallotItemsRetrieve, state.ballots ", state.ballots);
+        //console.log("BallotStore, voterBallotItemsRetrieve, newBallot ", newBallot);
 
         return {
           ...state,
@@ -162,10 +175,14 @@ class BallotStore extends FluxMapStore {
         } else {
           key = action.res.google_civic_election_id;
           newBallot[key] = action.res;
+          if (newBallot[key].ballot_found === false ) {
+            ballotCaveat = newBallot[key].ballot_caveat;
+          }
 
           return {
             ...state,
-            ballots: assign({}, state.ballots, newBallot )
+            ballots: assign({}, state.ballots, newBallot ),
+            ballotCaveat: ballotCaveat
           };
         }
 

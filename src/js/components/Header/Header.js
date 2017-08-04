@@ -30,8 +30,8 @@ const styles = {
   position: 'relative',
 },
   appleStyle: {
-    height: (Platform.OS === 'ios') ? 50 : 0,
-    justifyContent: (Platform.OS === 'ios') ? 'center' : '',
+    height: (Platform.OS === 'ios') ? 50 : 50,
+    justifyContent: (Platform.OS === 'ios') ? 'center' : 'flex-start',
   },
 }
 

@@ -29,7 +29,7 @@ import HeaderTitle from "../../components/Header/Header"
 
 const debug_mode = false;
 const delay_before_user_name_update_api_call = 1200;
-class SignIn extends Component {
+export default class SignIn extends Component {
 
   constructor (props) {
     super(props);
@@ -162,6 +162,7 @@ class SignIn extends Component {
       return LoadingWheel;
     }
 
+    var {height, width} = Dimensions.get('window');
     let page_title = "Sign In - We Vote";
     let your_account_title = "Your Account";
     let your_account_explanation = "";
@@ -280,13 +281,7 @@ class SignIn extends Component {
 }
 
 
-var styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    marginTop: 50,
-    padding: 20,
-    backgroundColor: '#ffffff',
-  },
+export var styles = StyleSheet.create({
   baseText: {
 	  fontFamily: 'sans-serif',
   },
@@ -325,5 +320,3 @@ var styles = StyleSheet.create({
       justifyContent: 'center'
   },
 });
-
-export default SignIn;

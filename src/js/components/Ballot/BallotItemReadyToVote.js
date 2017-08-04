@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { View, Text } from "react-native";
 import MeasureItemReadyToVote from "../../components/Ballot/MeasureItemReadyToVote";
 import OfficeItemReadyToVote from "../../components/Ballot/OfficeItemReadyToVote";
 
@@ -20,13 +21,13 @@ export default class BallotItemReadyToVote extends Component {
   }
 
   render () {
-    return <div className="BallotItem card" id={this.props.we_vote_id}>
+    return <View className="BallotItem card" id={this.props.we_vote_id}>
         { this.isMeasure() ?
           <MeasureItemReadyToVote {...this.props}
                    link_to_ballot_item_page /> :
           <OfficeItemReadyToVote {...this.props}
                    link_to_ballot_item_page />
         }
-      </div>;
+      </View>;
   }
 }

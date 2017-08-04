@@ -3,8 +3,19 @@ var FluxMapStore = require("flux/lib/FluxMapStore");
 const assign = require("object-assign");
 import { mergeTwoObjectLists } from "../utils/textFormat";
 import SupportActions from "../actions/SupportActions";
+import BallotActions from "../actions/BallotActions";
 
 class SupportStore extends FluxMapStore {
+  getInitialState () {
+    return {
+      voter_supports: {},
+      voter_opposes: {},
+      support_counts: {},
+      oppose_counts: {},
+      is_public_position: {},
+      voter_statement_text: {},
+    };
+  }
 
   get (ballot_item_we_vote_id) {
     if (!(this.supportList && this.opposeList && this.supportCounts && this.opposeCounts )){
@@ -78,6 +89,7 @@ class SupportStore extends FluxMapStore {
     switch (action.type) {
 
       case "voterAddressRetrieve":
+        BallotActions.voterBallotItemsRetrieve();
         SupportActions.voterAllPositionsRetrieve();
         SupportActions.positionsCountForAllBallotItems();
         return state;
