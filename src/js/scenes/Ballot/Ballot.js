@@ -20,7 +20,7 @@ import { browserHistory, Link } from "react-router-native";
 //import AddressBox from "../../components/AddressBox";
 import BallotActions from "../../actions/BallotActions";
 //import BallotElectionList from "../../components/Ballot/BallotElectionList";
-//import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
+import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
 //import BallotIntroMission from "../../components/Ballot/BallotIntroMission";
 //import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
@@ -349,7 +349,7 @@ export default class Ballot extends Component {
         </View> : <Text />;
 
     //let in_ready_to_vote_mode = this.getFilterType() === "filterReadyToVote";
-    let in_ready_to_vote_mode = true;
+    let in_ready_to_vote_mode = false;
 
     return <View>
       <View className="ballot">
@@ -384,21 +384,23 @@ export default class Ballot extends Component {
         </View>
       </View>
       {emptyBallot}
-        <View className="BallotList">
+      <View className="BallotList">
         { in_ready_to_vote_mode ?
           ballot.map( (item) => <View>
             <BallotItemReadyToVote key={item.we_vote_id} {...item} />
-          </View>) : null
-          /*ballot.map( (item) => <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
+          </View>) :
+          ballot.map( (item) => <View>
+            <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
                                                       _toggleMeasureModal={this._toggleMeasureModal}
                                                       key={item.we_vote_id}
-                                                      {...item} />)*/
+                                                      {...item} />
+          </View>)
         }
         {/* in_ready_to_vote_mode ?
           ballot.map( (item) => <Text> {item.ballot_item_display_name}</Text> ) : null
         */}
 
-        </View>
+      </View>
 
     </View>;
   }

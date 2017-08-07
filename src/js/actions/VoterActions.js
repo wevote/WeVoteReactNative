@@ -63,9 +63,10 @@ module.exports = {
     Dispatcher.loadEndpoint("voterAddressSave", { text_for_map_search: text, simple_save: simple_save, google_civic_election_id: google_civic_election_id});
   },
 
-  voterEmailAddressSave: function (voter_email_address){
+  voterEmailAddressSave: function (voter_email_address, send_link_to_sign_in = false){
     Dispatcher.loadEndpoint("voterEmailAddressSave", {
       text_for_email_address: voter_email_address,
+      send_link_to_sign_in: send_link_to_sign_in,
       make_primary_email: true
     });
   },
@@ -140,11 +141,33 @@ module.exports = {
       });
   },
 
+  voterRetrieve: function () {
+    Dispatcher.loadEndpoint("voterRetrieve");
+  },
+
   voterNameSave: function (first_name, last_name) {
     Dispatcher.loadEndpoint("voterUpdate",
       {
         first_name: first_name,
         last_name: last_name
+      });
+  },
+
+  // Tell the server to only save this name if a name does not currently exist
+  voterFullNameSoftSave: function (first_name, last_name, full_name = "") {
+    Dispatcher.loadEndpoint("voterUpdate",
+      {
+        first_name: first_name,
+        last_name: last_name,
+        full_name: full_name,
+        name_save_only_if_no_existing_names: true,
+      });
+  },
+
+  voterUpdateInterfaceStatusFlags: function (flag_integer_to_set) {
+    Dispatcher.loadEndpoint("voterUpdate",
+      {
+        flag_integer_to_set: flag_integer_to_set,
       });
   },
 
@@ -156,15 +179,17 @@ module.exports = {
       });
   },
 
-
-  voterRetrieve: function () {
-    Dispatcher.loadEndpoint("voterRetrieve");
-  },
-
-  voterUpdateStatusFlags: function (flag_integer_to_set) {
+  voterRefreshDonations: function () {
     Dispatcher.loadEndpoint("voterUpdate",
       {
-        flag_integer_to_set: flag_integer_to_set,
+        send_journal_list: true
+      });
+  },
+
+  voterSplitIntoTwoAccounts: function () {
+    Dispatcher.loadEndpoint("voterSplitIntoTwoAccounts",
+      {
+        split_off_twitter: true
       });
   },
 };

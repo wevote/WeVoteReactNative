@@ -172,12 +172,12 @@ class VoterStore extends FluxMapStore {
       case "organizationSuggestionTasks":
         if (action.res.success) {
           if (action.res.kind_of_follow_task === "FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW") {
-            console.log("organizationSuggestionTasks FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
+            // console.log("organizationSuggestionTasks FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
             GuideActions.retrieveGuidesToFollow(this.election_id());
             GuideActions.voterGuidesFollowedRetrieve(this.election_id());
             SupportActions.positionsCountForAllBallotItems(this.election_id());
           } else if (action.res.kind_of_suggestion_task === "UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW") {
-            console.log("organizationSuggestionTasks UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
+            // console.log("organizationSuggestionTasks UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
             GuideActions.retrieveGuidesToFollow(this.election_id());
           }
         }
@@ -214,7 +214,7 @@ class VoterStore extends FluxMapStore {
         }
 
       case "twitterRetrieveIdsIFollow":
-        //console.log("twitterRetrieveIdsIFollow")
+        // console.log("twitterRetrieveIdsIFollow")
         if (action.res.success) {
           VoterActions.organizationSuggestionTasks("UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW",
           "FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
@@ -348,20 +348,36 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterRetrieve":
-        console.log("voterRetrieve", action.res);
+        let current_voter_device_id = cookies.getItem("voter_device_id");
         if (!action.res.voter_found) {
-          // This voter_device_id is no good, so delete it.
-          cookies.setItem("voter_device_id", "", -1, "/");
+          // console.log("This voter_device_id is not in the db and is invalid, so delete it: " +
+          //             cookies.getItem("voter_device_id"));
+
+          cookies.removeItem("voter_device_id");
+          cookies.removeItem("voter_device_id", "/");
+
           // ...and then ask for a new voter. When it returns a voter with a new voter_device_id, we will set new cookie
-          VoterActions.voterRetrieve();
+          if (!cookies.getItem("voter_device_id")) {
+            // console.log("voter_device_id gone -- calling voterRetrieve");
+            VoterActions.voterRetrieve();
+          } else {
+            // console.log("voter_device_id still exists -- did not call voterRetrieve");
+          }
         } else {
           voter_device_id = action.res.voter_device_id;
-          this.setVoterDeviceIdCookie(voter_device_id);
-          VoterActions.voterAddressRetrieve(voter_device_id);
-          const url = action.res.facebook_profile_image_url_https;
-          if (action.res.signed_in_facebook && (url === null || url === "")) {
-            const userId = FacebookStore.userId;
-            FacebookActions.getFacebookProfilePicture(userId);
+          if (voter_device_id) {
+            if (current_voter_device_id !== voter_device_id) {
+              // console.log("Setting new voter_device_id");
+              this.setVoterDeviceIdCookie(voter_device_id);
+            }
+            VoterActions.voterAddressRetrieve(voter_device_id);
+            const url = action.res.facebook_profile_image_url_https;
+            if (action.res.signed_in_facebook && (url === null || url === "")) {
+              const userId = FacebookStore.userId;
+              FacebookActions.getFacebookProfilePicture(userId);
+            }
+          } else {
+              // console.log("voter_device_id not returned by voterRetrieve");
           }
         }
 
@@ -400,8 +416,7 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterUpdate":
-        const {first_name, last_name, email, interface_status_flags, notification_settings_flags} = action.res;
-        VoterActions.voterRetrieve();
+        const {first_name, last_name, email, interface_status_flags, notification_settings_flags, voter_donation_history_list} = action.res;
         return {
           ...state,
           voter: {...state.voter,

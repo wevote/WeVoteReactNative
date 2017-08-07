@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
 
 export default class ItemSupportOpposeCounts extends Component {
   static propTypes = {
@@ -35,7 +36,7 @@ export default class ItemSupportOpposeCounts extends Component {
     };
 
     var emptyBarStyle = {
-      borderWidth: "0"
+      borderWidth: 0
     };
 
     var isEmpty = support_count === 0 && oppose_count === 0;
@@ -55,38 +56,38 @@ export default class ItemSupportOpposeCounts extends Component {
       backgroundBarClassName = "network-positions__bar-well";
     }
 
-    return <div className="network-positions">
-      {/*<div className="network-positions__bar-label">
+    return <View style={{flexDirection: 'row', justifyContent: 'space-between'}} className="network-positions">
+      {/*<View className="network-positions__bar-label">
         {!isEmpty ?
           "Positions in your network" :
           "No positions in your network"
         }
-      </div>*/}
-      <div className="network-positions__support">
-        <img src={!isEmpty && isMajoritySupport ? "/img/global/icons/up-arrow-color-icon.svg" : "/img/global/icons/up-arrow-gray-icon.svg"} className="network-positions__support-icon u-inline--xs" width="20" height="20" />
-        <div className="network-positions__count">
-          {!isEmpty ? support_count : null}
-          <span className="sr-only"> Support</span>
-        </div>
-      </div>
-      <div className={backgroundBarClassName}>
+      </View>*/}
+      <View className="network-positions__support">
+        <Image source={!isEmpty && isMajoritySupport ? require("../../../img/global/icons/up-arrow-color-icon@2x.png") : require("../../../img/global/icons/up-arrow-gray-icon@2x.png")} className="network-positions__support-icon u-push--xs" width="20" height="20" />
+        <View className="network-positions__count">
+          <Text>{!isEmpty ? support_count : null}</Text>
+          <Text className="sr-only"> Support</Text>
+        </View>
+      </View>
+      <View className={backgroundBarClassName}>
         { isMajoritySupport ?
-          <div className="network-positions__bar network-positions__bar--majority network-positions__bar--support" style={!isEmpty ? barStyle : emptyBarStyle}>
-            <span className="sr-only">{this.percentageMajority()}% Supports</span>
-          </div> :
-          <div className="network-positions__bar network-positions__bar--majority network-positions__bar--oppose" style={!isEmpty ? barStyle : emptyBarStyle}>
-            <span className="sr-only">{this.percentageMajority()}% Supports</span>
-          </div>
+          <View className="network-positions__bar network-positions__bar--majority network-positions__bar--support" style={!isEmpty ? barStyle : emptyBarStyle}>
+            <Text className="sr-only">{this.percentageMajority()}% Supports</Text>
+          </View> :
+          <View className="network-positions__bar network-positions__bar--majority network-positions__bar--oppose" style={!isEmpty ? barStyle : emptyBarStyle}>
+            <Text className="sr-only">{this.percentageMajority()}% Supports</Text>
+          </View>
         }
-      </div>
+      </View>
 
-      <div className="network-positions__oppose">
-        <div className="network-positions__count u-inline--xs">
+      <View className="network-positions__oppose">
+        <View className="network-positions__count u-push--xs">
           {!isEmpty ? oppose_count : null}
-          <span className="sr-only"> Oppose</span>
-        </div>
-        <img src={!isEmpty && !isMajoritySupport ? "/img/global/icons/down-arrow-color-icon.svg" : "/img/global/icons/down-arrow-gray-icon.svg"} className="network-positions__oppose-icon" width="20" height="20" />
-      </div>
-    </div>;
+          <Text className="sr-only"> Oppose</Text>
+        </View>
+        <Image source={!isEmpty && !isMajoritySupport ? require("../../../img/global/icons/down-arrow-color-icon@2x.png") : require("../../../img/global/icons/down-arrow-gray-icon@2x.png")} className="network-positions__oppose-icon" width="20" height="20" />
+      </View>
+    </View>;
   }
 }
