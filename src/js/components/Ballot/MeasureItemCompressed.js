@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from "react";
 //import { Link, browserHistory } from "react-router";
+import { Link } from "react-router-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import GuideStore from "../../stores/GuideStore";
-import ItemActionBar from "../../components/Widgets/ItemActionBar";
-import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
-import ItemTinyOpinionsToFollow from "../../components/VoterGuide/ItemTinyOpinionsToFollow";
-import BookmarkAction from "../../components/Widgets/BookmarkAction";
+import ItemActionBar from "../Widgets/ItemActionBar";
+import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
+import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
+import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -69,8 +71,10 @@ export default class MeasureItemCompressed extends Component {
       // Only show ItemSupportOpposeCounts if your network has something to say
       oppose_count = supportProps.oppose_count;
     }
-    let { ballot_item_display_name, measure_subtitle,
-          measure_text, we_vote_id } = this.props;
+    let ballot_item_display_name = this.props.ballot_item_display_name;
+    let measure_subtitle = this.props.measure_subtitle;
+    let measure_text = this.props.measure_text;  // Not currently defined
+    let we_vote_id = this.props.we_vote_id;
     let measureLink = "/measure/" + we_vote_id;
     let goToMeasureLink = function () { browserHistory.push(measureLink); };
 
@@ -79,7 +83,7 @@ export default class MeasureItemCompressed extends Component {
 
     let measure_for_modal = {
       ballot_item_display_name: ballot_item_display_name,
-      guides_to_follow_list: GuideStore.toFollowListForBallotItemById(this.props.we_vote_id),
+      voter_guides_to_follow_for_ballot_item_id: GuideStore.getVoterGuidesToFollowForBallotItemId(this.props.we_vote_id),
       kind_of_ballot_item: this.props.kind_of_ballot_item,
       link_to_ballot_item_page: this.props.link_to_ballot_item_page,
       measure_subtitle: measure_subtitle,
@@ -91,78 +95,106 @@ export default class MeasureItemCompressed extends Component {
     // To get position_list
     // TODO DALE var measure = MeasureStore.get(this.state.measure_we_vote_id) || {};
 
-
-    return <div className="card-main measure-card">
-      <div className="card-main__content">
-        <h2 className="card-main__display-name">
+    return <View style={styles.container} className="card-main measure-card">
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}} >
+        <View style={{alignSelf: 'flex-start'}}>
           { this.props.link_to_ballot_item_page ?
-            <div>
-              <Link to={measureLink}>{ballot_item_display_name}
-              <span className="card-main__measure-read-more-link">learn&nbsp;more</span></Link>
-            </div> :
-              ballot_item_display_name
+            <View style={{flexDirection: 'row'}}>
+              <Link to={measureLink}>
+                <Text style={styles.titleText}> {ballot_item_display_name} </Text>
+              </Link>
+              <Link to={measureLink}>
+                <Text style={styles.measureReadMoreLink}> learn more </Text>
+              </Link>
+            </View> :
+            <Text style={styles.titleText}>{ballot_item_display_name}</Text>
           }
-        </h2>
-        <BookmarkAction we_vote_id={we_vote_id} type="MEASURE"/>
+        </View>
+        <View style={{alignSelf: 'flex-end'}}>
+          <BookmarkToggle we_vote_id={we_vote_id} type="MEASURE"/>
+        </View>
+      </View>
+      <View>
         {/* Measure information */}
-        <div
+        <Text
           className={ this.props.link_to_ballot_item_page ?
           "u-cursor--pointer" : null }
-          onClick={ this.props.link_to_ballot_item_page ?
+          onPress={ this.props.link_to_ballot_item_page ?
           goToMeasureLink : null }
         >
           {measure_subtitle}
-        </div>
+        </Text>
         { this.props.measure_text ?
-          <div className="measure_text">{measure_text}</div> :
+          <Text className="measure_text">{measure_text}</Text> :
           null }
-
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         {/* This is the area *under* the measure title/text */}
-        <div className={"u-flex" + (this.props.link_to_ballot_item_page ?
+        <View className={"u-flex" + (this.props.link_to_ballot_item_page ?
                 " u-cursor--pointer" : "") } >
 
           {/* Needed to force following flex area to the right */}
-          <div className="MeasureItem__summary u-flex-auto" />
+          <View className="MeasureItem__summary u-flex-auto" />
 
-          <div className="u-flex u-items-center">
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}} className="u-flex u-items-center">
             {/* *** "Positions in your Network" bar OR items you can follow *** */}
-            <div className="u-flex-none u-justify-end u-inline--md">
-              <span className={ this.props.link_to_ballot_item_page ?
+            <View style={{alignSelf: 'center'}} className="u-flex-none u-justify-end u-inline--md">
+              <View className={ this.props.link_to_ballot_item_page ?
                       "u-cursor--pointer" :
                       null }
               >
               { support_count || oppose_count ?
-                <span onClick={ this.props.link_to_ballot_item_page ?
+                <View onPress={ this.props.link_to_ballot_item_page ?
                       ()=>{this.props._toggleMeasureModal(measure_for_modal);} :
                       null } >
                   <ItemSupportOpposeCounts we_vote_id={we_vote_id} supportProps={this.state.supportProps}
                                            type="MEASURE" />
-                </span> :
-                <span onClick={ this.props.link_to_ballot_item_page ?
-                      ()=>{this.props._toggleMeasureModal(measure_for_modal);} :
-                      null } >
-                {/* Show possible voter guides to follow */}
-                { GuideStore.toFollowListForBallotItemById(we_vote_id) && GuideStore.toFollowListForBallotItemById(we_vote_id).length !== 0 ?
-                  <ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
-                                            organizationsToFollow={GuideStore.toFollowListForBallotItemById(we_vote_id)}
-                                            maximumOrganizationDisplay={this.state.maximum_organization_display}/> :
-                  <span /> }
-                </span> }
-              </span>
-            </div>
-
+                </View> :
+                <View onPress={ this.props.link_to_ballot_item_page ?
+                      ()=>{this.props._toggleMeasureModal(measure_for_modal);} : null } >
+                  {/* Show possible voter guides to follow */}
+                  { GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id) && GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id).length !== 0 ? null
+                    /*<ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
+                                              organizationsToFollow={GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id)}
+                                              maximumOrganizationDisplay={this.state.maximum_organization_display}/>*/ :
+                    <View /> }
+                </View> }
+              </View>
+            </View>
+            <Text> &nbsp; &nbsp; </Text>
             {/* *** Choose Support or Oppose *** */}
-            <div className="u-flex-none u-justify-end">
+            <View style={{alignSelf: 'flex-end'}} className="u-flex-none u-justify-end">
               <ItemActionBar ballot_item_we_vote_id={we_vote_id}
                              supportProps={this.state.supportProps}
                              shareButtonHide
                              commentButtonHide
                              transitioniing={this.state.transitioning}
                              type="MEASURE" />
-            </div>
-          </div>
-        </div>
-      </div> {/* END .card-main__content */}
-    </div>;
+            </View>
+          </View>
+        </View>
+
+      </View>
+    </View>;
   }
 }
+
+var styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    marginTop: 10,
+    padding: 20,
+    backgroundColor: '#ffffff',
+  },
+  titleText: {
+	fontFamily: 'sans-serif',
+	fontSize: 20,
+	fontWeight: 'bold',
+	color: '#48BBEC',
+  },
+  measureReadMoreLink: {
+  	fontFamily: 'sans-serif',
+  	fontSize: 15,
+  	color: '#48BBEC',
+  },
+});

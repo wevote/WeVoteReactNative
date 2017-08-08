@@ -124,8 +124,4 @@ export var styles = StyleSheet.create({
 	fontWeight: 'bold',
 	color: '#48BBEC',
   },
-  candidate_name: {
-    fontSize: 15,
-	fontFamily: 'sans-serif',
-  },
 });

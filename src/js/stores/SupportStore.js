@@ -26,8 +26,8 @@ class SupportStore extends FluxMapStore {
       is_oppose: this.opposeList[ballot_item_we_vote_id] || false,
       is_public_position: this.isForPublicList[ballot_item_we_vote_id] || false,  // Default to friends only
       voter_statement_text: this.statementList[ballot_item_we_vote_id] || "",
-      support_count: this.supportCounts[ballot_item_we_vote_id],
-      oppose_count: this.opposeCounts[ballot_item_we_vote_id]
+      support_count: this.supportCounts[ballot_item_we_vote_id] || 0,
+      oppose_count: this.opposeCounts[ballot_item_we_vote_id] || 0
     };
   }
 
@@ -89,7 +89,7 @@ class SupportStore extends FluxMapStore {
     switch (action.type) {
 
       case "voterAddressRetrieve":
-        BallotActions.voterBallotItemsRetrieve();
+        //BallotActions.voterBallotItemsRetrieve();
         SupportActions.voterAllPositionsRetrieve();
         SupportActions.positionsCountForAllBallotItems();
         return state;

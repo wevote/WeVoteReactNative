@@ -1,4 +1,7 @@
 import React, { Component, PropTypes } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity, ListView } from "react-native";
+import { Link } from "react-router-native";
+import Icon from 'react-native-vector-icons/FontAwesome';
 import CopyLinkModal from "../../components/Widgets/CopyLinkModal";
 
 export default class ShareButtonDropdown extends Component {
@@ -11,7 +14,11 @@ export default class ShareButtonDropdown extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { open: false };
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.state = {
+      open: false,
+      dataSource: ds.cloneWithRows(['Copy Link', 'Share On Facebook']),
+    };
   }
 
   componentWillMount () {
@@ -66,30 +73,42 @@ export default class ShareButtonDropdown extends Component {
     // const onButtonBlur = ;
     const dropdownClass = this.state.open ? " open" : "";
 
-    return <div className="item-actionbar__btn-set">
-      <div className={"btn-group" + dropdownClass}>
-        <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown-toggle item-actionbar__btn btn btn-default">
+    return <View className="item-actionbar__btn-set">
+      <View className={"btn-group" + dropdownClass}>
+        <TouchableOpacity onBlur={this.onButtonBlur.bind(this)} onPress={onClick} className="dropdown-toggle item-actionbar__btn btn btn-default">
           {shareIcon} {shareText} <span className="caret" />
-        </button>
+        </TouchableOpacity>
         {this.state.open ?
-          <ul className="dropdown-menu">
+            <ListView
+                style={styles.container}
+                dataSource={this.state.dataSource}
+                renderRow={(data) => <View><Text>{data}</Text></View>}
+              />
+
+          /*<ul className="dropdown-menu">
             <li>
-              <a onClick={onCopyLinkClick}>
+              <Text onPress={onCopyLinkClick}>
                   Copy link
-              </a>
+              </Text
             </li>
             <li>
-              <a onClick={this.shareFacebookComment.bind(this)}>
+              <Text onPress={this.shareFacebookComment.bind(this)}>
                   Share on Facebook
-              </a>
+              </Text>
             </li>
-          </ul> :
+          </ul>*/ :
           null
         }
-        </div>
-      <CopyLinkModal show={this.state.showCopyLinkModal}
+        </View>
+      /*<CopyLinkModal show={this.state.showCopyLinkModal}
                      onHide={this.closeCopyLinkModal.bind(this)}
-                     urlBeingShared={urlBeingShared} />
-    </div>;
+                     urlBeingShared={urlBeingShared} />*/
+    </View>;
   }
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 20,
+  },
+});
