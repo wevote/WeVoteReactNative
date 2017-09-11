@@ -1,10 +1,13 @@
 import React from "react";
 import { AppRegistry } from 'react-native';
-import { Route, Router, nativeHistory, IndexRoute, IndexRedirect } from "react-router-native";
-import cookies from "../../utils/cookies";
+import { NativeRouter, Route } from "react-router-native";
 import App from "./App.js"
-// main Application
 import Application from "./Application";
+import CookieStore from "../../stores/CookieStore";
+
+
+const DEBUG = false;
+
 
 /****************************** ROUTE-COMPONENTS ******************************/
 //import About from "./routes/More/About";
@@ -65,7 +68,7 @@ import Location from "../Settings/Location";
 //import YourPage from "./routes/YourPage";
 
 // See /js/components/Navigation/HeaderBar.jsx for voter_orientation_complete cookie
-const firstVisit = !cookies.getItem("voter_device_id");
+const firstVisit = !CookieStore.getItem("voter_device_id");
 
 const routes = (
   <Router history={nativeHistory}>

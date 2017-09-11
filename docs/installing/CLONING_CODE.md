@@ -15,7 +15,7 @@ and created a place to put all of the code from Github:
 2. Create a fork of wevote/WeVoteReactNative.git. You can do this from https://github.com/wevote/WeVoteReactNative 
 with the "Fork" button (upper right of screen). This will create a copy (a "fork") of https://github.com/wevote/WeVoteReactNative 
 but attached to your Github account. Your fork of WeVoteReactNative will appear here: 
-https://github.com/<YOUR USERNAME HERE>/WeVoteReactNative
+https://github.com/\<YOUR GITHUB NAME\>/WeVoteReactNative
 
 3. Change into the `/Users/<YOUR NAME HERE>/MyProjects/` folder on your local machine and clone your fork  
 
@@ -39,7 +39,13 @@ https://github.com/<YOUR USERNAME HERE>/WeVoteReactNative
 
 8.Go paste your keys into http://github.com, under SSH Keys for your account.  
 
-# How to use the fluxbranch
+# The fluxbranch
+We started the WeVoteReactNative repository by permanently forking the WeVote/WebApp (browser targeted) repository.
+
+Our 'fluxbranch' git branch is a long-lived branch off of the WeVoteReactNative repository that we use as a source 
+branch, where we work on code that is being ported to react-native.  
+
+## How to use the fluxbranch
 
 1. Fork this repository.
 
@@ -64,7 +70,7 @@ https://github.com/<YOUR USERNAME HERE>/WeVoteReactNative
 
 
 **Other notes:**
-After this fluxbranch is migrated completely (libraries replicated for react-native), we will have a functional ballot (See `scenes/Ballot/Ballot.js`)
+After this fluxbranch is migrated completely (all the browser oriented libraries will have been replaced with those for react-native), we will have a functional native WeVote ballot App (See `scenes/Ballot/Ballot.js`)
 
 There are a few `.jsx` files in this repo. They cannot be used with react-native, I haven't removed them as they may have dependencies. If so, when running `react-native run-ios` missing dependencies will be flagged, to fix this we just need to rename the extension to `.js` and rewrite the unused libraries (if any).
 

@@ -14,6 +14,10 @@ class Storage {
   getItem = async function (key) {
     return await this.asyncStorage.getItem(key);
   }
+
+  removeItem(key) {
+    this.asyncStorage.removeItem(key);
+  }
 }
 
 export default storage = new Storage();

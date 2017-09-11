@@ -5,15 +5,19 @@
  */
 "use strict";
 
-const DEBUG = false;
-const url = require("url");
-
-const assign = require("object-assign");
-const webAppConfig = require("../config");
-const cookies = require("./cookies");
 import {Linking, WebView} from 'react-native';
 import * as request from "superagent";
-var Dispatcher = require("flux/lib/Dispatcher");
+import CookieStore from '../stores/CookieStore';
+const Dispatcher = require("flux/lib/Dispatcher");
+const url = require("url");
+const assign = require("object-assign");
+const webAppConfig = require("../config");
+
+const DEBUG = false;
+
+
+let steveTest = CookieStore.getItem("voter_device_id");
+console.log("steveTest = " + steveTest);
 
 const defaults = {
   dataType: "json",
@@ -22,8 +26,9 @@ const defaults = {
   query: {},
   type: "GET",
   data: function () {
-    return cookies.getItem("voter_device_id") ? {
-      voter_device_id: cookies.getItem("voter_device_id")
+    const id = CookieStore.getItem("voter_device_id");
+    return id.length > 0 ? {
+      voter_device_id: id
     } : {};
   },
   success: (res) => console.warn("Success function not defined:", res),
@@ -45,8 +50,10 @@ export function $ajax (options) {
   return fetch(options.url)
     .then((response) => response.json())
     .then((responseJson) => {
+      console.log("steveTest", CookieStore.getItem("voter_device_id"));
+      console.log(options.data);
         console.log("responseJson", options.endpoint, responseJson);
-        const res = responseJson
+        const res = responseJson;
         this.dispatch({ type: options.endpoint, res });
     })
     .catch((error) => {
@@ -70,7 +77,7 @@ export function $ajax_twitter_sign_in (options) {
   return fetch(options.url)
     .then((response) => response.json())
     .then((responseJson) => {
-        const res = responseJson
+        const res = responseJson;
         if (res.twitter_redirect_url) {
           Linking.openURL(res.twitter_redirect_url).catch(err => console.error('An error occurred', err));
         } else {
@@ -91,11 +98,11 @@ function queryParams(params) {
 }
 
 export function get (options) {
-  var opts = assign(defaults, options);
+  let opts = assign(defaults, options);
 
   opts.url = url.resolve(opts.baseUrl, opts.endpoint);
   // We add voter_device_id to all endpoint calls
-  opts.query.voter_device_id = cookies.getItem("voter_device_id");
+  opts.query.voter_device_id = CookieStore.getItem("voter_device_id");
 
   return new Promise( (resolve, reject) => new request.Request("GET", opts.url)
     .accept(opts.dataType)
