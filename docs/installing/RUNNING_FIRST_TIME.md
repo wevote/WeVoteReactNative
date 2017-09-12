@@ -29,6 +29,10 @@ I recommend this method because then you have easier access to the XCode console
 
 3. Click the "Play" (sideways triangle button), and this opens the iOS Simulator.
 
+## Method 3 - For Webstorm users
+
+See "Developing mobile apps with React Native in WebStorm" - <https://blog.jetbrains.com/webstorm/2016/12/developing-mobile-apps-with-react-native-in-webstorm/>
+
 ### Additional Notes
 
 If your build is failing due to an issue with RCTWebSocket, you may have to follow the following steps:
@@ -45,14 +49,34 @@ If your build fails due to an error with the message `Ignoring return value of f
 
 1. Cmd+space to bring up spotlight search, type in and double click "RCTWebSocket.M".
 
-2. Find line: `SecRandomCopyBytes(kSecRandomDefault, sizeof(uint32_t), (uint8_t *)mask_key);`
+2. In "RCTWebSocket.M", find the lines: 
+```
+   int result = SecRandomCopyBytes(kSecRandomDefault, sizeof(uint32_t), (uint8_t *)mask_key);
+   assert(result == 0);
+```
 
-Change to: `(void)SecRandomCopyBytes(kSecRandomDefault, sizeof(uint32_t), (uint8_t *)mask_key);`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Comment them out and add the following line:
+```
+   //int result = SecRandomCopyBytes(kSecRandomDefault, sizeof(uint32_t), (uint8_t *)mask_key);
+   //assert(result == 0);
+   (void)SecRandomCopyBytes(kSecRandomDefault, sizeof(uint32_t), (uint8_t *)mask_key);
+```
 
 
-Find line: `SecRandomCopyBytes(kSecRandomDefault, keyBytes.length, keyBytes.mutableBytes);`
+2. Also in "RCTWebSocket.M", find the lines: 
+```
+  int result = SecRandomCopyBytes(kSecRandomDefault, keyBytes.length, keyBytes.mutableBytes);
+  assert(result == 0);
+```
 
-Change to: `(void)SecRandomCopyBytes(kSecRandomDefault, keyBytes.length, keyBytes.mutableBytes);`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Comment them out and add the following line:
+
+```
+  //int result = SecRandomCopyBytes(kSecRandomDefault, keyBytes.length, keyBytes.mutableBytes);
+  //assert(result == 0);
+  (void)SecRandomCopyBytes(kSecRandomDefault, keyBytes.length, keyBytes.mutableBytes);
+```
+
 
 ### Missing requirements
 

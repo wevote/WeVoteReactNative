@@ -2,13 +2,13 @@ import Dispatcher from "../dispatcher/Dispatcher";
 import BallotActions from "../actions/BallotActions";
 import FacebookActions from "../actions/FacebookActions";
 //import FacebookStore from "../stores/FacebookStore";
+import CookieStore from "./CookieStore";
 import FluxMapStore from "flux/lib/FluxMapStore";
 import FriendActions from "../actions/FriendActions";
 import GuideActions from "../actions/GuideActions";
 import BookmarkActions from "../actions/BookmarkActions";
 import SupportActions from "../actions/SupportActions";
 import VoterActions from "../actions/VoterActions";
-const cookies = require("../utils/cookies");
 
 class VoterStore extends FluxMapStore {
 
@@ -98,15 +98,9 @@ class VoterStore extends FluxMapStore {
     return this.getState().voter.voter_donation_history_list;
   }
 
-  voterDeviceId () {
-    return this.getState().voter.voter_device_id || cookies.getItem("voter_device_id");
-  }
-
-  setVoterDeviceIdCookie (id){
-    cookies.removeItem("voter_device_id");
-    cookies.removeItem("voter_device_id", "/");
-    cookies.setItem("voter_device_id", id, Infinity, "/");
-  }
+  // getVoterDeviceId () {
+  //   return this.getState().voter.voter_device_id || CookieStore.getItem("voter_device_id");
+  // }
 
   getDataFromArr (arr) {
     if (arr === undefined) {
@@ -348,27 +342,20 @@ class VoterStore extends FluxMapStore {
         };
 
       case "voterRetrieve":
-        let current_voter_device_id = cookies.getItem("voter_device_id");
+        let current_voter_device_id = CookieStore.getItem("voter_device_id");
         if (!action.res.voter_found) {
           // console.log("This voter_device_id is not in the db and is invalid, so delete it: " +
           //             cookies.getItem("voter_device_id"));
 
-          cookies.removeItem("voter_device_id");
-          cookies.removeItem("voter_device_id", "/");
-
+          CookieStore.removeItem("voter_device_id");
           // ...and then ask for a new voter. When it returns a voter with a new voter_device_id, we will set new cookie
-          if (!cookies.getItem("voter_device_id")) {
-            // console.log("voter_device_id gone -- calling voterRetrieve");
-            VoterActions.voterRetrieve();
-          } else {
-            // console.log("voter_device_id still exists -- did not call voterRetrieve");
-          }
+          VoterActions.voterRetrieve();
         } else {
           voter_device_id = action.res.voter_device_id;
           if (voter_device_id) {
             if (current_voter_device_id !== voter_device_id) {
               // console.log("Setting new voter_device_id");
-              this.setVoterDeviceIdCookie(voter_device_id);
+              CookieStore.setItem("voter_device_id", voter_device_id);
             }
             VoterActions.voterAddressRetrieve(voter_device_id);
             const url = action.res.facebook_profile_image_url_https;

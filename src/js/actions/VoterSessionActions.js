@@ -1,14 +1,14 @@
 import Dispatcher from "../dispatcher/Dispatcher";
-const cookies = require("../utils/cookies");
+import CookieStore from "../stores/CookieStore";
 
 module.exports = {
   voterSignOut: function (){
     Dispatcher.loadEndpoint("voterSignOut", {sign_out_all_devices: false});
-    cookies.setItem("voter_device_id", "", -1, "/");
-    cookies.setItem("voter_orientation_complete", "", -1, "/");
+    CookieStore.removeItem("voter_device_id");
+    CookieStore.removeItem("voter_orientation_complete");
   },
 
-  setVoterDeviceIdCookie (id){
-    cookies.setItem("voter_device_id", id, Infinity, "/");
-  },
+  setVoterDeviceIdCookie (id) {
+    CookieStore.setItem("voter_device_id", id);
+  }
 };
