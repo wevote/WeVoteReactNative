@@ -17,9 +17,10 @@ class CookieStore {
     const prime_key = 'voter_device_id';
     Storage.getItem(prime_key).then((value)=> {
       if (value.length > 0) {
-        const map2 = this.state.cookieMap.set(prime_key, value);
         console.log("Cookie to map in constructor \'" + prime_key + "\'  " + value);
-        this.state.cookieMap = map2;
+        this.state.cookieMap = this.state.cookieMap.set(prime_key, value);
+      } else {
+        console.log("Cookie for " + prime_key + 'was not found in Storage in constructor');
       }
     });
   }
@@ -30,25 +31,21 @@ class CookieStore {
       return this.state.cookieMap.get(key);
     } else {
       return Storage.getItem(key).then((value)=> {
-        console.log("Cookie from Storage \'" + key + "\'  " + value);
+        console.log("Cookie from Storage (updating cookieMap) \'" + key + "\'  " + value);
         if (value.length > 0)
-          this.setItem(key, value);
+          this.state.cookieMap = this.state.cookieMap.set(key, value);
       });
     }
   }
 
   setItem(key, value) {
-    console.log("Cookie to cookieMap \'" + key + "\'  " + value);
-
-    const map2 = this.state.cookieMap.set(key, value);
-    this.state.cookieMap = map2;
+    console.log("setItem cookie to cookieMap (and storage) \'" + key + "\'  " + value);
+    this.state.cookieMap = this.state.cookieMap.set(key, value);
     Storage.setItem(key, value);
-    console.log("set cookie:: " + key + ":" + value);
   }
 
   removeItem(key) {
-    const map2 = this.state.cookieMap.deleteIn(key);
-    this.state.cookieMap = map2;
+    this.state.cookieMap = this.state.cookieMap.deleteIn(key);
     Storage.removeItem(key);
   }
 }
