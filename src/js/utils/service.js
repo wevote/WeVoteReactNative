@@ -16,9 +16,6 @@ const webAppConfig = require("../config");
 const DEBUG = false;
 
 
-let steveTest = CookieStore.getItem("voter_device_id");
-console.log("steveTest = " + steveTest);
-
 const defaults = {
   dataType: "json",
   baseUrl: webAppConfig.WE_VOTE_SERVER_API_ROOT_URL,
@@ -50,9 +47,10 @@ export function $ajax (options) {
   return fetch(options.url)
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log("steveTest", CookieStore.getItem("voter_device_id"));
+      let cookie = CookieStore.getItem("voter_device_id");
+      console.log("voter_device_id in fetch (" +  options.endpoint + ") " + ( typeof cookie === 'object' ? JSON.stringify(cookie) + " object " : cookie + " string"));
       console.log(options.data);
-        console.log("responseJson", options.endpoint, responseJson);
+      console.log("responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id);
         const res = responseJson;
         this.dispatch({ type: options.endpoint, res });
     })
