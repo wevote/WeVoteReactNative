@@ -24,7 +24,7 @@ const defaults = {
   type: "GET",
   data: function () {
     const id = CookieStore.getItem("voter_device_id");
-    return id.length > 0 ? {
+    return id !== null && id.length > 0 ? {
       voter_device_id: id
     } : {};
   },

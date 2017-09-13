@@ -1,7 +1,7 @@
 // Note that we import these values into "web_app_config" (so we can search for it)
 module.exports = {
-//    WE_VOTE_URL_PROTOCOL: "http://",  // "http://" for local dev or "https://" for live server
-//    WE_VOTE_HOSTNAME: "localhost:3000",  // This should be without "http...". This is "WeVote.US" on live server.
+  //  WE_VOTE_URL_PROTOCOL: "http://",  // "http://" for local dev or "https://" for live server
+  //  WE_VOTE_HOSTNAME: "localhost:3000",  // This should be without "http...". This is "WeVote.US" on live server.
   WE_VOTE_URL_PROTOCOL: "https://",  // "http://" for local dev or "https://" for live server
   WE_VOTE_HOSTNAME: "wevote.us",  // This should be without "http...". This is "WeVote.US" on live server.
 
@@ -13,15 +13,20 @@ module.exports = {
 
   // Use 1 or 0 as opposed to true or false
   test: {
-    use_test_election: 0
+    use_test_election: 0,
   },
 
   location: {
-    text_for_map_search: ""
+    text_for_map_search: "",
   },
 
-  FACEBOOK_APP_ID: "",
 
-  STRIPE_API_KEY: ""
+  STRIPE_API_KEY:                 "",
+
+  FACEBOOK_APP_ID:                "",
+  SOCIAL_AUTH_FACEBOOK_KEY:       "",
+  SOCIAL_AUTH_FACEBOOK_SECRET:    "",
+
+  SOCIAL_AUTH_TWITTER_KEY:        "",
+  SOCIAL_AUTH_TWITTER_SECRET:     "",
 };
-
