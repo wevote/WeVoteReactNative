@@ -16,7 +16,7 @@ class CookieStore {
     // Pre-pull the voter_device_id from Storage into the local map, so that we never need to deliver a promise
     const prime_key = 'voter_device_id';
     Storage.getItem(prime_key).then((value)=> {
-      if (value.length > 0) {
+      if (value !== null && value.length > 0) {
         console.log("Cookie to map in constructor \'" + prime_key + "\'  " + value);
         this.state.cookieMap = this.state.cookieMap.set(prime_key, value);
       } else {
