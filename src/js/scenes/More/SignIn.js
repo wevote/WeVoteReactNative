@@ -192,7 +192,11 @@ export default class SignIn extends Component {
               <View >
                 {this.state.voter.signed_in_twitter ?
                   null :
-                 <TwitterSignIn />
+                  <View>
+                    <TwitterSignIn signIn />
+                    // signOut, may just be temporary for testing -- Sept 2017
+                    <TwitterSignIn signOut buttonText={"Twitter Sign Out"} />
+                  </View>
                 }
                 {/*&nbsp;*/}
                 {this.state.voter.signed_in_facebook ?

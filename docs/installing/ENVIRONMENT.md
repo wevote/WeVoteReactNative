@@ -50,7 +50,7 @@ We recommend referencing starting there. The notes that follow here are to suppl
 ### Install Xcode
 
 The easiest way to install Xcode is via the
-<a href="https://itunes.apple.com/us/app/xcode/id497799835?mt=12" target="_blank">Mac App Store</a>.
+<a href="https://itunes.apple.com/us/app/xcode/id497799835?mt=12" target="_blank">Mac App Store.</a>  The Xcode.app download is 10gb in size.
 
 ### Node, Watchman, React Native command line interface
 
@@ -64,6 +64,58 @@ Node comes with npm, which lets you install the React Native command line interf
     npm install -g react-native-cli
 
 If you get a permission error, try with sudo: `sudo npm install -g react-native-cli`.
+
+### As of September 2017, only a couple of people have setup for iOS, so the following instructions may not be necessary
+ 
+
+The installation of these components may have been captured by the
+
+    /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcodeproj 
+    
+More about this file later!    
+
+If you will need to add additional libraries that bridge JavaScript/ObjectiveC, you will need to install cocoapods
+
+    sudo gem install cocoapods
+    
+Then install Cocoapods Specs    
+
+    cd ~/.cocoapods/repos 
+    git clone https://github.com/CocoaPods/Specs.git master
+    
+Once you are done with that, run react-native link.
+
+    cd /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative
+    ./node_modules/.bin/react-native link react-native-oauth
+    
+A successful run looks like this (in my case re-running and overwriting the previous Podfile):
+
+    (WebAppEnv)Steves-MacBook-Pro-2017:WeVoteReactNative stevepodell$ 
+    /Users/stevepodell/WebstormProjects/WeVoteReactNative/node_modules/.bin/react-native link react-native-oauth
+    Scanning 523 folders for symlinks in /Users/stevepodell/WebstormProjects/WeVoteReactNative/node_modules (9ms)
+    Preparing to link react-native-firestack for iOS
+    Checking CocoaPods...
+    CocoaPods already installed
+    rnpm-install info Android module react-native-oauth is already linked 
+    rnpm-install info iOS module react-native-oauth is already linked 
+    Checking Podfile in iOS project (/Users/stevepodell/WebstormProjects/WeVoteReactNative/ios/Podfile)
+    
+    Found an existing Podfile, Do you want to override it? [N/y]
+    y
+    Adding Podfile to iOS project
+    Installing Pods
+    Analyzing dependencies
+    Pre-downloading: `DCTAuth` from `https://github.com/danielctull/DCTAuth.git`
+    Downloading dependencies
+    Installing DCTAuth 3.0 (was 3.0)
+    Generating Pods project
+    Integrating client project
+    Sending stats
+    Pod installation complete! There is 1 dependency from the Podfile and 1 total pod installed.
+    (WebAppEnv)Steves-MacBook-Pro-2017:WeVoteReactNative stevepodell$ 
+
+
+
 
 ## Android
 

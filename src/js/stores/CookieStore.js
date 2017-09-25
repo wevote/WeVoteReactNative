@@ -32,7 +32,7 @@ class CookieStore {
     } else {
       return Storage.getItem(key).then((value)=> {
         console.log("Cookie from Storage (updating cookieMap) \'" + key + "\'  " + value);
-        if (value.length > 0)
+        if (value !== null && value.length > 0)
           this.state.cookieMap = this.state.cookieMap.set(key, value);
       });
     }

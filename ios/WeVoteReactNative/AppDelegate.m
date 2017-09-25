@@ -8,6 +8,7 @@
  */
 
 #import "AppDelegate.h"
+#import "OAuthManager.h"
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -30,8 +31,25 @@
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
+
+  [OAuthManager setupOAuthHandler:application];
+
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+  if ([url.absoluteString containsString:@"wevotetwitterscheme"]){
+    return [OAuthManager handleOpenUrl:application
+                               openURL:url
+                     sourceApplication:@"twitter"
+                            annotation:nil];
+  } else{
+    // other callbacks ...
+    return NO;
+  }
 }
 
 @end
