@@ -22,16 +22,24 @@ I recommend this method because then you have easier access to the XCode console
 
 1. Open XCode.
 
-2. From within XCode, open this project:
+2. From within XCode, open this project.  **Be sure to open the xcworkspace!**  (not the xcodeproj!):
 
 
-    /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcodeproj
+    /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcworkspace
+    ~~/Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcodeproj~~
+
+
 
 3. Click the "Play" (sideways triangle button), and this opens the iOS Simulator.
 
 ## Method 3 - For Webstorm users
 
 See "Developing mobile apps with React Native in WebStorm" - <https://blog.jetbrains.com/webstorm/2016/12/developing-mobile-apps-with-react-native-in-webstorm/>
+
+**Be sure to open the xcworkspace!**  (not the xcodeproj!):
+
+        /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcworkspace
+
 
 ### Additional Notes
 
@@ -82,8 +90,11 @@ If your build fails due to an error with the message `Ignoring return value of f
 
 Since we're using external packages like `react-native-elements`, some dependency issues may arise. The work-around for this is to identify which dependencies are required by doing `npm install` and then adding the missing dependencies by `npm install --save <pkg_name>@<pkg_version>`
 
+
 ---
+
 
 Next: [Working with WeVoteReactNative Day-to-Day](../working/README_WORKING_WITH_REACT_NATIVE.md)
 
 [Go back to Readme Home](../../README.md)
+****

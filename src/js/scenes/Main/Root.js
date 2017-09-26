@@ -8,6 +8,13 @@ import CookieStore from "../../stores/CookieStore";
 
 const DEBUG = false;
 
+//  TODO: DELETE THIS FILE (soon)
+/* ******************************************************************************
+Steve September 20, 2017
+This component is to be deleted,
+We are no longer using "react-router-native" in this way
+ */
+
 
 /****************************** ROUTE-COMPONENTS ******************************/
 //import About from "./routes/More/About";
@@ -70,15 +77,18 @@ import Location from "../Settings/Location";
 // See /js/components/Navigation/HeaderBar.jsx for voter_orientation_complete cookie
 const firstVisit = !CookieStore.getItem("voter_device_id");
 
+/*
 const routes = (
   <Router history={nativeHistory}>
     <Route exact path="/" component={Application}>
-        <Route path="/settings/location" component={Location} />  /* Complete path on one line for searching */
-        <Route path="/ballot" component={BallotIndex}>
-          <IndexRoute component={Ballot}/>
-        </Route>
-  </Route>
+      <Route path="/settings/location" component={Location} />  /* Complete path on one line for searching */
+ /*     <Route path="/ballot" component={BallotIndex}>
+        <IndexRoute component={Ballot}/>
+      </Route>
+    </Route>
+  </Router>
   );
 
 export default routes;
 AppRegistry.registerComponent('App', () => () => routes);
+*/
