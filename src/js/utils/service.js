@@ -5,14 +5,11 @@
  */
 "use strict";
 
-import {Linking, WebView} from 'react-native';
 import * as request from "superagent";
 import CookieStore from '../stores/CookieStore';
-const Dispatcher = require("flux/lib/Dispatcher");
 const url = require("url");
 const assign = require("object-assign");
 const webAppConfig = require("../config");
-const MessageQueue = require('MessageQueue');
 
 const DEBUG = false;
 
@@ -48,11 +45,16 @@ export function $ajax (options) {
   return fetch(options.url)
     .then((response) => response.json())
     .then((responseJson) => {
-      let cookie = CookieStore.getItem("voter_device_id");
-      console.log("voter_device_id in fetch (" +  options.endpoint + ") " + ( typeof cookie === 'object' ? JSON.stringify(cookie) + " object " : cookie + " string"));
-      console.log("responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id);
-        const res = responseJson;
-        this.dispatch({ type: options.endpoint, res });
+      // let cookie = CookieStore.getItem("voter_device_id");
+      // console.log("voter_device_id in fetch (" +  options.endpoint + ") " + ( typeof cookie === 'object' ? JSON.stringify(cookie) + " object " : cookie + " string"));
+      if(responseJson.hasOwnProperty('voter_device_id') ) {
+        console.log("responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id + ' : ' + responseJson.status);
+      } else {
+        console.log("responseJson:" + options.endpoint + ' : ' + responseJson.status);
+      }
+
+      const res = responseJson;
+      this.dispatch({ type: options.endpoint, res });
     })
     .catch((error) => {
       console.error(error, options.endpoint);
@@ -60,6 +62,41 @@ export function $ajax (options) {
     });
   //return window.$.ajax(options);
 }
+
+
+/*
+September 2017, this is Rohan's first pass at doing the Twitter oAuth redirect in a similar way to the way the WebApp
+does it.   He was very close, and I added a bit to it, and setup the iOS schemes and added
+ObjectiveC in ios/WeVoteReactNAtive/AppDelegate.m to handle the "scheme" which I labeled "wevotetwitterscheme" and I got
+it to work.
+
+Two issues:
+1) Incoming URLs to an Apple app are defined in "Project Settings" -> Info -> URL Types in the Xcode development app,
+   the "Scheme"s that you define, allow incoming responses or requests to be routed to the WebApp then you use the
+   Linking JavaScript library to set a handler for that scheme.   The issue is that in order to get python to redirect
+   to an Apple scheme other than the predfined schemes {http,https,ftp}, I had to modify a library routine as follows:
+
+     class HttpResponseRedirectBase(HttpResponse):
+         allowed_schemes = ['http', 'https', 'ftp', 'wevotetwitterscheme']
+
+   ... modifying a library routine is a drag.  In Java you can override a method in a library, and I suspect we could do
+   the same in Python, but that is sort of a last resort.  If we revived this $ajax_twitter_sign_in
+
+2) When the wevotetwitterscheme redirect comes back to the Safari window opened by the native app to display the twitter
+   hosted login page, you get a "Open this page in "WeVoteReactNative?" question -- This one would be hard to get around
+   without writing some significant ObjectiveC for the project.  As is, it looks and acts kind of lame.  Pressing Cancel
+   leaves you on a dead-end page in Safari.  This is a known issue, and might be a purposeful feature on Apple's part to
+   provide extra security in some circumstances.
+
+So based on these two issues, I went with the react-native-oauth solution, which works really well, and is very simple.
+One drawback with react-native-oauth is that it requires you to configure the iOS app with the twitter and facebook
+oauth secrets, where with the $ajax_twitter_sign_in and the equivalent in the WebApp, those secrets are only configured
+on our production Python servers.  Not a big deal, but not ideal.  The other drawback of is that we don't "do it
+exactly the same" as in the WebApp, again not a big deal.
+ */
+// import {Linking, WebView} from 'react-native';
+// const MessageQueue = require('MessageQueue');
+// const Dispatcher = require("flux/lib/Dispatcher");
 
 // export function $ajax_twitter_sign_in (options) {
 //   if (!options.endpoint) throw new Error("$ajax missing endpoint option");

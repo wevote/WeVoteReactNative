@@ -17,21 +17,21 @@ class CookieStore {
     const prime_key = 'voter_device_id';
     Storage.getItem(prime_key).then((value)=> {
       if (value !== null && value.length > 0) {
-        console.log("Cookie to map in constructor \'" + prime_key + "\'  " + value);
+        // console.log("Cookie to map in constructor \'" + prime_key + "\'  " + value);
         this.state.cookieMap = this.state.cookieMap.set(prime_key, value);
       } else {
-        console.log("Cookie for " + prime_key + 'was not found in Storage in constructor');
+        // console.log("Cookie for " + prime_key + 'was not found in Storage in constructor');
       }
     });
   }
 
   getItem(key){
     if( this.state.cookieMap.has(key) ) {
-      console.log("Cookie from map \'" + key + "\'  " + this.state.cookieMap.get(key));
+      // console.log("Cookie from map \'" + key + "\'  " + this.state.cookieMap.get(key));
       return this.state.cookieMap.get(key);
     } else {
       return Storage.getItem(key).then((value)=> {
-        console.log("Cookie from Storage (updating cookieMap) \'" + key + "\'  " + value);
+        // console.log("Cookie from Storage (updating cookieMap) \'" + key + "\'  " + value);
         if (value !== null && value.length > 0)
           this.state.cookieMap = this.state.cookieMap.set(key, value);
       });
@@ -39,7 +39,7 @@ class CookieStore {
   }
 
   setItem(key, value) {
-    console.log("setItem cookie to cookieMap (and storage) \'" + key + "\'  " + value);
+    // console.log("setItem cookie to cookieMap (and storage) \'" + key + "\'  " + value);
     this.state.cookieMap = this.state.cookieMap.set(key, value);
     Storage.setItem(key, value);
   }

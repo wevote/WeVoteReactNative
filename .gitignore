@@ -2,12 +2,26 @@
 #
 .DS_Store
 
-build/
-
 # Xcode
+# Sept 2017, purposefully checking in the pods and the xcworkspace
 #
-/ios/Pods
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
 *.xcuserstate
+
 
 # Android/IntelliJ
 #

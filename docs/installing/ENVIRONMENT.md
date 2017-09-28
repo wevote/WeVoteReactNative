@@ -115,7 +115,11 @@ A successful run looks like this (in my case re-running and overwriting the prev
     (WebAppEnv)Steves-MacBook-Pro-2017:WeVoteReactNative stevepodell$ 
 
 
+**Clean Build:**
 
+You probably will need to "Clean Build Folder" to do this in XCode, on the Product menu, hold down the Option button 
+(on your Mac) and select "Clean Build Folder", after it completes (about 10 seconds), press the triangular
+Run (Play) button do to a full rebuild
 
 ## Android
 

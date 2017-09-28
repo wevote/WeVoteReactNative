@@ -2,16 +2,14 @@ import React, {Component} from 'react';
 import {StackNavigator, TabNavigator} from 'react-navigation';
 import { Linking, Text, View} from 'react-native';
 import Ballot from '../../scenes/Ballot/Ballot';
-import SignIn from '../More/SignIn';
+import SignIn from '../SignIn/SignIn';
 //import { } from "react-router-native";
-//import {nativeRoutes} from "./NativeRoutes"
 //import routes from "./Root";
 //import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
 //import BallotDetails from '../../components/BallotDetails/BallotDetails'
 //import Organizations from '../../components/Organizations/Organizations'
 //import Friends from '../../components/Friends/Friends'
 //import About from '../../components/About/About'
-
 
 
 
@@ -27,7 +25,6 @@ const Tabs = TabNavigator({
     tabBarOptions: { activeTintColor: '#e91e63',},
   });
 
-// https://medium.com/@psak.works/react-navigation-without-redux-887ad8a6b394
 const AppStack = StackNavigator({
   //Loading: {screen: LoadingScreen},
   Tabs: {screen: Tabs},
@@ -54,7 +51,7 @@ export default App;
 // componentWillMount() {
 //   Linking.addEventListener('url', this.handleDeepLink);
 //
-//   console.log("STEVE CCCCCCCCCCCCCCCCCCCC App.js this.componentWillMount() " );
+//   console.log("STEVE CCCCCCCCCCCCCCCCCCCC AppOld.js this.componentWillMount() " );
 //
 //   // Linking.getInitialURL().then((url) => {
 //   //   if (url) {
@@ -91,7 +88,7 @@ export default App;
 //   // Sept 2017, no idea where this one came from: this._navigator.replace(this.state.routes[route]);
 //
 //   //     In the simulator, navigating to "wevotetwitterscheme://twitter_sign_in" will get you here with route /twitter_sign_in
-//   // Sept 2017, Routing ... See NativeRoutes.js
+//   // Sept 2017, Routing
 //
 //   //nativeRoutes.push(route);
 // }

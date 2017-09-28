@@ -1,31 +1,31 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  Switch, 
+  Switch,
   ScrollView,
-  Text, 
-  View, 
-  TouchableOpacity, 
-  TextInput, 
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
   Dimensions,
   Platform,
-} 
-from 'react-native';
-//import Helmet from "react-helmet";
+} from 'react-native';
 import { browserHistory } from "react-router-native";
-//import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
-//import FacebookActions from "../../actions/FacebookActions";
-//import FacebookStore from "../../stores/FacebookStore";
-//import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 import LoadingWheel from "../../components/LoadingWheel";
-//import TwitterActions from "../../actions/TwitterActions";
-import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
+import TwitterSignIn from "./TwitterSignIn";
 import VoterActions from "../../actions/VoterActions";
 import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
 import VoterConstants from "../../constants/VoterConstants";
 import HeaderTitle from "../../components/Header/Header"
+import styles from "../BaseStyles"
+//import Helmet from "react-helmet";
+//import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
+//import FacebookActions from "../../actions/FacebookActions";
+//import FacebookStore from "../../stores/FacebookStore";
+//import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
+//import TwitterActions from "../../actions/TwitterActions";
 
 const debug_mode = false;
 const delay_before_user_name_update_api_call = 1200;
@@ -194,7 +194,7 @@ export default class SignIn extends Component {
                   null :
                   <View>
                     <TwitterSignIn signIn />
-                    // signOut, may just be temporary for testing -- Sept 2017
+                    {/* signOut, may just be temporary for testing -- Sept 2017 */}
                     <TwitterSignIn signOut buttonText={"Twitter Sign Out"} />
                   </View>
                 }
@@ -284,43 +284,3 @@ export default class SignIn extends Component {
   }
 }
 
-
-export var styles = StyleSheet.create({
-  baseText: {
-	  fontFamily: 'sans-serif',
-  },
-  titleText: {
-	fontFamily: 'sans-serif',
-	fontSize: 15,
-	fontWeight: 'bold',
-  },
-  title: {
-    fontSize: 20,
-    marginBottom: 10
-  },
-  buttonText: {
-    fontSize: 18,
-    color: 'white',
-    alignSelf: 'center'
-  },
-  button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'flex-start',
-    justifyContent: 'center'
-  },
-  dangerButton: {
-      height: 36,
-      backgroundColor: 'red',
-      borderColor: '#48BBEC',
-      borderWidth: 1,
-      borderRadius: 8,
-      marginBottom: 10,
-      alignSelf: 'flex-start',
-      justifyContent: 'center'
-  },
-});

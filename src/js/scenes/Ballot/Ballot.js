@@ -14,35 +14,36 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
-import { styles } from "../More/SignIn";
-//import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { styles } from "../BaseStyles";
+import HeaderTitle from "../../components/Header/Header"
 import { browserHistory, Link } from "react-router-native";
-//import AddressBox from "../../components/AddressBox";
 import BallotActions from "../../actions/BallotActions";
-//import BallotElectionList from "../../components/Ballot/BallotElectionList";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
-//import BallotIntroMission from "../../components/Ballot/BallotIntroMission";
-//import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
-//import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
-//import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionBar";
 import BallotStore from "../../stores/BallotStore";
 import BallotFilter from "../../components/Navigation/BallotFilter";
-//import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import EditAddress from "../../components/Widgets/EditAddress";
 import GuideActions from "../../actions/GuideActions";
-//import GuideList from "../../components/VoterGuide/GuideList";
 import GuideStore from "../../stores/GuideStore";
-//import Helmet from "react-helmet";
-//import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
-//import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
 import LoadingWheel from "../../components/LoadingWheel";
-//import Slider from "react-slick";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
+//import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+//import AddressBox from "../../components/AddressBox";
+//import BallotElectionList from "../../components/Ballot/BallotElectionList";
+//import BallotIntroMission from "../../components/Ballot/BallotIntroMission";
+//import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
+//import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
+//import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionBar";
+//import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
+//import GuideList from "../../components/VoterGuide/GuideList";
+//import Helmet from "react-helmet";
+//import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
+//import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
+//import Slider from "react-slick";
 
 const web_app_config = require("../../config");
 
@@ -292,18 +293,23 @@ export default class Ballot extends Component {
         return null;
     }
 
-    let ballot = this.state.ballot;
+    // HACK 9/28/17 !!!!!   let ballot = this.state.ballot;
+    let ballot = false;
+    // End HACK
     let text_for_map_search = VoterStore.getTextForMapSearch();
     let voter_address_object = VoterStore.getAddressObject();
+    let sign_in_message =  this.props.sign_in_message_type === 'success' ? this.props.sign_in_message : '';
 
     if (!ballot) {
       if (text_for_map_search.length === 0) {
         return <View className="ballot">
 
           <View className="ballot__header">
+            <HeaderTitle headerText = {'Your Ballot'} />
 
             <Text>
               Your ballot could not be found. Please change your address.
+              {sign_in_message}
             </Text>
           </View>
         </View>;
