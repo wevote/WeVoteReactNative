@@ -39,23 +39,21 @@ https://github.com/\<YOUR GITHUB NAME\>/WeVoteReactNative
 
 8.Go paste your keys into http://github.com, under SSH Keys for your account.  
 
-# The fluxbranch
+## The fluxbranch
 We started the WeVoteReactNative repository by permanently forking the WeVote/WebApp (browser targeted) repository.
 
-Our 'fluxbranch' git branch is a long-lived branch off of the WeVoteReactNative repository that we use as a source 
-branch, where we work on code that is being ported to react-native.  
+Our 'fluxbranch' git branch was a long-lived branch off of the WeVoteReactNative repository that we used as a source 
+branch, where we worked on code that is being ported to react-native.  
 
-## How to use the fluxbranch
+On September 27, 2017 we merged the fluxbranch back into develop, making fluxbranch a stale branch.  **Don't use the
+fluxbranch anymore.**
 
-1. Fork this repository.
 
-2. Locally, clone your fork.
+##Other notes:
 
-3. Checkout `fluxbranch`.
+This project has an active Wiki page with some uptodate notes.  Take a look at [ReactNativeWiki](https://github.com/wevote/WeVoteReactNative/wiki)
 
-4. Create a new branch off `fluxbranch`
-
-5. Pick an unused library from the following: 
+This list of preferred libraries might be dated (as of September 27, 2017): 
 
     > 1) react router we can use [react-router-native](https://github.com/ReactTraining/react-router/tree/master/packages/react-router-native)
     > 2) react bootstrap we can use [react-native-elements](https://github.com/react-native-training/react-native-elements) and [ReactNativeKatas](https://github.com/jondot/ReactNativeKatas)
@@ -66,17 +64,19 @@ branch, where we work on code that is being ported to react-native.
     > 7) react-bootstrap-toggle
     > 8) react-copy-to-clipboard
 
-6. Rewrite the code using the new libraries.
+Rewrite the code using the new libraries.
 
+After all the browser oriented libraries have been replaced with those for react-native, we will have a functional native 
+WeVote ballot App (See `scenes/Ballot/Ballot.js`)
 
-**Other notes:**
-After this fluxbranch is migrated completely (all the browser oriented libraries will have been replaced with those for react-native), we will have a functional native WeVote ballot App (See `scenes/Ballot/Ballot.js`)
-
-There are a few `.jsx` files in this repo. They cannot be used with react-native, I haven't removed them as they may have dependencies. If so, when running `react-native run-ios` missing dependencies will be flagged, to fix this we just need to rename the extension to `.js` and rewrite the unused libraries (if any).
+There are a few `.jsx` files in this repo. They cannot be used with react-native, I haven't removed them as they may 
+have dependencies. If so, when running `react-native run-ios` missing dependencies will be flagged, to fix this we just 
+need to rename the extension to `.js` and rewrite the unused libraries (if any).
 
 There are some components we can use within the react-native library, see [this link](https://facebook.github.io/react-native/docs/components-and-apis.html). (`Modal`, `Slider` we were using from `react-bootstrap` and `react-slick` respectively are in `react-native`), we may have to refactor how it's written but it should save a lot of work. Infact, a lot of the 3rd party libraries are included in the docs as well (eg. navigation).
 
-Other errors such as `Expected a component class, got [object, object]` are raised because we can't use html tags like `<div>`, we'll be using react-native components to do the same, `<View>`.
+Other errors such as `Expected a component class, got [object, object]` are raised because in react-native can't use HTML 
+tags like `<div>`.  In the case of each `<div>` from the WebApp code, we will instead we'll be using react-native's `<View>` component.
 
 I've commented out most of the libraries which cannot be used within the files.
 
