@@ -29,9 +29,9 @@ To run on android:
 react-native run-android
 ```
 
-# Contributing Guidelines:
+# Current Thoughts About Our Native Project:
 
-Please read the [wiki](https://github.com/wevote/WeVoteReactNative/wiki)
+Please read and contribute to our [WeVoteReactNative Wiki!](https://github.com/wevote/WeVoteReactNative/wiki)
 
 # We Vote React Native - README Home
 
