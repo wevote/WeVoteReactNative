@@ -64,7 +64,9 @@ export default class ItemSupportOpposeCounts extends Component {
         }
       </View>*/}
       <View className="network-positions__support">
+        {/* 9/27/16 hack
         <Image source={!isEmpty && isMajoritySupport ? require("../../../img/global/icons/up-arrow-color-icon@2x.png") : require("../../../img/global/icons/up-arrow-gray-icon@2x.png")} className="network-positions__support-icon u-push--xs" width="20" height="20" />
+        */}
         <View className="network-positions__count">
           <Text>{!isEmpty ? support_count : null}</Text>
           <Text className="sr-only"> Support</Text>
@@ -86,7 +88,10 @@ export default class ItemSupportOpposeCounts extends Component {
           {!isEmpty ? oppose_count : null}
           <Text className="sr-only"> Oppose</Text>
         </View>
+        {/* 9/27/16 hack
+
         <Image source={!isEmpty && !isMajoritySupport ? require("../../../img/global/icons/down-arrow-color-icon@2x.png") : require("../../../img/global/icons/down-arrow-gray-icon@2x.png")} className="network-positions__oppose-icon" width="20" height="20" />
+        */}
       </View>
     </View>;
   }

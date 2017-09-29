@@ -1,11 +1,17 @@
 import React, { Component, PropTypes } from "react";
+import {
+  Text,
+  View
+} from 'react-native';
+import { Actions } from 'react-native-router-flux';
+
 import { browserHistory } from "react-router";
 import TwitterActions from "../../actions/TwitterActions";
 import TwitterStore from "../../stores/TwitterStore";
 import VoterStore from "../../stores/VoterStore";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterActions from "../../actions/VoterActions";
-import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
+//import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
 export default class TwitterSignInProcess extends Component {
   static propTypes = {
@@ -22,9 +28,10 @@ export default class TwitterSignInProcess extends Component {
     };
   }
 
-  componentDidMount () {
+  // Doesn't work in react-native? // componentDidMount () {
+  componentWillMount () {
     this.twitterStoreListener = TwitterStore.addListener(this._onTwitterStoreChange.bind(this));
-    this.twitterSignInRetrieve();
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -32,11 +39,30 @@ export default class TwitterSignInProcess extends Component {
   }
 
   _onTwitterStoreChange () {
-    this.setState({
-      twitter_auth_response: TwitterStore.getTwitterAuthResponse(),
-      saving: false
-    });
+    if( TwitterStore.get().twitter_sign_in_found ) {
+      console.log("TwitterSignInProcess _onTwitterStoreChange() TwitterStore.get().twitter_sign_in_found DID DID DID succeed ");
+      this.setState({
+        twitter_auth_response: TwitterStore.getTwitterAuthResponse(),
+        saving: false
+      });
+    } else {
+      console.log("TwitterSignInProcess _onTwitterStoreChange() TwitterStore.get().twitter_sign_in_found did NOT succeed ");
+    }
   }
+
+  _onVoterStoreChange () {
+    let voter = VoterStore.getVoter();
+    if( voter ) {
+      console.log("TwitterSignInProcess _onVoterStoreChange() voter =  " + voter);
+      this.setState({
+        voter: voter,
+      });
+    } else {
+      console.log("TwitterSignInProcess _onVoterStoreChange() VoterStore.getVoter() did NOT succeed ");
+    }
+  }
+
+
 
   cancelMergeFunction () {
     browserHistory.push({
@@ -50,6 +76,12 @@ export default class TwitterSignInProcess extends Component {
 
   voterMergeTwoAccountsByTwitterKey (twitter_secret_key, voter_has_data_to_preserve = true) {
     VoterActions.voterMergeTwoAccountsByTwitterKey(twitter_secret_key);
+      Actions.ballot({
+        sign_in_message: "You have successfully signed in with Twitter.",
+        sign_in_message_type: "success"
+      });
+
+    /* Sept 28, 2017: Postpone dealing with this logic, and just go to ballot with a message
     if (voter_has_data_to_preserve) {
       browserHistory.push({
         pathname: "/more/network",
@@ -67,6 +99,7 @@ export default class TwitterSignInProcess extends Component {
         }
       });
     }
+    */
   }
 
   voterTwitterSaveToCurrentAccount () {
@@ -85,6 +118,7 @@ export default class TwitterSignInProcess extends Component {
   }
 
   twitterSignInRetrieve () {
+    console.log("TwitterSignInProcess firing TwitterActions.twitterSignInRetrieve();");
     TwitterActions.twitterSignInRetrieve();
     this.setState({saving: true});
   }
@@ -96,15 +130,15 @@ export default class TwitterSignInProcess extends Component {
   render () {
     let {twitter_auth_response, yes_please_merge_accounts} = this.state;
 
-    // console.log("TwitterSignInProcess render, this.state.saving:", this.state.saving);
+    // Wait until twitterSignInRetrieve promise is resolved, and twitter_auth_respose is populated
+    console.log("TwitterSignInProcess render, this.state.saving:", this.state.saving);
     if (this.state.saving ||
       !twitter_auth_response ||
       !twitter_auth_response.twitter_retrieve_attempted ) {
-      // console.log("twitter_auth_response:", twitter_auth_response);
-      return LoadingWheel;
+      return <LoadingWheel />;
     }
-    // console.log("=== Passed initial gate ===");
-    // console.log("twitter_auth_response:", twitter_auth_response);
+    console.log("=== Passed initial gate ===");
+    console.log("twitter_auth_response:", twitter_auth_response);
     let { twitter_secret_key } = twitter_auth_response;
 
     if (twitter_auth_response.twitter_sign_in_failed) {
@@ -116,7 +150,7 @@ export default class TwitterSignInProcess extends Component {
           message_type: "success"
         }
       });
-      return LoadingWheel;
+      return <LoadingWheel />;
     }
 
     if (yes_please_merge_accounts) {
@@ -124,7 +158,7 @@ export default class TwitterSignInProcess extends Component {
       // console.log("this.voterMergeTwoAccountsByTwitterKey -- yes please merge accounts");
       this.voterMergeTwoAccountsByTwitterKey(twitter_secret_key);
       // return <span>this.voterMergeTwoAccountsByTwitterKey({twitter_secret_key})</span>;
-      return LoadingWheel;
+      return <LoadingWheel />;
     }
 
     // This process starts when we return from attempting voterTwitterSignInRetrieve
@@ -138,7 +172,7 @@ export default class TwitterSignInProcess extends Component {
           message_type: "warning"
         }
       });
-      return LoadingWheel;
+      return <LoadingWheel />;
     }
 
     if (twitter_auth_response.existing_twitter_account_found) {
@@ -156,13 +190,13 @@ export default class TwitterSignInProcess extends Component {
         // console.log("TwitterSignInProcess this.voterMergeTwoAccountsByTwitterKey - No data to merge");
         this.voterMergeTwoAccountsByTwitterKey(twitter_secret_key, twitter_auth_response.voter_has_data_to_preserve);
         // return <span>this.voterMergeTwoAccountsByTwitterKey({twitter_secret_key}); - No data to merge</span>;
-        return LoadingWheel;
+        return <LoadingWheel />;
       }
     } else {
       // console.log("Setting up new Twitter entry - voterTwitterSaveToCurrentAccount");
       this.voterTwitterSaveToCurrentAccount();
       //return <span>Setting up new Twitter entry - voterTwitterSaveToCurrentAccount</span>;
-      return LoadingWheel;
+      return <LoadingWheel />;
     }
   }
 }

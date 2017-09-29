@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { $ajax_twitter_sign_in } from "../../utils/service";
 import {StyleSheet, Text, View, TouchableOpacity, Linking} from 'react-native';
+import {Actions} from "react-native-router-flux";
 import {browserHistory} from "react-router"
 import OAuthManager from 'react-native-oauth';
 import TwitterActions from "../../actions/TwitterActions";
@@ -24,8 +25,6 @@ export default class TwitterSignIn extends Component {
     };
   }
 
-
-
   componentWillMount () {
     console.log("Twitter Sign In, componentWillMount");
     this.initializeOAuthManager();
@@ -47,8 +46,8 @@ export default class TwitterSignIn extends Component {
 
   _onVoterStoreChange () {
     let voter = VoterStore.getVoter();
-    if( voter.signed_in_twitter )
-      this.props.navigator.redirect("/ballot");  // TODO: This is a test hack, don't check in
+    // if( voter.signed_in_twitter )
+    //   this.props.navigator.redirect("/ballot");  // TODO: This is a test hack, don't check in
    }
 
   componentWillUnmount() {
@@ -78,26 +77,17 @@ export default class TwitterSignIn extends Component {
 
     oauthManager.authorize('twitter')
       .then(resp => {
-        console.log("Before lodash");
-        console.log(_get(resp, "status"));
-        console.log(_get(resp, "response.authorized"));
-        console.log(_get(resp, "response.credentials.access_token_secret"));
-        console.log(_get(resp, "response.credentials.access_token"));
-        console.log('afterlodash');
+        // console.log("Before lodash");
+        // console.log(_get(resp, "status"));
+        // console.log(_get(resp, "response.authorized"));
+        // console.log(_get(resp, "response.credentials.access_token_secret"));
+        // console.log(_get(resp, "response.credentials.access_token"));
+        // console.log('afterlodash');
         if (_get(resp, "response.authorized")) {
           TwitterActions.twitterNativeSignInSave(_get(resp, "response.credentials.access_token"),
-            _get(resp, "response.credentials.access_token_secret"));
-          //VoterActions.voterRetrieve();
+                                                 _get(resp, "response.credentials.access_token_secret"));
           console.log("Twitter oAuth query returned authorized");
-          //this.props.navigator.redirect("/TwitterSignInProcess");
-
-
-this.props.navigation.navigate('Ballot');
-
-
-
-
-
+          Actions.twitterSignInProcess();
         } else {
           console.log("Twitter oAuth query returned WAS NOT authorized!");
         }
@@ -108,6 +98,33 @@ this.props.navigation.navigate('Ballot');
       });
     console.log('after manager.authorize twitter ');
   }
+
+/*
+  2017-09-21 17:50:33.549 [info][tid:com.facebook.React.JavaScript] resp =
+  { status: 'ok',
+   response:
+   { authorized: true,
+     identifier: '2EAF2219-4B2F-4907-95C6-BC46D950F58C',
+     uuid: '2EAF2219-4B2F-4907-95C6-BC46D950F58C',
+     credentials:
+     { access_token_secret: 'BTViDMivqi48G38CPPBkZvEnjdpr1yzNvkWSNOvsSCEPq',
+       access_token: '856525338557399042-XSBQshwmtjfbM0WEZ6Go5qekAR5XLhV'
+     }
+   },
+   provider: 'twitter'
+  }
+*/
+
+  /*
+    September 2017:  Save for now, see the note in service.js
+    twitterSignInStart () {
+      let return_url = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/twitter_sign_in";
+      $ajax_twitter_sign_in({
+        endpoint: "twitterSignInStart",
+        data: { return_url: return_url },
+      });
+    }
+  */
 
   // TODO: This is local only currently, have to communicate this to Postgres
   twitterSignOut () {
@@ -127,26 +144,6 @@ this.props.navigation.navigate('Ballot');
     console.log('after manager.deauthorize twitter ');
   }
 
-
-
-    /*
-   2017-09-21 17:50:33.549 [info][tid:com.facebook.React.JavaScript] resp =
-   { status: 'ok',
-     response:
-     { authorized: true,
-       identifier: '2EAF2219-4B2F-4907-95C6-BC46D950F58C',
-       uuid: '2EAF2219-4B2F-4907-95C6-BC46D950F58C',
-       credentials:
-       { access_token_secret: 'BTViDMivqi48G38CPPBkZvEnjdpr1yzNvkWSNOvsSCEPq',
-         access_token: '856525338557399042-XSBQshwmtjfbM0WEZ6Go5qekAR5XLhV'
-       }
-     },
-     provider: 'twitter'
-   }
-   */
-
-
-
   render () {
     let button_text = "Twitter Sign In";
     if (this.props.buttonText) {
@@ -156,7 +153,7 @@ this.props.navigation.navigate('Ballot');
     return <TouchableOpacity style = {styles.button} onPress={this.props.signIn ? this.twitterSignInStart.bind(this) :
                                                                                   this.twitterSignOut.bind(this)}>
       <Text style = {styles.buttonText}>{ button_text }</Text>
-     </TouchableOpacity>;
+    </TouchableOpacity>;
   }
 }
 
