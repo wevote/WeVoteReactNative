@@ -41,7 +41,7 @@ export default class ReadMore extends Component {
           num_of_lines = 3;
         }
         if (link_text === undefined) {
-          link_text = "SignIn";
+          link_text = "More";
         }
         if (collapse_text === undefined) {
           collapse_text = "Show Less  ";

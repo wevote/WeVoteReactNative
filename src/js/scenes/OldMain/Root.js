@@ -17,7 +17,7 @@ We are no longer using "react-router-native" in this way
 
 
 /****************************** ROUTE-COMPONENTS ******************************/
-//import About from "./routes/SignIn/About";
+//import About from "./routes/More/About";
 //import Activity from "./routes/Activity";
 import Ballot from "../Ballot/Ballot";
 import BallotIndex from "../Ballot/BallotIndex";
