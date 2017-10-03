@@ -41,7 +41,7 @@ See "Developing mobile apps with React Native in WebStorm" - <https://blog.jetbr
         /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcworkspace
 
 
-### Additional Notes
+### Additional Notes (iOS)
 
 If your build is failing due to an issue with RCTWebSocket, you may have to follow the following steps:
 
@@ -85,6 +85,17 @@ If your build fails due to an error with the message `Ignoring return value of f
   (void)SecRandomCopyBytes(kSecRandomDefault, keyBytes.length, keyBytes.mutableBytes);
 ```
 
+## Android
+See our ReactNative wiki [Android Cheat Sheet](https://github.com/wevote/WeVoteReactNative/wiki/Android-Cheat-Sheet)
+There are all sorts of issues/solutions in the sheet that will be necessary until some packages get fixed. 
+
+[Android Setup from react-native release notes](https://facebook.github.io/react-native/releases/0.45/docs/android-setup.html)
+
+Start up Android Studio
+File Menu, Open, Navigate to your andorid directory in your WeVoteReactNative project and 
+press Ok
+Run your project by opening the Run menu, Edit configurations
+In the upper left hand corner of the dialog, press the '+' and select Gradle
 
 ### Missing requirements
 
@@ -98,3 +109,14 @@ Next: [Working with WeVoteReactNative Day-to-Day](../working/README_WORKING_WITH
 
 [Go back to Readme Home](../../README.md)
 ****
+
+## General note about node_modules and manual fixes that we had to make to them
+If you are 'stack-overflowing' around trying to resolve npm issues, be careful about
+deleting all the node modules and re-installing them.  You will see recommendations to 
+"rm -rf node_modules" and then "npm i", ie: physically remove all the downloaded node
+modules and rebuild from fresh copies, based on the latest versions specified in package.json.
+
+The problem with starting from scratch is (unfortunately) other work arounds will have you 
+editing the source in these downloaded modules, and removing all, will end up with all those edits being lost.
+Eventually we will get to stability with react-native and other modules that include ObjectiveC and Java, but we are
+not there yet.
