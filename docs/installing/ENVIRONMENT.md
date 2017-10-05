@@ -82,6 +82,7 @@ Then install Cocoapods Specs
 
     cd ~/.cocoapods/repos 
     git clone https://github.com/CocoaPods/Specs.git master
+    pod setup
     
 Once you are done with that, run react-native link.
 
@@ -128,6 +129,9 @@ click on the "Android" button. Steps described include:
 
 - Downloading the latest Java SE Development Kit
 - Install Android Studio
+
+There is lots of info on our wiki at [Android Cheat Sheet](https://github.com/wevote/WeVoteReactNative/wiki/Android-Cheat-Sheet)
+
 
   *NOTE: Android Studio can take a significant amount of hard drive space. The amount ranges
   but it appears to be common for the SDK and Studio to take up 20-30gb.  On top of this, running the emulator can

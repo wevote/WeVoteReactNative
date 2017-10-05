@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Platform } from 'react-native';
 import { $ajax_twitter_sign_in } from "../../utils/service";
 import {StyleSheet, Text, View, TouchableOpacity, Linking} from 'react-native';
 import {Actions} from "react-native-router-flux";
@@ -6,7 +7,7 @@ import {browserHistory} from "react-router"
 import OAuthManager from 'react-native-oauth';
 import TwitterActions from "../../actions/TwitterActions";
 import VoterStore from "../../stores/VoterStore";
-import VoterActions from "../../actions/VoterActions";
+//import VoterActions from "../../actions/VoterActions";
 const web_app_config = require("../../config");
 const _get = require('lodash.get');
 
@@ -21,7 +22,7 @@ export default class TwitterSignIn extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      callback_url: "wevotetwitterscheme://twitter_sign_in",
+      callback_url: (Platform.OS === 'ios') ? "wevotetwitterscheme://twitter_sign_in" : "http://localhost/twitter",
     };
   }
 
@@ -77,17 +78,27 @@ export default class TwitterSignIn extends Component {
 
     oauthManager.authorize('twitter')
       .then(resp => {
-        // console.log("Before lodash");
-        // console.log(_get(resp, "status"));
-        // console.log(_get(resp, "response.authorized"));
-        // console.log(_get(resp, "response.credentials.access_token_secret"));
-        // console.log(_get(resp, "response.credentials.access_token"));
-        // console.log('afterlodash');
-        if (_get(resp, "response.authorized")) {
-          TwitterActions.twitterNativeSignInSave(_get(resp, "response.credentials.access_token"),
-                                                 _get(resp, "response.credentials.access_token_secret"));
+        let authorized = (Platform.OS === 'ios') ? _get(resp, "response.authorized") : _get(resp, "authorized");
+        let token = (Platform.OS === 'ios') ? _get(resp, "response.credentials.access_token") :
+                                              resp.response.credentials.access_token;
+        let secret = (Platform.OS === 'ios') ? _get(resp, "response.credentials.access_token_secret") :
+                                               resp.response.credentials.access_token_secret;
+        // Temporary hack for Android, this loss of the secret -- is it needed server side, or nice to have?
+        if(!secret)
+          secret = "null secret received in Android"
+        // End of temporary hack for Android
+        let consumer = (Platform.OS === 'ios') ? _get(resp, "response.credentials.consumerKey"):
+                                                 resp.response.credentials.consumerKey;
+        // We don't want these log lines in production
+        // console.log("authorized: " + authorized);
+        // console.log("credentials.access_token: " + token);
+        // console.log("credentials.access_token_secret: " + secret);
+        // console.log("credentials.consumerKey: " + consumer);
+        // End of We don't want these log lines in production
+        if (authorized) {
           console.log("Twitter oAuth query returned authorized");
-          Actions.twitterSignInProcess();
+          TwitterActions.twitterNativeSignInSave(token, secret);
+          Actions.twitterSignInProcess;
         } else {
           console.log("Twitter oAuth query returned WAS NOT authorized!");
         }

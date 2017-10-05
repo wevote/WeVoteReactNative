@@ -16,6 +16,21 @@ Navigate to the directory and run from the command line:
 
 Or, better yet, run [WeVoteReactNative from XCode](../installing/RUNNING_FIRST_TIME.md).
 
+## Watch your memory
+If you see your JavaScript reload times go from a couple of seconds, to much much longer, you are 
+probably swapping (relying on virtual memory on the disk).
+
+* Chrome tabs, especially debugging tabs, can take 1 to 6G of RAM
+* Android Studio  1 to 5g
+* Xcode starts at 250M, but after a long debugging session it once was at 50G! (Thanks Apple!)
+* node 720M to 2G and up
+* Slack 600M
+* PyChar 500M to 2G
+* pgAdmin4 400M and up
+* iOS Simulator 150M
+* postgres 60M
+
+Macs with 8G are usable, 16G is very nice.
 
 # How to Update to Latest Changes from “master” Branch
 
