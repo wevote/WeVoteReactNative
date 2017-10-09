@@ -27,7 +27,7 @@ export default class TwitterSignIn extends Component {
   }
 
   componentWillMount () {
-    console.log("Twitter Sign In, componentWillMount");
+    console.log("Twitter Sign In ++++ MOUNT");
     this.initializeOAuthManager();
     // this.twitterStoreListener = TwitterStore.addListener(this._onTwitterStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
@@ -52,6 +52,7 @@ export default class TwitterSignIn extends Component {
    }
 
   componentWillUnmount() {
+    console.log("Twitter Sign In ---- UN mount");
     this.voterStoreListener.remove();
   }
 
@@ -78,18 +79,22 @@ export default class TwitterSignIn extends Component {
 
     oauthManager.authorize('twitter')
       .then(resp => {
+        // 10/3/17  Obviously this shouldn't be needed, just one of those Android mysteries, Loadash is the better way to go.
         let authorized = (Platform.OS === 'ios') ? _get(resp, "response.authorized") : _get(resp, "authorized");
         let token = (Platform.OS === 'ios') ? _get(resp, "response.credentials.access_token") :
                                               resp.response.credentials.access_token;
         let secret = (Platform.OS === 'ios') ? _get(resp, "response.credentials.access_token_secret") :
                                                resp.response.credentials.access_token_secret;
-        // Temporary hack for Android, this loss of the secret -- is it needed server side, or nice to have?
+
+        // Unbelieveable 10/3/17:  Android returns the consumer key in the resp, but not the secret
+        //    iOS returns the secret, but not the consumer key.  Looks like it is not a problem, since
+        //    ﻿import_export_twitter_twitterauthresponse is fully filled out server side after authenticating in Android.
+        // Maybe we should just drop secret from the API call, it is there to provide symmetry with the WebApp calls.
         if(!secret)
           secret = "null secret received in Android"
-        // End of temporary hack for Android
         let consumer = (Platform.OS === 'ios') ? _get(resp, "response.credentials.consumerKey"):
                                                  resp.response.credentials.consumerKey;
-        // We don't want these log lines in production
+        // We don't want these log lines in production, they could be a security exploit
         // console.log("authorized: " + authorized);
         // console.log("credentials.access_token: " + token);
         // console.log("credentials.access_token_secret: " + secret);
@@ -98,7 +103,8 @@ export default class TwitterSignIn extends Component {
         if (authorized) {
           console.log("Twitter oAuth query returned authorized");
           TwitterActions.twitterNativeSignInSave(token, secret);
-          Actions.twitterSignInProcess;
+          console.log("RNRF TwitterSignIn  Actions.twitterSignInProcess({navigated_away: false})");
+          Actions.twitterSignInProcess({came_from: 'twitterSignIn'});
         } else {
           console.log("Twitter oAuth query returned WAS NOT authorized!");
         }
@@ -137,11 +143,14 @@ export default class TwitterSignIn extends Component {
     }
   */
 
-  // TODO: This is local only currently, have to communicate this to Postgres
+  // 10/4/17: This was meant for debugging, but without it, all we do is a /src/js/actions/VoterSessionActions.js, which
+  // "signs out" by clearing the voter_device_id, which has the effect of signing out of WeVote (while still having an
+  // active authentication session with twitter).  The only way to really signout of twitter without this function,
+  // would be to delete the app from your phone, and re-install it.
   twitterSignOut () {
     oauthManager.deauthorize('twitter')
       .then(resp => {
-        // deauthorize: {"status":"ok"}
+        // resp is ... deauthorize: {"status":"ok"}
         console.log("deauthorize: " + JSON.stringify(resp));
         console.log("Before deauthorizelodash");
         console.log(_get(resp, "status"));
@@ -156,6 +165,13 @@ export default class TwitterSignIn extends Component {
   }
 
   render () {
+    if ( ( Actions.currentScene !== "twitterSignIn") && ( Actions.currentScene !== "signIn") ) {
+      console.log("TwitterSignIn =-=-=-=-=-=-=-=-=-= render () when NOT CURRENT, scene  = " + Actions.currentScene);
+      return null;
+    }
+    console.log("TwitterSignIn =================== render (), scene = " + Actions.currentScene);
+
+
     let button_text = "Twitter Sign In";
     if (this.props.buttonText) {
       button_text = this.props.buttonText;

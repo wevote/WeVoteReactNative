@@ -46,12 +46,13 @@ export function $ajax (options) {
     .then((response) => response.json())
     .then((responseJson) => {
       // let cookie = CookieStore.getItem("voter_device_id");
-      // console.log("voter_device_id in fetch (" +  options.endpoint + ") " + ( typeof cookie === 'object' ? JSON.stringify(cookie) + " object " : cookie + " string"));
-      if(responseJson.hasOwnProperty('voter_device_id') ) {
-        console.log("responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id + ' : ' + responseJson.status);
-      } else {
-        console.log("responseJson:" + options.endpoint + ' : ' + responseJson.status);
-      }
+      // console.log("voter_device_id in fetch (" +  options.endpoint + ") " +
+      //      ( typeof cookie === 'object' ? JSON.stringify(cookie) + " object " : cookie + " string"));
+      // if(responseJson.hasOwnProperty('voter_device_id') ) {
+      //   console.log("responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id + ' : ' + responseJson.status);
+      // } else {
+      //   console.log("responseJson:" + options.endpoint + ' : ' + responseJson.status);
+      // }
 
       const res = responseJson;
       this.dispatch({ type: options.endpoint, res });

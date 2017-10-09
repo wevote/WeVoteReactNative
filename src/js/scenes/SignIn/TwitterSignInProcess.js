@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
-import { browserHistory } from "react-router";
+//import { browserHistory } from "react-router";
 import TwitterActions from "../../actions/TwitterActions";
 import TwitterStore from "../../stores/TwitterStore";
 import VoterStore from "../../stores/VoterStore";
@@ -28,17 +28,21 @@ export default class TwitterSignInProcess extends Component {
     };
   }
 
-  // Doesn't work in react-native? // componentDidMount () {
+  // componentDidMount ()  Doesn't work in react-native?
   componentWillMount () {
+    console.log("TwitterSignInProcess ++++ MOUNT");
     this.twitterStoreListener = TwitterStore.addListener(this._onTwitterStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
+    console.log("TwitterSignInProcess ---- UN mount ");
     this.twitterStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   _onTwitterStoreChange () {
+    console.log("TwitterSignInProcess _onTwitterStoreChange() AAAAAAAAAAAAA");
     if( TwitterStore.get().twitter_sign_in_found ) {
       console.log("TwitterSignInProcess _onTwitterStoreChange() TwitterStore.get().twitter_sign_in_found DID DID DID succeed ");
       this.setState({
@@ -51,6 +55,8 @@ export default class TwitterSignInProcess extends Component {
   }
 
   _onVoterStoreChange () {
+    console.log("TwitterSignInProcess _onVoterStoreChange() AAAAAAAAAAAAA");
+
     let voter = VoterStore.getVoter();
     if( voter ) {
       console.log("TwitterSignInProcess _onVoterStoreChange() voter =  " + voter);
@@ -65,52 +71,34 @@ export default class TwitterSignInProcess extends Component {
 
 
   cancelMergeFunction () {
-    browserHistory.push({
-      pathname: "/more/network",
-      state: {
-      }
-    });
+    // browserHistory.push({
+    //   pathname: "/more/network",
+    //   state: {
+    //   }
+    // });
     // message: "You have chosen to NOT merge your two accounts.",
     // message_type: "success"
   }
 
   voterMergeTwoAccountsByTwitterKey (twitter_secret_key, voter_has_data_to_preserve = true) {
     VoterActions.voterMergeTwoAccountsByTwitterKey(twitter_secret_key);
-      Actions.ballot({
-        sign_in_message: "You have successfully signed in with Twitter.",
-        sign_in_message_type: "success"
-      });
-
-    /* Sept 28, 2017: Postpone dealing with this logic, and just go to ballot with a message
-    if (voter_has_data_to_preserve) {
-      browserHistory.push({
-        pathname: "/more/network",
-        state: {
-          message: "Your accounts have been merged.",
-          message_type: "success"
-        }
-      });
-    } else {
-      browserHistory.push({
-        pathname: "/ballot",
-        state: {
-          message: "You have successfully signed in with Twitter.",
-          message_type: "success"
-        }
-      });
-    }
-    */
+    console.log("RNRF twitterSignInProcess  Actions.ballot({");
+    Actions.ballot({
+      came_from: 'TwitterSignInProcess voterMergeTwo',
+      sign_in_message: 'You have successfully signed in with Twitter.',
+      sign_in_message_type: 'success',
+    });
   }
 
   voterTwitterSaveToCurrentAccount () {
     VoterActions.voterTwitterSaveToCurrentAccount();
-    browserHistory.push({
-      pathname: "/more/network",
-      state: {
-        message: "You have successfully signed in with Twitter.",
-        message_type: "success"
-      }
-    });
+    // browserHistory.push({
+    //   pathname: "/more/network",
+    //   state: {
+    //     message: "You have successfully signed in with Twitter.",
+    //     message_type: "success"
+    //   }
+    // });
     if (VoterStore.getVoterPhotoUrlMedium().length === 0) {
       // This only fires once, for brand new users on their very first login
       VoterActions.voterRetrieve();
@@ -128,6 +116,12 @@ export default class TwitterSignInProcess extends Component {
   }
 
   render () {
+    if ( Actions.currentScene !== "twitterSignInProcess") {
+      console.log("TwitterSignInProcess =-=-=-=-=-=-=-=-=-= render () when NOT CURRENT, scene  = " + Actions.currentScene);
+      return null;
+    }
+    console.log("TwitterSignInProcess =================== render (), scene = " + Actions.currentScene);
+
     let {twitter_auth_response, yes_please_merge_accounts} = this.state;
 
     // Wait until twitterSignInRetrieve promise is resolved, and twitter_auth_respose is populated
@@ -137,19 +131,29 @@ export default class TwitterSignInProcess extends Component {
       !twitter_auth_response.twitter_retrieve_attempted ) {
       return <LoadingWheel />;
     }
+
+    if( twitter_auth_response && twitter_auth_response.twitter_sign_in_verified ) {
+      console.log("RNRF twitterSignInProcess, twitter_auth_response && twitter_auth_response.twitter_sign_in_verified so Actions.ballot(with param) then LoadingWheel");
+      Actions.signIn({
+        came_from: 'TwitterSignInProcess render',
+        forward_to_ballot: true
+      });
+      return <LoadingWheel />;
+    }
+
     console.log("=== Passed initial gate ===");
     console.log("twitter_auth_response:", twitter_auth_response);
     let { twitter_secret_key } = twitter_auth_response;
 
     if (twitter_auth_response.twitter_sign_in_failed) {
       // console.log("Twitter sign in failed - push to /more/sign_in");
-      browserHistory.push({
-        pathname: "/more/sign_in",
-        state: {
-          message: "Twitter sign in failed. Please try again.",
-          message_type: "success"
-        }
-      });
+      // browserHistory.push({
+      //   pathname: "/more/sign_in",
+      //   state: {
+      //     message: "Twitter sign in failed. Please try again.",
+      //     message_type: "success"
+      //   }
+      // });
       return <LoadingWheel />;
     }
 
@@ -165,13 +169,13 @@ export default class TwitterSignInProcess extends Component {
     // If twitter_sign_in_found NOT True, go back to the sign in page to try again
     if (!twitter_auth_response.twitter_sign_in_found) {
       // console.log("twitter_auth_response.twitter_sign_in_found", twitter_auth_response.twitter_sign_in_found);
-      browserHistory.push({
-        pathname: "/more/sign_in",
-        state: {
-          message: "Twitter authentication not found. Please try again.",
-          message_type: "warning"
-        }
-      });
+      // browserHistory.push({
+      //   pathname: "/more/sign_in",
+      //   state: {
+      //     message: "Twitter authentication not found. Please try again.",
+      //     message_type: "warning"
+      //   }
+      // });
       return <LoadingWheel />;
     }
 

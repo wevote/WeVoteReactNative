@@ -10,16 +10,17 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
-import { browserHistory } from "react-router-native";
+import { Actions } from 'react-native-router-flux';
 import LoadingWheel from "../../components/LoadingWheel";
 import TwitterSignIn from "./TwitterSignIn";
 import VoterActions from "../../actions/VoterActions";
-import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
 import VoterConstants from "../../constants/VoterConstants";
 import HeaderTitle from "../../components/Header/Header"
 import styles from "../BaseStyles"
+//import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
+//import { browserHistory } from "react-router-native";
 //import Helmet from "react-helmet";
 //import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 //import FacebookActions from "../../actions/FacebookActions";
@@ -29,6 +30,8 @@ import styles from "../BaseStyles"
 
 const debug_mode = false;
 const delay_before_user_name_update_api_call = 1200;
+
+
 export default class SignIn extends Component {
 
   constructor (props) {
@@ -49,8 +52,19 @@ export default class SignIn extends Component {
     this.updateVoterName = this.updateVoterName.bind(this);
   }
 
-  componentDidMount () {
-    //console.log("SignIn componentDidMount");
+  static onEnter = () => {
+    console.log("RNRF onEnter to SignIn: currentScene = " + Actions.currentScene);
+  };
+
+  static onExit = () => {
+    console.log("RNRF onExit from SignIn: currentScene = " + Actions.currentScene);
+  };
+
+
+  // Doesn't work in react-native? // componentDidMount () {
+  componentWillMount () {
+    console.log("SignIn ++++ MOUNT");
+
     VoterActions.voterRetrieve();
     this._onVoterStoreChange();
     //this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
@@ -58,6 +72,7 @@ export default class SignIn extends Component {
   }
 
   componentWillUnmount () {
+    console.log("SignIn ---- UN mount");
     //this.facebookListener.remove();
     this.voterStoreListener.remove();
     this.timer = null;
@@ -150,8 +165,27 @@ export default class SignIn extends Component {
 
 
   render () {
+    if ( Actions.currentScene !== "signIn") {
+      console.log("SignIn =-=-=-=-=-=-=-=-=-= render () when NOT CURRENT, scene  = " + Actions.currentScene);
+      return null;
+    }
+    console.log("SignIn =================== render (), scene = " + Actions.currentScene);
+
+    /*10/9/17 Steve, My theory on this react-native-router-flux (RNRF) work around:
+    You can navigate around in the  Stack Container while doing the sign-in Actions, but to go to the other tab (ballot)
+    you need to be in the signIn tab component.  If someone finds a simpler way to do this, please change over to your
+    simpler way */
+
+    const forward = this.props.forward_to_ballot || 'No Data';
+    if( forward === true ) {
+      console.log("RNRF SignIn received this.props.forward_to_ballot = " + this.props.forward_to_ballot);
+      console.log("RNRF SignIn  Actions.ballot(}");
+      Actions.ballot();
+      return <LoadingWheel />;
+    }
+
     if (!this.state.voter){
-        return LoadingWheel;
+      return <LoadingWheel />;
     }
 
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
@@ -277,7 +311,10 @@ export default class SignIn extends Component {
               </View>:
               null
             }
+      {/*
+        // October 3, 2017: Dale says don't need Sign In With Email for now
         <VoterEmailAddressEntry />
+        */}
         </View>
       </View>
     );

@@ -14,7 +14,8 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
-import { styles } from "../BaseStyles";
+import styles from "../BaseStyles";
+import { Actions } from 'react-native-router-flux';
 import HeaderTitle from "../../components/Header/Header"
 import { browserHistory, Link } from "react-router-native";
 import BallotActions from "../../actions/BallotActions";
@@ -81,7 +82,21 @@ export default class Ballot extends Component {
     this._toggleBallotSummaryModal = this._toggleBallotSummaryModal.bind(this);
   }
 
-  componentDidMount () {
+  static staticSingletonVisibleScene = true;  // An experiment for possibly suppressing too many renders when this tab is not displayed
+
+  static onEnter = () => {
+    console.log("RNRF onEnter to Ballot: currentScene = " + Actions.currentScene);
+    staticSingletonVisibleScene = true;
+  };
+
+  static onExit = () => {
+    console.log("RNRF onExit from Ballot: currentScene = " + Actions.currentScene);
+    staticSingletonVisibleScene = false;
+  };
+
+  // componentDidMount ()  Doesn't work in react-native?
+  componentWillMount () {
+    console.log("Ballot ++++ MOUNT");
     this.setState({mounted: true});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
       browserHistory.push("settings/location");
@@ -106,8 +121,10 @@ export default class Ballot extends Component {
   }
 
   componentWillUnmount (){
+    console.log("Ballot ---- UN mount ");
     this.setState({mounted: false});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){
+      console.log('VERY STRANGE do not remove listeners if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false)')
       // No ballot found
     } else {
       this.ballotStoreListener.remove();
@@ -288,12 +305,16 @@ export default class Ballot extends Component {
     }
   }
 
-  render () {
-    if (!this.state.mounted) {
-        return null;
-    }
+  // Test code, feel free to delete if you are working on adding features to this class
+  doSomething () {
+    console.log("pressed: " + Ballot.steveCount++);
+  }
 
-    // HACK 9/28/17 !!!!!   let ballot = this.state.ballot;
+  render () {
+    console.log("Ballot.js =================== render (), scene = " + Actions.currentScene);
+
+    // HACK 9/28/17 !!!!! This was temporarily removed to ease early iOS debug, feel free to add this back in.
+    // let ballot = this.state.ballot;
     let ballot = false;
     // End HACK
     let text_for_map_search = VoterStore.getTextForMapSearch();
@@ -311,6 +332,13 @@ export default class Ballot extends Component {
               Your ballot could not be found. Please change your address.
               {sign_in_message}
             </Text>
+
+            {/* This is a test button, October 2017, anyone working on getting this page going should feel free to delete it */}
+            <TouchableOpacity style = {styles.button} onPress={this.doSomething.bind(this)}>
+              <Text style = {styles.buttonText}>Test Button</Text>
+            </TouchableOpacity>
+            {/* End of test button, October 2017 */}
+
           </View>
         </View>;
       } else {
