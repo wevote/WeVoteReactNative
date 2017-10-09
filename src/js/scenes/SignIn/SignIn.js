@@ -1,22 +1,19 @@
 import React, { Component } from "react";
 import {
-  StyleSheet,
   Switch,
-  ScrollView,
   Text,
   View,
   TouchableOpacity,
   TextInput,
   Dimensions,
-  Platform,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import LoadingWheel from "../../components/LoadingWheel";
 import TwitterSignIn from "./TwitterSignIn";
 import VoterActions from "../../actions/VoterActions";
+import VoterConstants from "../../constants/VoterConstants";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
-import VoterConstants from "../../constants/VoterConstants";
 import HeaderTitle from "../../components/Header/Header"
 import styles from "../BaseStyles"
 //import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
@@ -28,7 +25,7 @@ import styles from "../BaseStyles"
 //import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 //import TwitterActions from "../../actions/TwitterActions";
 
-const debug_mode = false;
+
 const delay_before_user_name_update_api_call = 1200;
 
 
@@ -54,8 +51,8 @@ export default class SignIn extends Component {
 
   static onEnter = () => {
     console.log("RNRF onEnter to SignIn: currentScene = " + Actions.currentScene);
-    // Actions.refresh({param1: 'hello', param2: 'world'});
-    // Actions.refs.SignIn.forceUpdate();
+    Actions.refresh({dummy: 'hello'});  // triggers componentWillReceiveProps
+    // Actions.refs.signIn.forceUpdate();
   };
 
   static onExit = () => {
@@ -66,7 +63,7 @@ export default class SignIn extends Component {
     // October 9, 2017: This is hacky, we need a refresh when we come back from the ballot tab, not sure why.
     if( nextProps.came_from === "ballot") {
       console.log("RNRF componentWillReceiveProps, forcing update : currentScene = " + Actions.currentScene);
-      this.forceUpdate()
+      this.forceUpdate();
     }
   }
 
@@ -200,12 +197,12 @@ export default class SignIn extends Component {
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
     if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
       console.log("SignIn.jsx facebook_retrieve_attempted");
-      browserHistory.push("/facebook_sign_in");
+      // browserHistory.push("/facebook_sign_in");
       // return <Text>SignIn.jsx facebook_retrieve_attempted</Text>;
       return LoadingWheel;
     }
 
-    var {height, width} = Dimensions.get('window');
+    let {width} = Dimensions.get('window');
     let page_title = "Sign In - We Vote";
     let your_account_title = "Your Account";
     let your_account_explanation = "";

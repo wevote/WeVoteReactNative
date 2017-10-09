@@ -1,23 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import {
-  StyleSheet,
-  Switch,
-  ScrollView,
   Text,
-  Modal,
-  Slider,
-  Button,
   View,
   Image,
   TouchableOpacity,
-  TextInput,
-  Dimensions,
-  Platform,
 } from 'react-native';
 import styles from "../BaseStyles";
 import { Actions } from 'react-native-router-flux';
 import HeaderTitle from "../../components/Header/Header"
-import { browserHistory, Link } from "react-router-native";
 import BallotActions from "../../actions/BallotActions";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
@@ -32,6 +22,7 @@ import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
+//import { browserHistory, Link } from "react-router-native";
 //import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 //import AddressBox from "../../components/AddressBox";
 //import BallotElectionList from "../../components/Ballot/BallotElectionList";
@@ -82,17 +73,14 @@ export default class Ballot extends Component {
     this._toggleBallotSummaryModal = this._toggleBallotSummaryModal.bind(this);
   }
 
-  static staticSingletonVisibleScene = true;  // An experiment for possibly suppressing too many renders when this tab is not displayed
 
   static onEnter = () => {
     console.log("RNRF onEnter to Ballot: currentScene = " + Actions.currentScene);
-    staticSingletonVisibleScene = true;
   };
 
   static onExit = () => {
     console.log("RNRF onExit from Ballot: currentScene = " + Actions.currentScene);
-    Actions.refresh({came_from: 'ballot'})
-    staticSingletonVisibleScene = false;
+    Actions.refresh({came_from: 'ballot', forward_to_ballot: false})
   };
 
   // componentDidMount ()  Doesn't work in react-native?
@@ -307,6 +295,7 @@ export default class Ballot extends Component {
   }
 
   // Test code, feel free to delete if you are working on adding features to this class
+  static steveCount = 0;
   doSomething () {
     console.log("pressed: " + Ballot.steveCount++);
   }
