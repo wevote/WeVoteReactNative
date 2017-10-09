@@ -102,12 +102,6 @@ In the upper left hand corner of the dialog, press the '+' and select Gradle
 Since we're using external packages like `react-native-elements`, some dependency issues may arise. The work-around for this is to identify which dependencies are required by doing `npm install` and then adding the missing dependencies by `npm install --save <pkg_name>@<pkg_version>`
 
 
----
-
-
-Next: [Working with WeVoteReactNative Day-to-Day](../working/README_WORKING_WITH_REACT_NATIVE.md)
-
-[Go back to Readme Home](../../README.md)
 ****
 
 ## General note about node_modules and manual fixes that we had to make to them
@@ -120,3 +114,9 @@ The problem with starting from scratch is (unfortunately) other work arounds wil
 editing the source in these downloaded modules, and removing all, will end up with all those edits being lost.
 Eventually we will get to stability with react-native and other modules that include ObjectiveC and Java, but we are
 not there yet.
+
+---
+
+Next: [Working with WeVoteReactNative Day-to-Day](../working/README_WORKING_WITH_REACT_NATIVE.md)
+
+[Go back to Readme Home](../../README.md)
