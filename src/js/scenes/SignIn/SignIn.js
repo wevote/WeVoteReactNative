@@ -54,12 +54,21 @@ export default class SignIn extends Component {
 
   static onEnter = () => {
     console.log("RNRF onEnter to SignIn: currentScene = " + Actions.currentScene);
+    // Actions.refresh({param1: 'hello', param2: 'world'});
+    // Actions.refs.SignIn.forceUpdate();
   };
 
   static onExit = () => {
     console.log("RNRF onExit from SignIn: currentScene = " + Actions.currentScene);
   };
 
+  componentWillReceiveProps(nextProps) {
+    // October 9, 2017: This is hacky, we need a refresh when we come back from the ballot tab, not sure why.
+    if( nextProps.came_from === "ballot") {
+      console.log("RNRF componentWillReceiveProps, forcing update : currentScene = " + Actions.currentScene);
+      this.forceUpdate()
+    }
+  }
 
   // Doesn't work in react-native? // componentDidMount () {
   componentWillMount () {
@@ -180,7 +189,7 @@ export default class SignIn extends Component {
     if( forward === true ) {
       console.log("RNRF SignIn received this.props.forward_to_ballot = " + this.props.forward_to_ballot);
       console.log("RNRF SignIn  Actions.ballot(}");
-      Actions.ballot();
+      Actions.ballot({came_from: 'signIn'});
       return <LoadingWheel />;
     }
 

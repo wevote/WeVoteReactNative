@@ -91,6 +91,7 @@ export default class Ballot extends Component {
 
   static onExit = () => {
     console.log("RNRF onExit from Ballot: currentScene = " + Actions.currentScene);
+    Actions.refresh({came_from: 'ballot'})
     staticSingletonVisibleScene = false;
   };
 

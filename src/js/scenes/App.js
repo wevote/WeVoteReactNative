@@ -28,6 +28,7 @@ const App = () => {
         <Scene
           key="tabbar"
           tabs={true}
+          tabBarPosition="top"
           tabBarStyle={{ backgroundColor: '#515151', }}>
           {/* Stack Container for Signing In */}
           <Scene key="ballot"
