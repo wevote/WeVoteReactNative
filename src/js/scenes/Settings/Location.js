@@ -14,8 +14,20 @@ export default class Location extends Component {
     this.state = {};
   }
 
+  static onEnter = () => {
+    console.log("RNRF onEnter to location: currentScene = " + Actions.currentScene);
+  };
+
+  static onExit = () => {
+    console.log("RNRF onExit from location: currentScene = " + Actions.currentScene);
+    Actions.refresh({came_from: 'location', forward_to_ballot: false})
+  };
+
+
   render () {
     // console.log("Settings/Location");
+    console.log("Location.js =================== render (), scene = " + Actions.currentScene);
+
     return <View>
       /*<BrowserPushMessage incomingProps={this.props} />*/
       <Text>

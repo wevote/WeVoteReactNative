@@ -15,7 +15,7 @@ import VoterConstants from "../../constants/VoterConstants";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
 import HeaderTitle from "../../components/Header/Header"
-import styles from "../BaseStyles"
+import styles from "../../stylesheets/BaseStyles"
 //import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 //import { browserHistory } from "react-router-native";
 //import Helmet from "react-helmet";

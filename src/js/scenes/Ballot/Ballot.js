@@ -5,7 +5,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import styles from "../BaseStyles";
+import styles from "../../stylesheets/BaseStyles";
 import { Actions } from 'react-native-router-flux';
 import HeaderTitle from "../../components/Header/Header"
 import BallotActions from "../../actions/BallotActions";
@@ -22,6 +22,7 @@ import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
+import SelectAddressModal from "../../components/Ballot/SelectAddressModal";
 //import { browserHistory, Link } from "react-router-native";
 //import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 //import AddressBox from "../../components/AddressBox";
@@ -88,7 +89,10 @@ export default class Ballot extends Component {
     console.log("Ballot ++++ MOUNT");
     this.setState({mounted: true});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
-      browserHistory.push("settings/location");
+      console.log("RNRF Ballot had no voter so called  Actions.location()");
+
+      Actions.location({came_from: 'ballot'});
+      //browserHistory.push("settings/location");
     } else {
       let ballot = this.getBallot(this.props);
       if (ballot !== undefined) {
@@ -99,13 +103,14 @@ export default class Ballot extends Component {
       this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
       // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
       // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
-      SupportActions.voterAllPositionsRetrieve();
-      SupportActions.positionsCountForAllBallotItems();
-      BallotActions.voterBallotListRetrieve();
       this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
       this.supportStoreListener = SupportStore.addListener(this._onBallotStoreChange.bind(this));
       this._onVoterStoreChange(); // We call this to properly set showBallotIntroModal
       this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+      VoterActions.voterRetrieve();  // New October 9, 2017
+      SupportActions.voterAllPositionsRetrieve();
+      SupportActions.positionsCountForAllBallotItems();
+      BallotActions.voterBallotListRetrieve();
     }
   }
 
@@ -199,6 +204,7 @@ export default class Ballot extends Component {
       } else {
         //let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
         let ballot_type = "all";
+        // console.log("ballot = " + this.getBallot(this.props))
         this.setState({ballot: this.getBallot(this.props), ballot_type: ballot_type});
       }
       this.setState({ballotElectionList: BallotStore.ballotList()});
@@ -329,6 +335,7 @@ export default class Ballot extends Component {
             </TouchableOpacity>
             {/* End of test button, October 2017 */}
 
+
           </View>
         </View>;
       } else {
@@ -355,8 +362,8 @@ export default class Ballot extends Component {
     const emptyBallotButton = this.getFilterType() !== "none" && !missing_address ?
         <TouchableOpacity onPress={browserHistory.push('/ballot')}>
           <Text style = {styles.buttonText}>View Full Ballot</Text>
-        </TouchableOpacity> :
-        <Link to="/settings/location">Enter a Different Address</Link>;
+        </TouchableOpacity> : null;
+        //<Link to="/settings/location">Enter a Different Address</Link>;
         /*<TouchableOpacity onPress={browserHistory.push('/settings/location')}>
           <Text style = {styles.buttonText}>Enter a Different Address</Text>
         </TouchableOpacity>;*/

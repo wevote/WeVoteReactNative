@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Platform } from 'react-native';
+import styles from "../../stylesheets/BaseStyles"
 import { $ajax_twitter_sign_in } from "../../utils/service";
 import {StyleSheet, Text, View, TouchableOpacity, Linking} from 'react-native';
 import {Actions} from "react-native-router-flux";
@@ -183,21 +184,3 @@ export default class TwitterSignIn extends Component {
     </TouchableOpacity>;
   }
 }
-
-var styles = StyleSheet.create({
-  buttonText: {
-    fontSize: 18,
-    color: 'white',
-    alignSelf: 'center'
-  },
-  button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'baseline',
-    justifyContent: 'center'
-  },
-});

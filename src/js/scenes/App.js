@@ -3,6 +3,7 @@ import { Text } from 'react-native';
 import { Router, Scene, Stack } from 'react-native-router-flux';
 
 import Ballot from './Ballot/Ballot';
+import Location from './Settings/Location';
 import SignIn from './SignIn/SignIn';
 import TwitterSignInProcess from "./SignIn/TwitterSignInProcess";
 import TwitterSignIn from "./SignIn/TwitterSignIn";
@@ -30,12 +31,21 @@ const App = () => {
           tabs={true}
           tabBarPosition="top"
           tabBarStyle={{ backgroundColor: '#515151', }}>
-          {/* Stack Container for Signing In */}
-          <Scene key="ballot"
+          {/* Tab */}
+          <Stack key="ballot_1"
                  hideNavBar
                  tabBarLabel={"Ballot"}
-                 icon={TabIcon}
-                 component={Ballot} />
+                 icon={TabIcon} >
+
+            <Scene key="ballot"
+                   component={Ballot}
+                   type='replace'
+                   initial />
+            <Scene key ="location"
+                   component={Location}
+                   type='replace' />
+          </Stack>
+          {/* Tab */}
           <Stack key="signin_1"
                  tabBarLabel={"Sign In"}
                  icon={TabIcon}
