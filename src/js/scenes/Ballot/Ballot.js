@@ -297,7 +297,7 @@ export default class Ballot extends Component {
   // Test code, feel free to delete if you are working on adding features to this class
   static steveCount = 0;
   doSomething () {
-    console.log("pressed: " + Ballot.steveCount++);
+    console.log("pressed: " + ++Ballot.steveCount);
   }
 
   render () {
