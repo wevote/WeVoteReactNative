@@ -1,12 +1,13 @@
 /* global google */
 import React, { Component, PropTypes } from "react";
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import {Actions} from "react-native-router-flux";
 import { FormInput } from 'react-native-elements'
-//import { Button } from "react-bootstrap";
-//import { browserHistory } from "react-router";
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
 import VoterStore from "../stores/VoterStore";
+//import { Button } from "react-bootstrap";
+//import { browserHistory } from "react-router";
 
 export default class AddressBox extends Component {
   static propTypes = {
@@ -27,15 +28,16 @@ export default class AddressBox extends Component {
   }
 
   componentDidMount () {
-    this.setState({ voter_address: VoterStore.getAddress() });
+    this.setState({ voter_address: VoterStore.getAddressObject() });
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    let addressAutocomplete = new google.maps.places.Autocomplete(this.refs.autocomplete);
-    this.googleAutocompleteListener = addressAutocomplete.addListener("place_changed", this._placeChanged.bind(this, addressAutocomplete));
+    // October 10, 2017:  We do want google autocomplete if possible in native
+    // let addressAutocomplete = new google.maps.places.Autocomplete(this.refs.autocomplete);
+    // this.googleAutocompleteListener = addressAutocomplete.addListener("place_changed", this._placeChanged.bind(this, addressAutocomplete));
   }
 
   componentWillUnmount (){
     this.voterStoreListener.remove();
-    this.googleAutocompleteListener.remove();
+    // this.googleAutocompleteListener.remove();
   }
 
   _onVoterStoreChange () {
@@ -43,9 +45,9 @@ export default class AddressBox extends Component {
        this.props._toggleSelectAddressModal();
      }
     if (this.state.voter_address){
-      browserHistory.push(this.props.saveUrl);
+      Actions.pop();  // browserHistory.push(this.props.saveUrl);
     } else {
-      this.setState({ voter_address: VoterStore.getAddress(), loading: false });
+      this.setState({ voter_address: VoterStore.getAddressObject(), loading: false });
     }
   }
 
@@ -89,15 +91,16 @@ export default class AddressBox extends Component {
 
   render () {
     if (this.state.loading){
-      return LoadingWheel;
+      return <LoadingWheel />;
     }
+    let {width} = Dimensions.get('window');
     return <View>
         <FormInput style={{height: 40, width: width-100, borderColor: 'lightgray', borderWidth: 0.3}}
           onChangeText={(value) => this.setState({voter_address: value})}
           onSubmitEditing={this.voterAddressSave}
           value={this.state.voter_address}
           ref="autocomplete"
-          placeholder="Enter address where you are registered to vote"/>
+          placeholder="Enter address where you are registered to vote" />
 
         <View>
           <TouchableOpacity onPress={this.voterAddressSave}>

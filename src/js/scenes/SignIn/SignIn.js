@@ -1,25 +1,23 @@
 import React, { Component } from "react";
 import {
-  StyleSheet,
   Switch,
-  ScrollView,
   Text,
   View,
   TouchableOpacity,
   TextInput,
   Dimensions,
-  Platform,
 } from 'react-native';
-import { browserHistory } from "react-router-native";
+import { Actions } from 'react-native-router-flux';
 import LoadingWheel from "../../components/LoadingWheel";
 import TwitterSignIn from "./TwitterSignIn";
 import VoterActions from "../../actions/VoterActions";
-import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
+import VoterConstants from "../../constants/VoterConstants";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
-import VoterConstants from "../../constants/VoterConstants";
 import HeaderTitle from "../../components/Header/Header"
-import styles from "../BaseStyles"
+import styles from "../../stylesheets/BaseStyles"
+//import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
+//import { browserHistory } from "react-router-native";
 //import Helmet from "react-helmet";
 //import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 //import FacebookActions from "../../actions/FacebookActions";
@@ -27,8 +25,10 @@ import styles from "../BaseStyles"
 //import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
 //import TwitterActions from "../../actions/TwitterActions";
 
-const debug_mode = false;
+
 const delay_before_user_name_update_api_call = 1200;
+
+
 export default class SignIn extends Component {
 
   constructor (props) {
@@ -49,8 +49,28 @@ export default class SignIn extends Component {
     this.updateVoterName = this.updateVoterName.bind(this);
   }
 
-  componentDidMount () {
-    //console.log("SignIn componentDidMount");
+  static onEnter = () => {
+    console.log("RNRF onEnter to SignIn: currentScene = " + Actions.currentScene);
+    Actions.refresh({dummy: 'hello'});  // triggers componentWillReceiveProps
+    // Actions.refs.signIn.forceUpdate();
+  };
+
+  static onExit = () => {
+    console.log("RNRF onExit from SignIn: currentScene = " + Actions.currentScene);
+  };
+
+  componentWillReceiveProps(nextProps) {
+    // October 9, 2017: This is hacky, we need a refresh when we come back from the ballot tab, not sure why.
+    if( nextProps.came_from === "ballot") {
+      console.log("RNRF componentWillReceiveProps, forcing update : currentScene = " + Actions.currentScene);
+      this.forceUpdate();
+    }
+  }
+
+  // Doesn't work in react-native? // componentDidMount () {
+  componentWillMount () {
+    console.log("SignIn ++++ MOUNT");
+
     VoterActions.voterRetrieve();
     this._onVoterStoreChange();
     //this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
@@ -58,6 +78,7 @@ export default class SignIn extends Component {
   }
 
   componentWillUnmount () {
+    console.log("SignIn ---- UN mount");
     //this.facebookListener.remove();
     this.voterStoreListener.remove();
     this.timer = null;
@@ -150,19 +171,38 @@ export default class SignIn extends Component {
 
 
   render () {
+    if ( Actions.currentScene !== "signIn") {
+      console.log("SignIn =-=-=-=-=-=-=-=-=-= render () when NOT CURRENT, scene  = " + Actions.currentScene);
+      return null;
+    }
+    console.log("SignIn =================== render (), scene = " + Actions.currentScene);
+
+    /*10/9/17 Steve, My theory on this react-native-router-flux (RNRF) work around:
+    You can navigate around in the  Stack Container while doing the sign-in Actions, but to go to the other tab (ballot)
+    you need to be in the signIn tab component.  If someone finds a simpler way to do this, please change over to your
+    simpler way */
+
+    const forward = this.props.forward_to_ballot || 'No Data';
+    if( forward === true ) {
+      console.log("RNRF SignIn received this.props.forward_to_ballot = " + this.props.forward_to_ballot);
+      console.log("RNRF SignIn  Actions.ballot(}");
+      Actions.ballot({came_from: 'signIn'});
+      return <LoadingWheel />;
+    }
+
     if (!this.state.voter){
-        return LoadingWheel;
+      return <LoadingWheel />;
     }
 
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
     if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
       console.log("SignIn.jsx facebook_retrieve_attempted");
-      browserHistory.push("/facebook_sign_in");
+      // browserHistory.push("/facebook_sign_in");
       // return <Text>SignIn.jsx facebook_retrieve_attempted</Text>;
       return LoadingWheel;
     }
 
-    var {height, width} = Dimensions.get('window');
+    let {width} = Dimensions.get('window');
     let page_title = "Sign In - We Vote";
     let your_account_title = "Your Account";
     let your_account_explanation = "";
@@ -277,7 +317,10 @@ export default class SignIn extends Component {
               </View>:
               null
             }
+      {/*
+        // October 3, 2017: Dale says don't need Sign In With Email for now
         <VoterEmailAddressEntry />
+        */}
         </View>
       </View>
     );

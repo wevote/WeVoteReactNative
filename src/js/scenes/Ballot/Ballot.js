@@ -1,22 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import {
-  StyleSheet,
-  Switch,
-  ScrollView,
   Text,
-  Modal,
-  Slider,
-  Button,
   View,
   Image,
   TouchableOpacity,
-  TextInput,
-  Dimensions,
-  Platform,
 } from 'react-native';
-import { styles } from "../BaseStyles";
+import styles from "../../stylesheets/BaseStyles";
+import { Actions } from 'react-native-router-flux';
 import HeaderTitle from "../../components/Header/Header"
-import { browserHistory, Link } from "react-router-native";
 import BallotActions from "../../actions/BallotActions";
 import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
@@ -31,6 +22,8 @@ import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
+import SelectAddressModal from "../../components/Ballot/SelectAddressModal";
+//import { browserHistory, Link } from "react-router-native";
 //import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 //import AddressBox from "../../components/AddressBox";
 //import BallotElectionList from "../../components/Ballot/BallotElectionList";
@@ -81,10 +74,25 @@ export default class Ballot extends Component {
     this._toggleBallotSummaryModal = this._toggleBallotSummaryModal.bind(this);
   }
 
-  componentDidMount () {
+
+  static onEnter = () => {
+    console.log("RNRF onEnter to Ballot: currentScene = " + Actions.currentScene);
+  };
+
+  static onExit = () => {
+    console.log("RNRF onExit from Ballot: currentScene = " + Actions.currentScene);
+    Actions.refresh({came_from: 'ballot', forward_to_ballot: false})
+  };
+
+  // componentDidMount ()  Doesn't work in react-native?
+  componentWillMount () {
+    console.log("Ballot ++++ MOUNT");
     this.setState({mounted: true});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
-      browserHistory.push("settings/location");
+      console.log("RNRF Ballot had no voter so called  Actions.location()");
+
+      Actions.location({came_from: 'ballot'});
+      //browserHistory.push("settings/location");
     } else {
       let ballot = this.getBallot(this.props);
       if (ballot !== undefined) {
@@ -95,19 +103,22 @@ export default class Ballot extends Component {
       this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
       // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
       // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
-      SupportActions.voterAllPositionsRetrieve();
-      SupportActions.positionsCountForAllBallotItems();
-      BallotActions.voterBallotListRetrieve();
       this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
       this.supportStoreListener = SupportStore.addListener(this._onBallotStoreChange.bind(this));
       this._onVoterStoreChange(); // We call this to properly set showBallotIntroModal
       this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+      VoterActions.voterRetrieve();  // New October 9, 2017
+      SupportActions.voterAllPositionsRetrieve();
+      SupportActions.positionsCountForAllBallotItems();
+      BallotActions.voterBallotListRetrieve();
     }
   }
 
   componentWillUnmount (){
+    console.log("Ballot ---- UN mount ");
     this.setState({mounted: false});
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){
+      console.log('VERY STRANGE do not remove listeners if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false)')
       // No ballot found
     } else {
       this.ballotStoreListener.remove();
@@ -193,6 +204,7 @@ export default class Ballot extends Component {
       } else {
         //let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
         let ballot_type = "all";
+        // console.log("ballot = " + this.getBallot(this.props))
         this.setState({ballot: this.getBallot(this.props), ballot_type: ballot_type});
       }
       this.setState({ballotElectionList: BallotStore.ballotList()});
@@ -288,12 +300,17 @@ export default class Ballot extends Component {
     }
   }
 
-  render () {
-    if (!this.state.mounted) {
-        return null;
-    }
+  // Test code, feel free to delete if you are working on adding features to this class
+  static steveCount = 0;
+  doSomething () {
+    console.log("pressed: " + ++Ballot.steveCount);
+  }
 
-    // HACK 9/28/17 !!!!!   let ballot = this.state.ballot;
+  render () {
+    console.log("Ballot.js =================== render (), scene = " + Actions.currentScene);
+
+    // HACK 9/28/17 !!!!! This was temporarily removed to ease early iOS debug, feel free to add this back in.
+    // let ballot = this.state.ballot;
     let ballot = false;
     // End HACK
     let text_for_map_search = VoterStore.getTextForMapSearch();
@@ -311,6 +328,14 @@ export default class Ballot extends Component {
               Your ballot could not be found. Please change your address.
               {sign_in_message}
             </Text>
+
+            {/* This is a test button, October 2017, anyone working on getting this page going should feel free to delete it */}
+            <TouchableOpacity style = {styles.button} onPress={this.doSomething.bind(this)}>
+              <Text style = {styles.buttonText}>Test Button</Text>
+            </TouchableOpacity>
+            {/* End of test button, October 2017 */}
+
+
           </View>
         </View>;
       } else {
@@ -337,8 +362,8 @@ export default class Ballot extends Component {
     const emptyBallotButton = this.getFilterType() !== "none" && !missing_address ?
         <TouchableOpacity onPress={browserHistory.push('/ballot')}>
           <Text style = {styles.buttonText}>View Full Ballot</Text>
-        </TouchableOpacity> :
-        <Link to="/settings/location">Enter a Different Address</Link>;
+        </TouchableOpacity> : null;
+        //<Link to="/settings/location">Enter a Different Address</Link>;
         /*<TouchableOpacity onPress={browserHistory.push('/settings/location')}>
           <Text style = {styles.buttonText}>Enter a Different Address</Text>
         </TouchableOpacity>;*/

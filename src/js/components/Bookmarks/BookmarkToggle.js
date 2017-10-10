@@ -27,7 +27,8 @@ export default class BookmarkToggle extends Component {
     this.voterStoreListener.remove();
   }
 
-  componentDidMount (){
+  // componentDidMount ()  Doesn't work in react-native?
+  componentWillMount () {
     this.token = BookmarkStore.addListener(this._onChange.bind(this));
     this._onChange();
 
