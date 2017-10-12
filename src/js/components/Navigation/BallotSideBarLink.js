@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { sentenceCaseString } from "../../utils/textFormat";
 import { Link } from "react-router-native";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";

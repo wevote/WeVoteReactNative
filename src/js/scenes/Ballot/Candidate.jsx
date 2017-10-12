@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateItem from "../../components/Ballot/CandidateItem";
 import CandidateStore from "../../stores/CandidateStore";

@@ -1,5 +1,7 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { Modal, Text, TouchableHighlight, View } from 'react-native';
+import PropTypes from 'prop-types';
+
 // import BallotIntroMission from "./BallotIntroMission";
 import BallotIntroFollowIssues from "./BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "./BallotIntroFollowAdvisers";

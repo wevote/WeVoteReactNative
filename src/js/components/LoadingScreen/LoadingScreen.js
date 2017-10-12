@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
 import {View, Text, StyleSheet, Button} from 'react-native';
+import PropTypes from 'prop-types';
 import globalStyle from '../../../css/styles/style'
 import UserService from '../../../services/UserService'
 import AuthService from '../../../services/AuthService'

@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, ListView } from "react-native";
+import PropTypes from 'prop-types';
 import { Link } from "react-router-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CopyLinkModal from "../../components/Widgets/CopyLinkModal";
