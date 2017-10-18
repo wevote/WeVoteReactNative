@@ -46,7 +46,12 @@
                                openURL:url
                      sourceApplication:@"twitter"
                             annotation:nil];
-  } else{
+  } else if ([url.absoluteString containsString:@"fb1097389196952441"]) {
+    return [OAuthManager handleOpenUrl:application
+                               openURL:url
+                     sourceApplication:@"facebook"
+                            annotation:nil];
+  } else {
     // other callbacks ...
     return NO;
   }

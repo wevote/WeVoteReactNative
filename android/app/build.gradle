@@ -126,6 +126,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fbsdk')
     compile project(':react-native-oauth')
     compile project(':react-native-vector-icons')
     compile project(':react-native-cookies')

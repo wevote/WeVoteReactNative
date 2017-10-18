@@ -1,7 +1,5 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 import BallotActions from "../actions/BallotActions";
-import FacebookActions from "../actions/FacebookActions";
-//import FacebookStore from "../stores/FacebookStore";
 import CookieStore from "./CookieStore";
 import FluxMapStore from "flux/lib/FluxMapStore";
 import FriendActions from "../actions/FriendActions";
@@ -107,7 +105,7 @@ class VoterStore extends FluxMapStore {
       return [];
     }
     let data_list = [];
-    for (var i = 0, len = arr.length; i < len; i++) {
+    for (let i = 0, len = arr.length; i < len; i++) {
       data_list.push( arr[i] );
     }
     return data_list;
@@ -126,12 +124,8 @@ class VoterStore extends FluxMapStore {
   getNotificationSettingsFlagState (flag) {
     // Look in js/Constants/VoterConstants.js for list of flag constant definitions
     let notificationSettingsFlags = this.getState().voter.notification_settings_flags || 0;
-    result = notificationSettingsFlags & flag
-    if (result) {
-        return true;
-    } else {
-        return false;
-    }
+    return notificationSettingsFlags & flag;
+
     // return True if bit specified by the flag is also set
     //  in notificationSettingsFlags (voter.notification_settings_flags)
     // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
@@ -179,7 +173,7 @@ class VoterStore extends FluxMapStore {
 
       case "positionListForVoter":
         if (action.res.show_only_this_election) {
-          var position_list_for_one_election = action.res.position_list;
+          let position_list_for_one_election = action.res.position_list;
           return {
             ...state,
             voter: {
@@ -188,7 +182,7 @@ class VoterStore extends FluxMapStore {
             }
           };
         } else if (action.res.show_all_other_elections) {
-          var position_list_for_all_except_one_election = action.res.position_list;
+          let position_list_for_all_except_one_election = action.res.position_list;
           return {
             ...state,
             voter: {
@@ -197,7 +191,7 @@ class VoterStore extends FluxMapStore {
             }
           };
         } else {
-          var position_list = action.res.position_list;
+          let position_list = action.res.position_list;
           return {
             ...state,
             voter: {
@@ -335,12 +329,6 @@ class VoterStore extends FluxMapStore {
           }
         };
 
-      case "voterPhotoSave":
-        return {
-          ...state,
-          voter: {...state.voter, facebook_profile_image_url_https: action.res.facebook_profile_image_url_https}
-        };
-
       case "voterRetrieve":
         let current_voter_device_id = CookieStore.getItem("voter_device_id");
         if (!action.res.voter_found) {
@@ -358,13 +346,6 @@ class VoterStore extends FluxMapStore {
               CookieStore.setItem("voter_device_id", voter_device_id);
             }
             VoterActions.voterAddressRetrieve(voter_device_id);
-            const url = action.res.facebook_profile_image_url_https;
-            if (action.res.signed_in_facebook && (url === null || url === "")) {
-              const userId = FacebookStore.userId;
-              FacebookActions.getFacebookProfilePicture(userId);
-            }
-          } else {
-              // console.log("voter_device_id not returned by voterRetrieve");
           }
         }
 

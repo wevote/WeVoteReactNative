@@ -65,14 +65,30 @@ Node comes with npm, which lets you install the React Native command line interf
 
 If you get a permission error, try with sudo: `sudo npm install -g react-native-cli`.
 
-### As of September 2017, only a couple of people have setup for iOS, so the following instructions may not be necessary
+### iOS specific setup
  
 
-The installation of these components may have been captured by the
 
-    /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcodeproj 
+Be sure to open **`/Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcworkspace`** each time, if
+you forget the compile will fail, since you won't have referenced the cocopods (a dependency manger, that pulls in some iOS 
+specific libraries.)
+
+Be sure to NOT open ~~`/Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcodeproj`~~ with Xcode, 
+and don't pick one out of the history in the Welcome to Xcode dialog.  The history unfortunately only contains contains 
+references to .xcodeproj files.
+
+
+
+![](../images/Welcome To Xcode.png)
+
+
+And in the "Welcome to Xcode" dialog, don't pick anything from the history (those are all xcodeproj files), you have to
+click "Open another projecxt..." and navigate to the 'WeVoteReactNative.xcworkspace' option.
     
-More about this file later!    
+#### The following may not be necessary for developers who don't need to add libaries that contain ObjectiveC 
+
+The installation of these components may have been captured by the `ios/Podfile` and the `ios/WeVoteReactNative/Info.plist`, 
+until a new volunteer starts working on this, and gets it going from scratch, we won't know for sure.
 
 If you will need to add additional libraries that bridge JavaScript/ObjectiveC, you will need to install cocoapods
 
@@ -82,18 +98,18 @@ Then install Cocoapods Specs
 
     cd ~/.cocoapods/repos 
     git clone https://github.com/CocoaPods/Specs.git master
-    pod setup
     
-Once you are done with that, run react-native link.
-
-    cd /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative
-    ./node_modules/.bin/react-native link react-native-oauth
+    cd ~/MyProjects/WeVoteReactNative/ios
     
-A successful run looks like this (in my case re-running and overwriting the previous Podfile):
+Next run react-native link.  Do not overwrite the source controlled `ios/Podfile`, it has been 
+hand coded and is necessary for authentication to Twitter and Facebook.
 
-    (WebAppEnv)Steves-MacBook-Pro-2017:WeVoteReactNative stevepodell$ 
-    /Users/stevepodell/WebstormProjects/WeVoteReactNative/node_modules/.bin/react-native link react-native-oauth
-    Scanning 523 folders for symlinks in /Users/stevepodell/WebstormProjects/WeVoteReactNative/node_modules (9ms)
+    react-native link react-native-oauth
+    
+A successful run looks like this (in my case re-running the previous Podfile):
+
+    (WebAppEnv)Steves-MacBook-Pro-2017:WeVoteReactNative stevepodell$ react-native link react-native-oauth
+    Scanning 611 folders for symlinks in /Users/stevepodell/WebstormProjects/WeVoteReactNative/node_modules (4ms)
     Preparing to link react-native-firestack for iOS
     Checking CocoaPods...
     CocoaPods already installed
@@ -102,18 +118,49 @@ A successful run looks like this (in my case re-running and overwriting the prev
     Checking Podfile in iOS project (/Users/stevepodell/WebstormProjects/WeVoteReactNative/ios/Podfile)
     
     Found an existing Podfile, Do you want to override it? [N/y]
-    y
-    Adding Podfile to iOS project
-    Installing Pods
+    n
+    Add the following pods:
+    
+    
+    source 'https://github.com/CocoaPods/Specs.git'
+    platform :ios, '8.0'
+    use_frameworks!
+    
+    pod 'DCTAuth', :git => 'https://github.com/danielctull/DCTAuth.git'
+    
+    
+    and run 'pod install' to install OAuth for iOS
+    (WebAppEnv)Steves-MacBook-Pro-2017:WeVoteReactNative stevepodell$ 
+
+Then run `pod install`
+
+
+    (WebAppEnv)Steves-MacBook-Pro-2017:ios stevepodell$ pod install
     Analyzing dependencies
-    Pre-downloading: `DCTAuth` from `https://github.com/danielctull/DCTAuth.git`
+    Fetching podspec for `React` from `../node_modules/react-native`
+    Fetching podspec for `Yoga` from `../node_modules/react-native/ReactCommon/yoga`
+    Fetching podspec for `react-native-fbsdk` from `../node_modules/react-native-fbsdk/ios`
+    Fetching podspec for `react-native-fbsdkcore` from `../node_modules/react-native-fbsdkcore`
+    Fetching podspec for `react-native-fbsdklogin` from `../node_modules/react-native-fbsdklogin`
+    Fetching podspec for `react-native-fbsdkshare` from `../node_modules/react-native-fbsdkshare`
     Downloading dependencies
-    Installing DCTAuth 3.0 (was 3.0)
+    Installing Bolts (1.8.4)
+    Using DCTAuth (3.0)
+    Installing FBSDKCoreKit (4.27.1)
+    Installing FBSDKLoginKit (4.27.1)
+    Installing FBSDKShareKit (4.27.1)
+    Installing React (0.47.2)
+    Installing Yoga (0.47.2.React)
+    Installing react-native-fbsdk (0.6.3)
+    Installing react-native-fbsdkcore (0.0.8)
+    Installing react-native-fbsdklogin (0.0.8)
+    Installing react-native-fbsdkshare (0.0.8)
     Generating Pods project
     Integrating client project
     Sending stats
-    Pod installation complete! There is 1 dependency from the Podfile and 1 total pod installed.
-    (WebAppEnv)Steves-MacBook-Pro-2017:WeVoteReactNative stevepodell$ 
+    Pod installation complete! There are 11 dependencies from the Podfile and 11 total pods installed.
+    (WebAppEnv)Steves-MacBook-Pro-2017:ios stevepodell$ 
+
 
 
 **Clean Build:**

@@ -1,20 +1,25 @@
-# Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+# Hand coded for WeVoteReactNative, do not casually overwrite me
+
+platform :ios, '9.0'
+source 'https://github.com/CocoaPods/Specs.git'
 
 target 'WeVoteReactNative' do
-  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  # use_frameworks!
-
-  # Pods for WeVoteReactNative
-
-  target 'WeVoteReactNativeTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
+  inherit! :search_paths
+  react_native_path = '../node_modules/react-native'
+  pod "Yoga", :path => "#{react_native_path}/ReactCommon/yoga"
+  pod 'React', :subspecs => ['Core', 'RCTImage', 'RCTNetwork', 'RCTText', 'RCTWebSocket'], :path => '../node_modules/react-native'
+  pod 'DCTAuth', :git => 'https://github.com/danielctull/DCTAuth.git'
+  pod 'react-native-fbsdk',      :path => '../node_modules/react-native-fbsdk/ios'
+  pod 'react-native-fbsdkcore',  :path => '../node_modules/react-native-fbsdkcore'
+  pod 'react-native-fbsdklogin', :path => '../node_modules/react-native-fbsdklogin'
+  pod 'react-native-fbsdkshare', :path => '../node_modules/react-native-fbsdkshare'
 end
-source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '8.0'
+
+target 'WeVoteReactNativeTests' do
+  # October 2017, this section may need some rework
+  inherit! :search_paths
+  # Pods for testing
+end
+
 use_frameworks!
 
-pod 'DCTAuth', :git => 'https://github.com/danielctull/DCTAuth.git'
