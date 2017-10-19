@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
+import PropTypes from 'prop-types';
 //import { Modal } from "react-bootstrap";
 import BookmarkStore from "../../stores/BookmarkStore";
 import BookmarkActions from "../../actions/BookmarkActions";

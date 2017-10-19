@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { View, Text } from "react-native";
+import PropTypes from 'prop-types';
 import MeasureItemReadyToVote from "../../components/Ballot/MeasureItemReadyToVote";
 import OfficeItemReadyToVote from "../../components/Ballot/OfficeItemReadyToVote";
 

@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { Modal, Text, TouchableOpacity, View } from 'react-native';
+import PropTypes from 'prop-types';
 import {Actions} from "react-native-router-flux";
 import AddressBox from "../../components/AddressBox";
 import styles from "../../stylesheets/BaseStyles"

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from 'prop-types';
 
 export default class BallotIntroPositionBar extends Component {
   static propTypes = {
@@ -6,7 +7,7 @@ export default class BallotIntroPositionBar extends Component {
     next: PropTypes.func.isRequired,
   };
 
-  constructor (props) {
+  constructor (props) {import PropTypes from 'prop-types';
     super(props);
     this.state = {};
   }

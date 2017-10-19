@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from 'prop-types';
+
 //import { OverlayTrigger, Popover } from "react-bootstrap";
 
 export default class RatingPopover extends Component {

@@ -1,6 +1,7 @@
 /* global google */
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import PropTypes from 'prop-types';
 import {Actions} from "react-native-router-flux";
 import { FormInput } from 'react-native-elements'
 import LoadingWheel from "../components/LoadingWheel";

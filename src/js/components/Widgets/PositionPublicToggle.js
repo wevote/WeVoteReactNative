@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import SupportActions from "../../actions/SupportActions";
 //import { Tooltip, OverlayTrigger } from "react-bootstrap";
 //import ReactBootstrapToggle from "react-bootstrap-toggle";
