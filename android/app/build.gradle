@@ -131,8 +131,15 @@ dependencies {
     compile project(':react-native-vector-icons')
     compile project(':react-native-cookies')
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:appcompat-v7'
     compile 'com.facebook.react:react-native:+'
+
+    // Facebook Android SDK https://github.com/facebook/facebook-android-sdk
+    compile 'com.facebook.android:facebook-core:4.27'
+    compile 'com.facebook.android:facebook-login:4.27'
+    compile 'com.facebook.android:facebook-share:4.27'
+    compile 'com.facebook.android:facebook-android-sdk:4.27'
+
     // From node_modules
     compile 'com.facebook.stetho:stetho:1.5.0'
     compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
