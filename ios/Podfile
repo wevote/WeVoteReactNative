@@ -7,7 +7,16 @@ target 'WeVoteReactNative' do
   inherit! :search_paths
   react_native_path = '../node_modules/react-native'
   pod "Yoga", :path => "#{react_native_path}/ReactCommon/yoga"
-  pod 'React', :subspecs => ['Core', 'RCTImage', 'RCTNetwork', 'RCTText', 'RCTWebSocket'], :path => '../node_modules/react-native'
+  pod 'React', :path => '../node_modules/react-native', :subspecs => [
+    'Core',
+    'CxxBridge'
+    'BatchedBridge',
+    'DevSupport',
+    'RCTImage',
+    'RCTText',
+    'RCTNetwork',
+    'RCTWebSocket',
+  ]
   pod 'DCTAuth', :git => 'https://github.com/danielctull/DCTAuth.git'
   pod 'react-native-fbsdk',      :path => '../node_modules/react-native-fbsdk/ios'
   pod 'react-native-fbsdkcore',  :path => '../node_modules/react-native-fbsdkcore'
