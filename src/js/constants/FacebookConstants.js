@@ -11,6 +11,7 @@ const FacebookConstants = {
     FACEBOOK_LOGGED_OUT: null,
     FACEBOOK_RECEIVED_DATA: null,
     FACEBOOK_SIGN_IN_DISCONNECT: null,
+    FACEBOOK_ACCESS_TOKEN: null,
     IMAGE_UPLOADED: null,
 };
 

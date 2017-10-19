@@ -6,7 +6,7 @@ import Ballot from './Ballot/Ballot';
 import Location from './Settings/Location';
 import SignIn from './SignIn/SignIn';
 import TwitterSignInProcess from "./SignIn/TwitterSignInProcess";
-import TwitterSignIn from "./SignIn/TwitterSignIn";
+import SocialSignIn from "./SignIn/SocialSignIn";
 
 const TabIcon = ({ selected, tabBarLabel }) => {
   return (
@@ -55,8 +55,8 @@ const App = () => {
                    component={SignIn}
                    type='replace'
                    initial />
-            <Scene key="twitterSignIn"
-                   component={TwitterSignIn}
+            <Scene key="socialSignIn"
+                   component={SocialSignIn}
                    type='replace' />
             <Scene key="twitterSignInProcess"
                    component={TwitterSignInProcess}
