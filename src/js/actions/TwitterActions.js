@@ -38,3 +38,5 @@ module.exports = {
   // },
 
 };
+
+export default [];

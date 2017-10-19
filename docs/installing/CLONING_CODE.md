@@ -39,17 +39,8 @@ https://github.com/\<YOUR GITHUB NAME\>/WeVoteReactNative
 
 8.Go paste your keys into http://github.com, under SSH Keys for your account.  
 
-## The fluxbranch
-We started the WeVoteReactNative repository by permanently forking the WeVote/WebApp (browser targeted) repository.
 
-Our 'fluxbranch' git branch was a long-lived branch off of the WeVoteReactNative repository that we used as a source 
-branch, where we worked on code that is being ported to react-native.  
-
-On September 27, 2017 we merged the fluxbranch back into develop, making fluxbranch a stale branch.  **Don't use the
-fluxbranch anymore.**
-
-
-##Other notes:
+## Other notes:
 
 This project has an active Wiki page with some uptodate notes.  Take a look at [ReactNativeWiki](https://github.com/wevote/WeVoteReactNative/wiki)
 

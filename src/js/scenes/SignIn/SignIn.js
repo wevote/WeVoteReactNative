@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import LoadingWheel from "../../components/LoadingWheel";
-import TwitterSignIn from "./TwitterSignIn";
+import SocialSignIn from "./SocialSignIn";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterSessionActions from "../../actions/VoterSessionActions";
@@ -146,18 +146,6 @@ export default class SignIn extends Component {
     }
   }
 
-
-
-  // getFacebookAuthResponse () {
-  //   return {
-  //     accessToken: FacebookStore.accessToken,
-  //     facebookIsLoggedIn: FacebookStore.loggedIn,
-  //     userId: FacebookStore.userId,
-  //     facebookPictureStatus: FacebookStore.facebookPictureStatus,
-  //     facebookPictureUrl: FacebookStore.facebookPictureUrl
-  //   };
-  // }
-
   updateNewsletterOptIn (value) {
       if (value) {
         VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
@@ -233,9 +221,11 @@ export default class SignIn extends Component {
                 {this.state.voter.signed_in_twitter ?
                   null :
                   <View>
-                    <TwitterSignIn signIn />
-                    {/* signOut, may just be temporary for testing -- Sept 2017 */}
-                    <TwitterSignIn signOut buttonText={"Twitter Sign Out"} />
+                    <SocialSignIn signIn authenticator={'twitter'} />
+                    <SocialSignIn signIn authenticator={'facebook'} />
+                    {/* the two signOuts, may just be temporary for testing -- Oct 2017 */}
+                    <SocialSignIn signOut authenticator={'twitter'} buttonText={"Twitter Sign Out"} />
+                    <SocialSignIn signOut authenticator={'facebook'} buttonText={"Facebook Sign Out"} />
                   </View>
                 }
                 {/*&nbsp;*/}

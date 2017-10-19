@@ -26,17 +26,17 @@
 		18B8690D4D744CDD987F09CC /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 501591194E7C43568D74CC56 /* FontAwesome.ttf */; };
 		3BA51843BC0F45479604C4AE /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B37640D78B945F7BAC9E773 /* MaterialIcons.ttf */; };
 		59B214D39ECE45549C0169FB /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4481BB39398A45EDB735F6D3 /* Octicons.ttf */; };
-		5D05FB4B98180F95E3F049E2 /* Pods_WeVoteReactNative.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F8A71884FD5D4538E06356 /* Pods_WeVoteReactNative.framework */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		664998811F6DCE6C00355CC2 /* libOAuthManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66DB23EE1F6C740500B46473 /* libOAuthManager.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		857AACDD787584310D26986E /* Pods_WeVoteReactNative.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E0CC8A1415511963FD6B1C2 /* Pods_WeVoteReactNative.framework */; };
 		8EE1372E118744E38F7D8AAD /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADB1963F48E7410A9A5837BB /* Ionicons.ttf */; };
 		A2FC8C6368F7411AA339BCA7 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DDA35C7F51C44D6A1D6D9CC /* Zocial.ttf */; };
 		B0FA908A76BF480BA2B28482 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F72B98D335584328AFC3737F /* EvilIcons.ttf */; };
 		C064B61E63994D398E3742E7 /* libRNCookieManagerIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFE5EF0EE3F24827A9D9D06C /* libRNCookieManagerIOS.a */; };
 		D1C32387CFC54EADABF11C55 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7862BD180A4040D98407BCDE /* Entypo.ttf */; };
-		D7BAECBE30F037CD1A268C4E /* Pods_WeVoteReactNativeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64160128806E111C1F9DCF4C /* Pods_WeVoteReactNativeTests.framework */; };
 		D9F4A085701F4D23A36E97D3 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 182F251113734F7AACC4FA13 /* libRNVectorIcons.a */; };
+		E965637BE945285CDCFBC91C /* Pods_WeVoteReactNativeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D4A88528FEEF54FE7EA55BB /* Pods_WeVoteReactNativeTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -299,19 +299,20 @@
 		4DDA35C7F51C44D6A1D6D9CC /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		501591194E7C43568D74CC56 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
-		64160128806E111C1F9DCF4C /* Pods_WeVoteReactNativeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeVoteReactNativeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6649987F1F6C789C00355CC2 /* WeVoteReactNative.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = WeVoteReactNative.entitlements; path = WeVoteReactNative/WeVoteReactNative.entitlements; sourceTree = "<group>"; };
 		667FB3B51F717C2600DFC717 /* RNCookieManagerIOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCookieManagerIOS.xcodeproj; path = "../node_modules/react-native-cookies/ios/RNCookieManagerIOS.xcodeproj"; sourceTree = "<group>"; };
 		6B2D63EEA0DF486883AA618F /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
+		6E0CC8A1415511963FD6B1C2 /* Pods_WeVoteReactNative.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeVoteReactNative.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7862BD180A4040D98407BCDE /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		8D4A88528FEEF54FE7EA55BB /* Pods_WeVoteReactNativeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeVoteReactNativeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		92C51DCD1BD2492190DF016C /* libRCTFBSDK.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTFBSDK.a; sourceTree = "<group>"; };
 		99FC874C3011E57A0D1BA3E4 /* Pods-WeVoteReactNative.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeVoteReactNative.release.xcconfig"; path = "Pods/Target Support Files/Pods-WeVoteReactNative/Pods-WeVoteReactNative.release.xcconfig"; sourceTree = "<group>"; };
 		9B37640D78B945F7BAC9E773 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		ADB1963F48E7410A9A5837BB /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		B5B867779507FA23D9026C58 /* Pods-WeVoteReactNative.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeVoteReactNative.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WeVoteReactNative/Pods-WeVoteReactNative.debug.xcconfig"; sourceTree = "<group>"; };
 		C536FB8A0762E4572015BBD2 /* Pods-WeVoteReactNativeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeVoteReactNativeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WeVoteReactNativeTests/Pods-WeVoteReactNativeTests.release.xcconfig"; sourceTree = "<group>"; };
-		C9F8A71884FD5D4538E06356 /* Pods_WeVoteReactNative.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeVoteReactNative.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2A28641A6084E10B96FA3CD /* OAuthManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = OAuthManager.xcodeproj; path = "../node_modules/react-native-oauth/ios/OAuthManager.xcodeproj"; sourceTree = "<group>"; };
 		D7D17B8A51094FE780F2AF8B /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		F72B98D335584328AFC3737F /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -324,7 +325,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
-				D7BAECBE30F037CD1A268C4E /* Pods_WeVoteReactNativeTests.framework in Frameworks */,
+				E965637BE945285CDCFBC91C /* Pods_WeVoteReactNativeTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,7 +347,7 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				D9F4A085701F4D23A36E97D3 /* libRNVectorIcons.a in Frameworks */,
 				C064B61E63994D398E3742E7 /* libRNCookieManagerIOS.a in Frameworks */,
-				5D05FB4B98180F95E3F049E2 /* Pods_WeVoteReactNative.framework in Frameworks */,
+				857AACDD787584310D26986E /* Pods_WeVoteReactNative.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,8 +416,8 @@
 		0C956E24E6E42281F8C6A9B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C9F8A71884FD5D4538E06356 /* Pods_WeVoteReactNative.framework */,
-				64160128806E111C1F9DCF4C /* Pods_WeVoteReactNativeTests.framework */,
+				6E0CC8A1415511963FD6B1C2 /* Pods_WeVoteReactNative.framework */,
+				8D4A88528FEEF54FE7EA55BB /* Pods_WeVoteReactNativeTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -514,6 +515,7 @@
 			children = (
 				182F251113734F7AACC4FA13 /* libRNVectorIcons.a */,
 				FFE5EF0EE3F24827A9D9D06C /* libRNCookieManagerIOS.a */,
+				92C51DCD1BD2492190DF016C /* libRCTFBSDK.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -656,7 +658,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 830;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
@@ -1043,9 +1045,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-WeVoteReactNative/Pods-WeVoteReactNative-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1091,11 +1096,31 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-WeVoteReactNative/Pods-WeVoteReactNative-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/DCTAuth/DCTAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKShareKit/FBSDKShareKit.framework",
+				"${BUILT_PRODUCTS_DIR}/React/React.framework",
+				"${BUILT_PRODUCTS_DIR}/Yoga/yoga.framework",
+				"${BUILT_PRODUCTS_DIR}/react-native-fbsdk/react_native_fbsdk.framework",
+				"${BUILT_PRODUCTS_DIR}/react-native-fbsdkcore/react_native_fbsdkcore.framework",
+				"${BUILT_PRODUCTS_DIR}/react-native-fbsdklogin/react_native_fbsdklogin.framework",
+				"${BUILT_PRODUCTS_DIR}/react-native-fbsdkshare/react_native_fbsdkshare.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DCTAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKShareKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_fbsdk.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_fbsdkcore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_fbsdklogin.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_fbsdkshare.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1173,6 +1198,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-oauth/ios/OAuthManager/**",
+					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 				);
 				INFOPLIST_FILE = WeVoteReactNativeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1181,7 +1207,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
+				MACH_O_TYPE = mh_bundle;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1203,6 +1231,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-oauth/ios/OAuthManager/**",
+					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 				);
 				INFOPLIST_FILE = WeVoteReactNativeTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1211,7 +1240,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
+				MACH_O_TYPE = mh_bundle;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1226,37 +1257,34 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B5B867779507FA23D9026C58 /* Pods-WeVoteReactNative.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = WeVoteReactNative/WeVoteReactNative.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 5W9D9VF3NM;
 				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
-					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
+					"<Multiple",
+					"values>",
 					"$(SRCROOT)/../node_modules/react-native-oauth/ios/OAuthManager",
-					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
-					"$(SRCROOT)/../node_modules/react-native/React/**",
 				);
-				"HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
-					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
-					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
-					"$(SRCROOT)/../node_modules/react-native-oauth/ios/OAuthManager",
-					"$(SRCROOT)/../node_modules/react-native/React/**",
-				);
+				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				INFOPLIST_FILE = WeVoteReactNative/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				NEW_SETTING = "";
 				OTHER_LDFLAGS = (
-					"$(inherited)",
 					"-ObjC",
+					"$(inherited)",
 					"-lc++",
 				);
+				"OTHER_LDFLAGS[arch=*]" = "$(inherited) -ObjC -lc++";
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.WeVoteReactNative;
 				PRODUCT_NAME = WeVoteReactNative;
+				SYSTEM_HEADER_SEARCH_PATHS = "";
+				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = "";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1265,19 +1293,21 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 99FC874C3011E57A0D1BA3E4 /* Pods-WeVoteReactNative.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = WeVoteReactNative/WeVoteReactNative.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5W9D9VF3NM;
 				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
-					"$(SRCROOT)/../node_modules/react-native-cookies/RNCookieManagerIOS",
-					"$(SRCROOT)/../node_modules/react-native/Libraries/LinkingIOS",
+					"<Multiple",
+					"values>",
 					"$(SRCROOT)/../node_modules/react-native-oauth/ios/OAuthManager",
 				);
+				"HEADER_SEARCH_PATHS[arch=*]" = "";
 				INFOPLIST_FILE = WeVoteReactNative/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				NEW_SETTING = "";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1286,6 +1316,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.WeVoteReactNative;
 				PRODUCT_NAME = WeVoteReactNative;
+				SYSTEM_HEADER_SEARCH_PATHS = "";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1328,8 +1360,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				"HEADER_SEARCH_PATHS[arch=*]" = "RNCookieManagerIOS/**";
+				"HEADER_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../node_modules/react-native/React/Base RNCookieManagerIOS/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACH_O_TYPE = mh_execute;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1369,6 +1402,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				"HEADER_SEARCH_PATHS[arch=*]" = "RNCookieManagerIOS/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACH_O_TYPE = mh_execute;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
