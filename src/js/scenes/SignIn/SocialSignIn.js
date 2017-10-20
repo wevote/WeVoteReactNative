@@ -9,6 +9,7 @@ import FacebookActions from "../../actions/FacebookActions";
 import VoterStore from "../../stores/VoterStore";
 
 import FacebookStore from "../../stores/FacebookStore";
+import {AccessToken} from "react-native-fbsdk";
 
 const WebAppConfig = require("../../config");
 const lodash_get = require('lodash.get');
@@ -79,8 +80,6 @@ export default class SocialSignIn extends Component {
     let facebook = FacebookStore.getFacebookAuthResponse();
    }
 
-
-
   componentWillUnmount () {
     console.log("Social Sign In ---- UN mount");
     this.voterStoreListener.remove();
@@ -100,7 +99,7 @@ export default class SocialSignIn extends Component {
 
   socialSignInStart () {
     let authenticator = this.props.authenticator;
-    console.log("Attempting oAuth with \'" + authenticator + "\', callback_url = " );
+    console.log("Attempting oAuth with \'" + authenticator + "\'" );
 
     oauthManager.authorize(authenticator) // Must be 'twitter' or 'facebook' or else
       .then(resp => {
@@ -129,6 +128,25 @@ export default class SocialSignIn extends Component {
               facebook_access_token: accessToken,
               facebook_user_id:      clientID,
             });
+
+            // October 19, 2017
+            // For Android, initialize the Java side AccessToken so that when we get to
+            // ./node_modules/react-native-fbsdk/android/src/main/java/com/facebook/reactnative/androidsdk/FBGraphRequestModule.java
+            // private void setConfig(GraphRequest graphRequest, ReadableMap configMap) and try to set the new
+            // AccessToken, based on the previous one (that you would have gotten if you used the FBSDK to authenticate)
+            // there is a bare bones AccessToken in place to avoid crashing in kind of thoughtless lines like
+            // AccessToken.getCurrentAccessToken().getApplicationId()
+            AccessToken.setCurrentAccessToken({
+              accessToken: accessToken,
+              permissions: [],
+              declinedPermissions: [],
+              applicationID: clientID,
+              accessTokenSource: "FACEBOOK_APPLICATION_NATIVE",
+              userID: clientID,
+              expirationTime: 0,
+              lastRefreshTime: 0,
+            });
+
             FacebookActions.getFacebookData(accessToken);
           }
         } else {
@@ -139,11 +157,10 @@ export default class SocialSignIn extends Component {
         console.log('manager.authorize threw an error: ' + err.toString());
         console.log(err);
       });
-    console.log('after manager.authorize twitter ');
+    console.log('after manager.authorize ' + authenticator);
   }
 
-  // would be to delete the app from your phone, and re-install it.
-  /*
+   /*
   10/4/17: This was meant for debugging, but without it, all we do is a /src/js/actions/VoterSessionActions.js, which
   "signs out" by clearing the voter_device_id, which has the effect of signing out of WeVote (while still having an
    active authentication session with twitter).  The only way to really signout of twitter without this function,
