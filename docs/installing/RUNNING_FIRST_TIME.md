@@ -92,10 +92,20 @@ There are all sorts of issues/solutions in the sheet that will be necessary unti
 [Android Setup from react-native release notes](https://facebook.github.io/react-native/releases/0.45/docs/android-setup.html)
 
 Start up Android Studio
-File Menu, Open, Navigate to your andorid directory in your WeVoteReactNative project and 
+File Menu, Open, Navigate to your android directory in your WeVoteReactNative project and 
 press Ok
 Run your project by opening the Run menu, Edit configurations
 In the upper left hand corner of the dialog, press the '+' and select Gradle
+
+
+### Genymotion
+If you can't get the Android emulator that comes with the Android Studio working, the third-party alternative [Genymotion](https://www.genymotion.com/) works very well.
+Genymotion is a purchased product, but when your Trial period runs out, you can select "Genymotion for personal use" which
+is a free license.  When setting up your run configuration in on the General tab, under "Deployment Target Options",
+select "USB Device" (even though it isn't a USB device).  When about to run, start the OSX
+"Genymotion" application, and press start (after configuring a device of your choice, I used a Google Nexus6, and 
+Android 7.0 Nougat, since I had trouble with 8.0).
+ 
 
 ### Missing requirements
 

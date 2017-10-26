@@ -14,7 +14,7 @@ const TabIcon = ({ selected, tabBarLabel }) => {
   );
 };
 
-/* Some good articles on react-native-router-flux (RNRF)
+/* Some good articles on react-native-router-flux (RNRF) which is based on react-navigation (NOT on react-native-router!)
  https://medium.com/differential/react-native-basics-using-react-native-router-flux-f11e5128aff9
  https://medium.com/the-react-native-log/thousand-ways-to-navigate-in-react-native-f7a1e311a0e8
  https://medium.com/@psak.works/react-navigation-without-redux-887ad8a6b394
@@ -36,7 +36,6 @@ const App = () => {
                  hideNavBar
                  tabBarLabel={"Ballot"}
                  icon={TabIcon} >
-
             <Scene key="ballot"
                    component={Ballot}
                    type='replace'
