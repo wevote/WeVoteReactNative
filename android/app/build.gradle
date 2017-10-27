@@ -125,6 +125,10 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile project(':react-native-fbsdk')
     compile project(':react-native-oauth')
@@ -132,8 +136,7 @@ dependencies {
     compile project(':react-native-cookies')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7'
-    compile 'com.facebook.react:react-native:+'
-
+    compile 'com.facebook.react:react-native:0.47.2'
     // Facebook Android SDK https://github.com/facebook/facebook-android-sdk
     compile 'com.facebook.android:facebook-core:4.27'
     compile 'com.facebook.android:facebook-login:4.27'

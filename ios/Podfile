@@ -1,34 +1,55 @@
 # Hand coded for WeVoteReactNative, do not casually overwrite me
+# I suspect that the Xcode IDE does not respond to changes made here, and definitely does not show any syntax errors in
+# the Podfile.  Be sure to run 'pod install' from the ios directory in a terminal, after making changes to this file.
 
 platform :ios, '9.0'
 source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
+#inherit! :search_paths
 
 target 'WeVoteReactNative' do
-  inherit! :search_paths
-  react_native_path = '../node_modules/react-native'
-  pod "Yoga", :path => "#{react_native_path}/ReactCommon/yoga"
+  pod "Yoga", :path => "../node_modules/react-native/ReactCommon/yoga"
   pod 'React', :path => '../node_modules/react-native', :subspecs => [
     'Core',
-    'CxxBridge'
-    'BatchedBridge',
-    'DevSupport',
-    'RCTImage',
     'RCTText',
     'RCTNetwork',
-    'RCTWebSocket',
+    'CxxBridge',
+    'DevSupport',
+    'RCTImage',
+    'RCTLinkingIOS',
+    'RCTWebSocket'
   ]
+  # React-Native-Oauth dependency
   pod 'DCTAuth', :git => 'https://github.com/danielctull/DCTAuth.git'
+
+  # React-Native dependencies
+  pod 'DoubleConversion', podspec: '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'Folly', podspec: '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'GLog', podspec: '../node_modules/react-native/third-party-podspecs/GLog.podspec'
+
+  # Facebook SDK
   pod 'react-native-fbsdk',      :path => '../node_modules/react-native-fbsdk/ios'
   pod 'react-native-fbsdkcore',  :path => '../node_modules/react-native-fbsdkcore'
   pod 'react-native-fbsdklogin', :path => '../node_modules/react-native-fbsdklogin'
   pod 'react-native-fbsdkshare', :path => '../node_modules/react-native-fbsdkshare'
 end
 
-target 'WeVoteReactNativeTests' do
-  # October 2017, this section may need some rework
-  inherit! :search_paths
-  # Pods for testing
-end
-
-use_frameworks!
-
+# target 'WeVoteReactNativeTests' do
+#   pod "Yoga", :path => "../node_modules/react-native/ReactCommon/yoga"
+#   pod 'React', :path => '../node_modules/react-native', :subspecs => [
+#     'Core',
+#     'RCTText',
+#     'RCTNetwork',
+#     'CxxBridge',
+#     'DevSupport',
+#     'RCTImage',
+#     'RCTLinkingIOS',
+#     'RCTWebSocket',
+#     'RCTAnimation'
+#   ]
+#
+#   # React-Native dependencies
+#   pod 'DoubleConversion', podspec: '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+#   pod 'Folly', podspec: '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+#   pod 'GLog', podspec: '../node_modules/react-native/third-party-podspecs/GLog.podspec'
+# end

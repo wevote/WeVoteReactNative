@@ -27,14 +27,25 @@ export default class SocialSignIn extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      hasMounted: false
     };
   }
 
   componentWillMount () {
-    console.log("Social Sign In ++++ MOUNT");
-    this.initializeOAuthManager();
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this)); // Oct 13, 2017: Not sure this is need here, just to test the listener
+    console.log("Social Sign In ++++ MOUNT, hasMounted = " + this.state.hasMounted);
+    if (!this.state.hasMounted) {
+      this.setState({hasMounted: true});
+    }
+
+    if (oauthManager) {
+      console.log("OAUTH oauthManager already initialized in componentWillMount, not adding potentially duplicate listeners");
+    } else {
+      console.log("OAUTH setting adding listeners in componentWillMount ()");
+
+      this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+      this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this)); // Oct 13, 2017: Not sure this is need here, just to test the listener
+      this.initializeOAuthManager();
+    }
   }
 
   initializeOAuthManager() {
@@ -51,21 +62,26 @@ export default class SocialSignIn extends Component {
       console.log("Missing SOCIAL_AUTH_FACEBOOK_SECRET from src/js/config.js");
     }
 
-    oauthManager = new OAuthManager('WeVoteReactNative');
 
-    oauthManager.configure({
-      twitter: {
-        consumer_key: WebAppConfig.SOCIAL_AUTH_TWITTER_KEY,
-        consumer_secret: WebAppConfig.SOCIAL_AUTH_TWITTER_SECRET,
-        callback_url: (Platform.OS === 'ios') ? "wevotetwitterscheme://twitter_sign_in" : "http://localhost/twitter",
-      },
-      facebook: {
-        client_id:  WebAppConfig.SOCIAL_AUTH_FACEBOOK_KEY,
-        client_secret:  WebAppConfig.SOCIAL_AUTH_FACEBOOK_SECRET,
-        //callback_url: (Platform.OS === 'ios') ? "http://localhost/fb" + WebAppConfig.SOCIAL_AUTH_FACEBOOK_KEY  : "http://localhost/facebook",  //http://localhost:3000/  "://authorize"
-        callback_url: (Platform.OS === 'ios') ? "fb" + WebAppConfig.SOCIAL_AUTH_FACEBOOK_KEY + "://authorize" : "http://localhost/facebook",
-      }
-    });
+    if (oauthManager) {
+      console.log("OAUTH oauthManager already initialized in initializeOAuthManager()")
+    } else {
+      console.log("OAUTH initializing new OAuthManager() in initializeOAuthManager()");
+      oauthManager = new OAuthManager('WeVoteReactNative');
+      oauthManager.configure({
+        twitter: {
+          consumer_key: WebAppConfig.SOCIAL_AUTH_TWITTER_KEY,
+          consumer_secret: WebAppConfig.SOCIAL_AUTH_TWITTER_SECRET,
+          callback_url: (Platform.OS === 'ios') ? "wevotetwitterscheme://twitter_sign_in" : "http://localhost/twitter",
+        },
+        facebook: {
+          client_id: WebAppConfig.SOCIAL_AUTH_FACEBOOK_KEY,
+          client_secret: WebAppConfig.SOCIAL_AUTH_FACEBOOK_SECRET,
+          //callback_url: (Platform.OS === 'ios') ? "http://localhost/fb" + WebAppConfig.SOCIAL_AUTH_FACEBOOK_KEY  : "http://localhost/facebook",  //http://localhost:3000/  "://authorize"
+          callback_url: (Platform.OS === 'ios') ? "fb" + WebAppConfig.SOCIAL_AUTH_FACEBOOK_KEY + "://authorize" : "http://localhost/facebook",
+        }
+      });
+    }
   }
 
   _onVoterStoreChange () {
@@ -82,8 +98,10 @@ export default class SocialSignIn extends Component {
 
   componentWillUnmount () {
     console.log("Social Sign In ---- UN mount");
-    this.voterStoreListener.remove();
-    this.facebookStoreListener.remove();
+    if (this.voterStoreListener)
+      this.voterStoreListener.remove();
+    if (this.facebookStoreListener)
+      this.facebookStoreListener.remove();
   }
 
   didClickSocialSignInButton () {
@@ -108,17 +126,13 @@ export default class SocialSignIn extends Component {
         if (authorized) {
           console.log(authenticator + " oAuth query returned authorized");
           if (this.props.authenticator === 'twitter') {
-            // 10/3/17  Obviously this shouldn't be needed, just one of those Android mysteries, Loadash is the better way to go.
-            let token = (Platform.OS === 'ios') ? lodash_get(resp, "response.credentials.access_token") :
-              resp.response.credentials.access_token;
-            let secret = (Platform.OS === 'ios') ? lodash_get(resp, "response.credentials.access_token_secret") :
-              resp.response.credentials.access_token_secret;
+            let token = lodash_get(resp, "response.credentials.access_token");
+            let secret = lodash_get(resp, "response.credentials.access_token_secret");
             if(!secret)
-              secret = "null secret received in Android";
-            let consumer = (Platform.OS === 'ios') ? lodash_get(resp, "response.credentials.consumerKey"):
-              resp.response.credentials.consumerKey;
+              secret = "null secret received in " + this.props.authenticator;
+            let consumer = lodash_get(resp, "response.credentials.consumerKey");
 
-            TwitterActions.twitterNativeSignInSave(token, secret);
+            TwitterActions.twitterNativeSignInSave(token, secret);  // Save to postgres
             console.log("RNRF SocialSignIn  Actions.twitterSignInProcess({navigated_away: false})");
             Actions.twitterSignInProcess({came_from: 'socialSignIn'});
           } else {
@@ -189,6 +203,8 @@ export default class SocialSignIn extends Component {
       return null;
     }
     console.log("SocialSignIn =================== render (), scene = " + Actions.currentScene);
+    console.log("SocialSignIn =================== render (), this.state.hasMounted = " + this.state.hasMounted);
+
 
     let onPressFunction = null;
     let button_text = null;

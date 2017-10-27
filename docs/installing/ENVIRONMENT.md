@@ -82,8 +82,8 @@ references to .xcodeproj files.
 ![](../images/Welcome To Xcode.png)
 
 
-And in the "Welcome to Xcode" dialog, don't pick anything from the history (those are all xcodeproj files), you have to
-click "Open another projecxt..." and navigate to the 'WeVoteReactNative.xcworkspace' option.
+And in the "Welcome to Xcode" dialog, don't pick anything from the history list (those are all xcodeproj files), you have to
+click "Open another project..." and navigate to the 'WeVoteReactNative.xcworkspace' item (which is actually a directory).
     
 #### The following may not be necessary for developers who don't need to add libaries that contain ObjectiveC 
 
@@ -165,7 +165,7 @@ Then run `pod install`
 
 **Clean Build:**
 
-You probably will need to "Clean Build Folder" to do this in XCode, on the Product menu, hold down the Option button 
+You probably will run into the need to "Clean Build Folder".  To do this in XCode, go to the Product menu, hold down the Option button 
 (on your Mac) and select "Clean Build Folder", after it completes (about 10 seconds), press the triangular
 Run (Play) button do to a full rebuild
 
