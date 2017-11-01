@@ -356,44 +356,44 @@ export default class Ballot extends Component {
     let text_for_map_search = VoterStore.getAddressFromObjectOrTextForMapSearch();
     let sign_in_message =  this.props.sign_in_message_type === 'success' ? this.props.sign_in_message : '';
 
+    if (text_for_map_search.length === 0) {
+      return <View className="ballot">{/*     return from here -------------------------------------------------*/}
+
+        <View className="ballot__header">
+          <HeaderTitle headerText = {'Your Ballot'} />
+
+          <Text>
+            Your ballot could not be found. Please change your address.
+            {sign_in_message}
+          </Text>
+
+          {(Actions.currentScene === 'ballot') ?
+            <SelectAddressModal show={this.state.showSelectAddressModal}
+                                toggleFunction={this._toggleSelectAddressModal} /> : null }
+
+          {/* This is a test button, October 2017, anyone working on getting this page going should feel free to delete it */}
+          <TouchableOpacity style = {styles.button} onPress={this.doSomething.bind(this)}>
+            <Text style = {styles.buttonText}>Test Button</Text>
+          </TouchableOpacity>
+          {/* End of test button, October 2017 */}
+
+        </View>
+      </View>;
+    }
+
     if (!ballot) {
-      if (text_for_map_search.length === 0) {
-        return <View className="ballot">{/*     return from here -------------------------------------------------*/}
+      console.log("ballot render retrieving ballot to Loading Wheel ");
+      BallotActions.voterBallotListRetrieve();
 
-          <View className="ballot__header">
-            <HeaderTitle headerText = {'Your Ballot'} />
-
-            <Text>
-              Your ballot could not be found. Please change your address.
-              {sign_in_message}
-            </Text>
-
-            {(Actions.currentScene === 'ballot') ?
-              <SelectAddressModal show={this.state.showSelectAddressModal}
-                                  toggleFunction={this._toggleSelectAddressModal} /> : null }
-
-            {/* This is a test button, October 2017, anyone working on getting this page going should feel free to delete it */}
-            <TouchableOpacity style = {styles.button} onPress={this.doSomething.bind(this)}>
-              <Text style = {styles.buttonText}>Test Button</Text>
-            </TouchableOpacity>
-            {/* End of test button, October 2017 */}
-
-          </View>
-        </View>;
-      } else {
-        console.log("ballot render retrieving ballot to Loading Wheel ");
-        BallotActions.voterBallotListRetrieve();
-
-        return <LoadingWheel />;
-        {/*<View className="ballot">/!*     return from here -------------------------------------------------*!/*/}
-            {/*<View className="ballot__header">*/}
-              {/*<Text>*/}
-                {/*Your ballot could not be found. Please change your address.*/}
-              {/*</Text>*/}
-              {/*<LoadingWheel />;*/}
-            {/*</View>*/}
-          {/*</View>;*/}
-      }
+      return <LoadingWheel />;
+      {/*<View className="ballot">/!*     return from here -------------------------------------------------*!/*/}
+          {/*<View className="ballot__header">*/}
+            {/*<Text>*/}
+              {/*Your ballot could not be found. Please change your address.*/}
+            {/*</Text>*/}
+            {/*<LoadingWheel />;*/}
+          {/*</View>*/}
+        {/*</View>;*/}
     }
 
     const missing_address = false;
