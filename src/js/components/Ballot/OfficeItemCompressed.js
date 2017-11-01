@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-//import { Link, browserHistory } from "react-router";
-import { Link } from "react-router-native";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import GuideStore from "../../stores/GuideStore";
 import ImageHandler from "../ImageHandler";
@@ -12,6 +10,9 @@ import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
+import ballotStyles from "../../stylesheets/BallotStyles"
+//import { Link } from "react-router-native";
+//import { Link, browserHistory } from "react-router";
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 3;
 
@@ -74,14 +75,14 @@ export default class OfficeItemCompressed extends Component {
       remaining_candidates_to_display_count = this.props.candidate_list.length - NUMBER_OF_CANDIDATES_TO_DISPLAY;
     }
 
-    return <View style={styles.container} className="card-main office-item">
+    return <View style={ballotStyles.container} className="card-main office-item">
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}} className ="card-main__content">
         <View style={{alignSelf: 'flex-start'}} className="u-flex u-stack--sm">
           { this.props.link_to_ballot_item_page ?
             <View style={{flexDirection: 'row'}}>
-              <Link to={officeLink}>
-                <Text style={styles.titleText}> {ballot_item_display_name} </Text>
-              </Link>
+              {/*<Link to={officeLink}>*/}
+                <Text style={ballotStyles.titleText}> {ballot_item_display_name} </Text>
+              {/*</Link>*/}
             </View> :
             <Text> {ballot_item_display_name} </Text>
           }
@@ -102,7 +103,7 @@ export default class OfficeItemCompressed extends Component {
                           ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
                           null }>
               <Image source={{uri: one_candidate.candidate_photo_url_large}} style={{width: 48, height: 48}} />
-              <Text style={styles.titleText} className="card-main__candidate-name u-f4">&nbsp; {one_candidate.ballot_item_display_name} </Text>
+              <Text style={ballotStyles.titleText} className="card-main__candidate-name u-f4">&nbsp; {one_candidate.ballot_item_display_name} </Text>
             </TouchableOpacity>
 
             {/* *** "Positions in your Network" bar OR items you can follow *** */}
@@ -165,23 +166,3 @@ export default class OfficeItemCompressed extends Component {
   </View>;
   }
 }
-
-var styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    marginTop: 10,
-    padding: 20,
-    backgroundColor: '#ffffff',
-  },
-  titleText: {
-	fontFamily: 'sans-serif',
-	fontSize: 20,
-	fontWeight: 'bold',
-	color: '#48BBEC',
-  },
-  officeReadMoreLink: {
-  	fontFamily: 'sans-serif',
-  	fontSize: 15,
-  	color: '#48BBEC',
-  },
-});

@@ -17,6 +17,7 @@ target 'WeVoteReactNative' do
     'DevSupport',
     'RCTImage',
     'RCTLinkingIOS',
+    'RCTAnimation',
     'RCTWebSocket'
   ]
   # React-Native-Oauth dependency

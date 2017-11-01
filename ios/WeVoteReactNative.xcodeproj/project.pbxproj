@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		079E854C64E94FD799F04307 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D7D17B8A51094FE780F2AF8B /* Foundation.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -14,6 +15,7 @@
 		18B8690D4D744CDD987F09CC /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 501591194E7C43568D74CC56 /* FontAwesome.ttf */; };
 		3BA51843BC0F45479604C4AE /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B37640D78B945F7BAC9E773 /* MaterialIcons.ttf */; };
 		59B214D39ECE45549C0169FB /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4481BB39398A45EDB735F6D3 /* Octicons.ttf */; };
+		662149791FA79A9E00107EB4 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		664998811F6DCE6C00355CC2 /* libOAuthManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66DB23EE1F6C740500B46473 /* libOAuthManager.a */; };
 		668814E81F9AC8A700EEBF2C /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 668814E91F9AC8A700EEBF2C /* Bolts.framework */; };
 		6688150A1F9AC93F00EEBF2C /* DCTAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6688150B1F9AC93F00EEBF2C /* DCTAuth.framework */; };
@@ -316,6 +318,7 @@
 				6688150A1F9AC93F00EEBF2C /* DCTAuth.framework in Frameworks */,
 				668814E81F9AC8A700EEBF2C /* Bolts.framework in Frameworks */,
 				664998811F6DCE6C00355CC2 /* libOAuthManager.a in Frameworks */,
+				662149791FA79A9E00107EB4 /* libRCTAnimation.a in Frameworks */,
 				A525FEC738FB91892AB4A07B /* Pods_WeVoteReactNative.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -489,7 +492,6 @@
 		66C934091F9FBADF005D11F5 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				17AF07E141574186B63F8732 /* libRCTFBSDK.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1080,9 +1082,7 @@
 				INFOPLIST_FILE = WeVoteReactNative/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				NEW_SETTING = "";
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = (
@@ -1090,7 +1090,11 @@
 					"$(inherited)",
 					"-lc++",
 				);
-				"OTHER_LDFLAGS[arch=*]" = "$(inherited) -ObjC -lc++";
+				"OTHER_LDFLAGS[arch=*]" = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.WeVoteReactNative;
 				PRODUCT_NAME = WeVoteReactNative;
 				SYSTEM_HEADER_SEARCH_PATHS = "";
@@ -1119,9 +1123,7 @@
 				INFOPLIST_FILE = WeVoteReactNative/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				NEW_SETTING = "";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1174,7 +1176,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				"HEADER_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../node_modules/react-native/React/Base RNCookieManagerIOS/**";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(SRCROOT)/../node_modules/react-native/React/Base",
+					"RNCookieManagerIOS/**",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACH_O_TYPE = mh_execute;
 				MTL_ENABLE_DEBUG_INFO = YES;

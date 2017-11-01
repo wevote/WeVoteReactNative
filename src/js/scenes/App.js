@@ -18,6 +18,8 @@ const TabIcon = ({ selected, tabBarLabel }) => {
  https://medium.com/differential/react-native-basics-using-react-native-router-flux-f11e5128aff9
  https://medium.com/the-react-native-log/thousand-ways-to-navigate-in-react-native-f7a1e311a0e8
  https://medium.com/@psak.works/react-navigation-without-redux-887ad8a6b394
+
+ See https://github.com/wevote/WebApp/blob/develop/src/js/Root.jsx  for the routes we use in WebApp
 */
 
 const App = () => {

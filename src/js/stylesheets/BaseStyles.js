@@ -4,6 +4,7 @@ import {
 
 
 // https://www.bountysource.com/issues/39479584-fontfamily-in-theme-js-has-no-effect
+// There is no out-of-the-box sans-serif in iOS, so used Arial instead.  Works fine on Android.
 const styles = StyleSheet.create({
   baseText: {
     fontFamily: 'Arial',

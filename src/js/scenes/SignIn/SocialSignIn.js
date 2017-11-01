@@ -162,6 +162,7 @@ export default class SocialSignIn extends Component {
             });
 
             FacebookActions.getFacebookData(accessToken);
+            VoterActions.voterRetrieve();  // Load the voter, so they will be available on the Ballot tab, New October 26, 2017
           }
         } else {
           console.log(authenticator + ' oAuth query returned WAS NOT authorized!');

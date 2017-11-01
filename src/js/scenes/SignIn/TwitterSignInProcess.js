@@ -50,6 +50,7 @@ export default class TwitterSignInProcess extends Component {
         twitter_auth_response: TwitterStore.getTwitterAuthResponse(),
         saving: false
       });
+      VoterActions.voterRetrieve();  // Load the voter, so they will be available on the Ballot tab, New October 31, 2017
     } else {
       console.log("TwitterSignInProcess _onTwitterStoreChange() TwitterStore.get().twitter_sign_in_found did NOT succeed ");
     }

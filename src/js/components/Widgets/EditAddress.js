@@ -16,13 +16,20 @@ export default class EditAddress extends Component {
   }
 
   render () {
-    let address = this.props.address.text_for_map_search || "";
     let normalized_line1 = this.props.address.normalized_line1 || "";
 
-    if (address.length) {
+    let addressString = this.props.address.text_for_map_search || "";
+    if (addressString.length === 0) {
+      let addressObj = this.props.address || {};
+      if (addressObj !== {} && (typeof addressObj.voterAddressSave != "undefined")) {
+        addressString = addressObj.voterAddressSave;
+      }
+    }
+
+    if (addressString.length) {
       return (
         <View className="ballot__date_location">
-          <Text style={{ fontSize: 15 }}>{ address } &nbsp; (
+          <Text style={{ fontSize: 15 }}>{ addressString } &nbsp; (
             <Text style = {{color: '#48BBEC'}} onPress={this.props._toggleSelectAddressModal}>Edit</Text>)
           </Text>
           {/* normalized_line1.length ? <Text>&nbsp;</Text> : <EditAddressPopover popover_off={false} placement={"bottom"} onClick={this.props._toggleSelectAddressModal} /> */}

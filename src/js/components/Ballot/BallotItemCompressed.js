@@ -25,9 +25,10 @@ export default class BallotItemCompressed extends Component {
 
   render () {
     return <View className="BallotItem card" id={this.props.we_vote_id}>
-        { this.isMeasure() ?
-          <MeasureItemCompressed {...this.props}
-                   link_to_ballot_item_page /> :
+        { this.isMeasure() ? null :
+          // November 1, 2017 -- Temporarily commented out
+          // <MeasureItemCompressed {...this.props}
+          //          link_to_ballot_item_page /> :
           <OfficeItemCompressed {...this.props}
                    link_to_ballot_item_page />
         }
