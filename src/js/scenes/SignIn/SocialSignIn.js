@@ -6,6 +6,7 @@ import {Actions} from "react-native-router-flux";
 import OAuthManager from 'react-native-oauth';
 import TwitterActions from "../../actions/TwitterActions";
 import FacebookActions from "../../actions/FacebookActions";
+import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 
 import FacebookStore from "../../stores/FacebookStore";
