@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, Text, TouchableOpacity, View, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import {Actions} from "react-native-router-flux";
 import AddressBox from "../../components/AddressBox";
@@ -10,7 +10,7 @@ export default class SelectAddressModal extends Component {
 
   static propTypes = {
     show: PropTypes.bool,
-    //toggleFunction: PropTypes.func.isRequired
+    toggleFunction: PropTypes.func.isRequired
   };
 
   constructor (props) {
@@ -22,41 +22,23 @@ export default class SelectAddressModal extends Component {
 
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
+    // See https://github.com/facebook/react-native/commit/6a83ac3af62308e4c286ca169f4834b6d2c3fadd
+    // onRequestClose only works on Android
+    if (Platform.OS === 'ios') {
+      this.props.toggleFunction();
+    }
   }
-
 
   render () {
     return <Modal
-      animationType="slide"
-      transparent={false}
-      visible={this.state.modalVisible}
-      onRequestClose={() => {this.props.toggleFunction}}
-    >
-      <View style={{marginTop: 22}}>
+        animationType="slide"
+        transparent={false}
+        visible={this.state.modalVisible}
+        onRequestClose={() => {this.props.toggleFunction}}>
         <View>
-          <Text>Enter address where you are registered to vote</Text>
-{/*
-          <TouchableOpacity style = {styles.button} onPress={() => {
-            this.setModalVisible(!this.state.modalVisible) }}>
-            <Text style = {styles.buttonText}>{ button_text }</Text>
-          </TouchableOpacity>;
-*/}
-          <AddressBox saveUrl={"/ballot"} _toggleSelectAddressModal={() => {
+          <AddressBox saveUrl={"/ballot"} toggleFunction={() => {
             this.setModalVisible(!this.state.modalVisible) }} />
         </View>
-      </View>
-    </Modal>
-{/*
-    return <Modal show onHide={this.props.toggleFunction} className="ballot-election-list ballot-election-list__modal ballot-election-list__modal-mobile" >
-      <Modal.Header closeButton onHide={this.props.toggleFunction}>
-        <Modal.Title className="ballot-election-list__h1">Enter address where you are registered to vote</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <AddressBox saveUrl={"/ballot"} _toggleSelectAddressModal={this.props.toggleFunction} />
-        <br/>
-        <br/>
-      </Modal.Body>
-    </Modal>;
-*/}
+      </Modal>
   }
 }

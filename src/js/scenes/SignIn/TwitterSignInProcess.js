@@ -5,13 +5,12 @@ import {
   View
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-
-//import { browserHistory } from "react-router";
 import TwitterActions from "../../actions/TwitterActions";
 import TwitterStore from "../../stores/TwitterStore";
 import VoterStore from "../../stores/VoterStore";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterActions from "../../actions/VoterActions";
+//import { browserHistory } from "react-router";
 //import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
 export default class TwitterSignInProcess extends Component {
@@ -44,12 +43,13 @@ export default class TwitterSignInProcess extends Component {
 
   _onTwitterStoreChange () {
     console.log("TwitterSignInProcess _onTwitterStoreChange() AAAAAAAAAAAAA");
+    this.setState({
+      twitter_auth_response: TwitterStore.getTwitterAuthResponse(),
+      saving: false
+    });
     if( TwitterStore.get().twitter_sign_in_found ) {
       console.log("TwitterSignInProcess _onTwitterStoreChange() TwitterStore.get().twitter_sign_in_found DID DID DID succeed ");
-      this.setState({
-        twitter_auth_response: TwitterStore.getTwitterAuthResponse(),
-        saving: false
-      });
+      VoterActions.voterRetrieve();  // Load the voter, so they will be available on the Ballot tab, New October 31, 2017
     } else {
       console.log("TwitterSignInProcess _onTwitterStoreChange() TwitterStore.get().twitter_sign_in_found did NOT succeed ");
     }
@@ -130,7 +130,12 @@ export default class TwitterSignInProcess extends Component {
     if (this.state.saving ||
       !twitter_auth_response ||
       !twitter_auth_response.twitter_retrieve_attempted ) {
-      return <LoadingWheel />;
+      return <View className="ballot">
+          <View className="ballot__header">
+            <Text>Waiting for Twitter to return</Text>
+            <LoadingWheel/>
+          </View>
+        </View>;
     }
 
     if( twitter_auth_response && twitter_auth_response.twitter_sign_in_verified ) {

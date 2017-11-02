@@ -6,6 +6,7 @@ import {Actions} from "react-native-router-flux";
 import OAuthManager from 'react-native-oauth';
 import TwitterActions from "../../actions/TwitterActions";
 import FacebookActions from "../../actions/FacebookActions";
+import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 
 import FacebookStore from "../../stores/FacebookStore";
@@ -30,6 +31,15 @@ export default class SocialSignIn extends Component {
       hasMounted: false
     };
   }
+
+  static onEnter = () => {
+    console.log("RNRF onEnter to SocialSignIn: currentScene = " + Actions.currentScene);
+  };
+
+  static onExit = () => {
+    console.log("RNRF onExit from SocialSignIn: currentScene = " + Actions.currentScene);
+  };
+
 
   componentWillMount () {
     console.log("Social Sign In ++++ MOUNT, hasMounted = " + this.state.hasMounted);
@@ -137,10 +147,11 @@ export default class SocialSignIn extends Component {
             Actions.twitterSignInProcess({came_from: 'socialSignIn'});
           } else {
             let accessToken = lodash_get(resp, "response.credentials.accessToken") || false;
-            let clientID    = lodash_get(resp, "response.credentials.clientID") || false;
+            let clientID = lodash_get(resp, "response.credentials.clientID") || false;
+            console.log("SocialSignIn oauthManager.authorize for Facebook DID DID DID succeed ");
             FacebookActions.voterFacebookSignInAuth({
               facebook_access_token: accessToken,
-              facebook_user_id:      clientID,
+              facebook_user_id: clientID,
             });
 
             // October 19, 2017
@@ -162,6 +173,14 @@ export default class SocialSignIn extends Component {
             });
 
             FacebookActions.getFacebookData(accessToken);
+            if (!VoterStore.isVoterFound ())  {
+              VoterActions.voterRetrieve();  // Load the voter, so they will be available on the Ballot tab, New October 26, 2017
+            }
+            console.log("RNRF SocialSignIn  Actions.signIn({came_from: 'socialSignIn'})");
+            Actions.signIn({
+              came_from: 'socialSignIn',
+              forward_to_ballot: true
+            });
           }
         } else {
           console.log(authenticator + ' oAuth query returned WAS NOT authorized!');

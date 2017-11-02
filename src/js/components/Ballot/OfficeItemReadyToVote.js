@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-//import { Link, browserHistory } from "react-router";
 import { Link } from "react-router-native";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image } from "react-native";
 import GuideStore from "../../stores/GuideStore";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
+import ballotStyles from "../../stylesheets/BallotStyles"
+
+//import { Link, browserHistory } from "react-router";
 
 
 export default class OfficeItemReadyToVote extends Component {
@@ -99,11 +101,11 @@ export default class OfficeItemReadyToVote extends Component {
       });
     }
 
-    return <View style={styles.container} className="card-main office-item">
+    return <View style={ballotStyles.container} className="card-main office-item">
       <View className="card-main__content">
         { this.props.link_to_ballot_item_page ?
-          <Link to={officeLink}><Text style={styles.titleText}>{ballot_item_display_name}</Text></Link> :
-            <Text style={styles.titleText}>{ballot_item_display_name}</Text>
+          <Link to={officeLink}><Text style={ballotStyles.titleText}>{ballot_item_display_name}</Text></Link> :
+            <Text style={ballotStyles.titleText}>{ballot_item_display_name}</Text>
         }
 
         <View style={{flexDirection: 'row', justifyContent:'space-between'}} className={ this.props.link_to_ballot_item_page ?
@@ -156,21 +158,3 @@ export default class OfficeItemReadyToVote extends Component {
     </View>;
   }
 }
-export var styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    marginTop: 10,
-    padding: 20,
-    backgroundColor: '#ffffff',
-  },
-  titleText: {
-	fontFamily: 'sans-serif',
-	fontSize: 15,
-	fontWeight: 'bold',
-	color: '#48BBEC',
-  },
-  candidate_name: {
-    fontSize: 15,
-	fontFamily: 'sans-serif',
-  },
-});

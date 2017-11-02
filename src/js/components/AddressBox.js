@@ -2,17 +2,15 @@
 import React, { Component } from "react";
 import { Text, View, TouchableOpacity, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
-import {Actions} from "react-native-router-flux";
-import { FormInput } from 'react-native-elements'
+import { FormInput, FormLabel } from 'react-native-elements'
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
 import VoterStore from "../stores/VoterStore";
-//import { Button } from "react-bootstrap";
-//import { browserHistory } from "react-router";
+import styles from "../stylesheets/BaseStyles";
 
 export default class AddressBox extends Component {
   static propTypes = {
-    _toggleSelectAddressModal: PropTypes.func,
+    toggleFunction: PropTypes.func.isRequired,
     saveUrl: PropTypes.string.isRequired
   };
 
@@ -29,7 +27,7 @@ export default class AddressBox extends Component {
   }
 
   componentDidMount () {
-    this.setState({ voter_address: VoterStore.getAddressObject() });
+    this.setState({ voter_address: VoterStore.getTextForMapSearch() });
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     // October 10, 2017:  We do want google autocomplete if possible in native
     // let addressAutocomplete = new google.maps.places.Autocomplete(this.refs.autocomplete);
@@ -42,18 +40,19 @@ export default class AddressBox extends Component {
   }
 
   _onVoterStoreChange () {
-    if (this.props._toggleSelectAddressModal){
-       this.props._toggleSelectAddressModal();
-     }
-    if (this.state.voter_address){
-      Actions.pop();  // browserHistory.push(this.props.saveUrl);
+    // There are two different address objects that can be in the VoterStore (unfortunately)
+    let addressString = VoterStore.getAddressFromObjectOrTextForMapSearch();
+    if (this.props.toggleFunction && addressString.length > 0 ){
+      this.setState({ voter_address: addressString, loading: false });
+      console.log("AddressBox _onVoterStoreChange, VoterStore changed and Address round tripped -- calling toggleFunction. ");
+      this.props.toggleFunction();
     } else {
-      this.setState({ voter_address: VoterStore.getAddressObject(), loading: false });
+      console.log("AddressBox _onVoterStoreChange, VoterStore changed, but the Address has been not yet been saved. addressString = '" + addressString + "'");
     }
   }
 
   _ballotLoaded (){
-    browserHistory.push(this.props.saveUrl);
+    //browserHistory.push(this.props.saveUrl);
   }
 
   _placeChanged (addressAutocomplete) {
@@ -85,26 +84,35 @@ export default class AddressBox extends Component {
   }
 
   voterAddressSave (event) {
+    console.log("AddressBox voterAddressSave, VoterActions.voterAddressSave(" + this.state.voter_address +");" );
     event.preventDefault();
     VoterActions.voterAddressSave(this.state.voter_address);
     this.setState({loading: true});
   }
 
   render () {
-    if (this.state.loading){
+    if (this.state.loading) {
       return <LoadingWheel />;
     }
-    let {width} = Dimensions.get('window');
-    return <View>
-        <FormInput style={{height: 40, width: width-100, borderColor: 'lightgray', borderWidth: 0.3}}
-          onChangeText={(value) => this.setState({voter_address: value})}
-          onSubmitEditing={this.voterAddressSave}
-          value={this.state.voter_address}
-          ref="autocomplete"
-          placeholder="Enter address where you are registered to vote" />
-
-        <View>
-          <TouchableOpacity onPress={this.voterAddressSave}>
+    let {height, width} = Dimensions.get('window');
+    return <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+         <View>
+          <FormLabel style={{marginTop: height/6}}>Enter address where you are registered to vote</FormLabel>
+          <FormInput style={{marginTop: height/16, marginBottom: height/13, height: height/17, width: width*0.9,
+                             borderWidth: 1, padding: 5}}
+                     onChangeText={text => this.setState({voter_address: text})}
+                     onSubmitEditing={this.voterAddressSave}
+                     value={this.state.voter_address}
+                     ref="autocomplete"
+                     placeholder="Enter address" />
+        </View>
+        <View style={{marginTop: height/3}}>
+          <TouchableOpacity style = {styles.button} onPress={this.voterAddressSave}>
             <Text> Save </Text>
           </TouchableOpacity>
         </View>

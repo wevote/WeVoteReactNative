@@ -1,16 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-//import { Link, browserHistory } from "react-router";
 import { Link } from "react-router-native";
 import { View, Text, Image, StyleSheet } from "react-native";
 import GuideStore from "../../stores/GuideStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
-// import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
-// import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
 import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
+import ballotStyles from "../../stylesheets/BallotStyles"
+//import { Link, browserHistory } from "react-router";
+// import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
+// import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
 
 
 export default class MeasureItemCompressed extends Component {
@@ -89,19 +90,19 @@ export default class MeasureItemCompressed extends Component {
     }
 
 
-    return <View style={styles.container} className="card-main measure-card">
+    return <View style={ballotStyles.container} className="card-main measure-card">
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}} >
         <View style={{alignSelf: 'flex-start'}}>
           { this.props.link_to_ballot_item_page ?
             <View style={{flexDirection: 'row'}}>
               <Link to={measureLink}>
-                <Text style={styles.titleText}> {ballot_item_display_name} </Text>
+                <Text style={ballotStyles.titleText}> {ballot_item_display_name} </Text>
               </Link>
               <Link to={measureLink}>
-                <Text style={styles.measureReadMoreLink}> learn more </Text>
+                <Text style={ballotStyles.measureReadMoreLink}> learn more </Text>
               </Link>
             </View> :
-            <Text style={styles.titleText}>{ballot_item_display_name}</Text>
+            <Text style={ballotStyles.titleText}>{ballot_item_display_name}</Text>
           }
         </View>
         <View style={{alignSelf: 'flex-end'}}>
@@ -174,23 +175,3 @@ export default class MeasureItemCompressed extends Component {
     </View>;
   }
 }
-
-var styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    marginTop: 10,
-    padding: 20,
-    backgroundColor: '#ffffff',
-  },
-  titleText: {
-	fontFamily: 'sans-serif',
-	fontSize: 20,
-	fontWeight: 'bold',
-	color: '#48BBEC',
-  },
-  measureReadMoreLink: {
-  	fontFamily: 'sans-serif',
-  	fontSize: 15,
-  	color: '#48BBEC',
-  },
-});

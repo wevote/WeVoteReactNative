@@ -40,6 +40,21 @@ class VoterStore extends FluxMapStore {
     return this.getState().address || {};
   }
 
+  // October 31st 2017, this may be a hack, but it matches the data that comes from the server today.
+  // It could be that the Native code fell 3 to 6 months behind most of the WebApp code and the server
+  // that Native references is always pretty current.
+  getAddressFromObjectOrTextForMapSearch () {
+    // There are two different address objects that can be in the VoterStore (unfortunately)
+    let addressString = this.getState().address.text_for_map_search || "";
+    if (addressString.length === 0) {
+      let addressObj = this.getState().address || {};
+      if (addressObj !== {} && (typeof addressObj.voterAddressSave != "undefined")) {
+        addressString = addressObj.voterAddressSave;
+      }
+    }
+    return addressString;
+  }
+
   getEmailAddressList (){
     return this.getDataFromArr(this.getState().email_address_list) || {};
   }

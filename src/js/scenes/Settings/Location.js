@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
+import { Actions } from 'react-native-router-flux';
 import AddressBox from "../../components/AddressBox";
 //import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 //import Helmet from "react-helmet";
@@ -30,13 +31,7 @@ export default class Location extends Component {
     console.log("Location.js =================== render (), scene = " + Actions.currentScene);
 
     return <View>
-      /*<BrowserPushMessage incomingProps={this.props} />*/
-      <Text>
-        Enter address where you are registered to vote
-      </Text>
-      <View>
         <AddressBox {...this.props} saveUrl="/ballot" />
-      </View>
     </View>;
   }
 }
