@@ -63,7 +63,7 @@ export default class SignIn extends Component {
     // October 9, 2017: This is hacky, we need a refresh when we come back from the ballot tab, not sure why.
     if( nextProps.came_from === "ballot") {
       console.log("RNRF componentWillReceiveProps, forcing update : currentScene = " + Actions.currentScene);
-      this.forceUpdate();
+      // Nov 2, 2017, removed, this.forceUpdate();
     }
   }
 
@@ -71,7 +71,10 @@ export default class SignIn extends Component {
   componentWillMount () {
     console.log("SignIn ++++ MOUNT");
 
-    VoterActions.voterRetrieve();
+    if (!VoterStore.isVoterFound ())  {
+      VoterActions.voterRetrieve();
+    }
+
     this._onVoterStoreChange();
     //this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));

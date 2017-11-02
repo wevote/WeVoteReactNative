@@ -98,6 +98,8 @@ export default class OfficeItemCompressed extends Component {
         <View key={one_candidate.we_vote_id} className="u-stack--md">
           <View className="u-flex u-items-center u-flex-wrap u-justify-between">
             {/* *** Candidate name *** */}
+            {/* November 2, 2017, getting about 36 duplicate keys here for each candidate, and it is really hurting us
+              console.log("OfficeItemCompressed key", one_candidate.we_vote_id) */}
             <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'space-between'}} className="u-flex u-cursor--pointer u-min-50"
                 onPress={ this.props.link_to_ballot_item_page ?
                           ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :

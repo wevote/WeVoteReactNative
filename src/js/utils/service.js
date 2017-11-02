@@ -1,5 +1,5 @@
 /**
- * The idea of this APIS.js file is to abstract away the details
+ * The idea of this APIS.js (WeVote service.js) file is to abstract away the details
  * of many repetitive service calls that we will be using.
  * @author Nick Fiorini <nf071590@gmail.com>
  */
@@ -45,20 +45,24 @@ export function $ajax (options) {
   return fetch(options.url)
     .then((response) => response.json())
     .then((responseJson) => {
-      // let cookie = CookieStore.getItem("voter_device_id");
-      // console.log("voter_device_id in fetch (" +  options.endpoint + ") " +
-      //      ( typeof cookie === 'object' ? JSON.stringify(cookie) + " object " : cookie + " string"));
-      // if(responseJson.hasOwnProperty('voter_device_id') ) {
-      //   console.log("responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id + ' : ' + responseJson.status);
-      // } else {
-      //   console.log("responseJson:" + options.endpoint + ' : ' + responseJson.status);
-      // }
+      let cookie = CookieStore.getItem("voter_device_id");
+
+      if (webAppConfig.LOG_NATIVE_HTTP_REQUESTS) {
+        console.log("HTTP FETCH $ajax for (" + options.endpoint + ") with voter_device_id " +
+          ( typeof cookie === 'object' ? JSON.stringify(cookie) + " object " : cookie + " string"));
+        if (responseJson.hasOwnProperty('voter_device_id')) {
+          console.log("HTTP responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id + ' : ' +
+            responseJson.status);
+        } else {
+          console.log("HTTP responseJson:" + options.endpoint + ' : ' + responseJson.status);
+        }
+      }
 
       const res = responseJson;
       this.dispatch({ type: options.endpoint, res });
     })
     .catch((error) => {
-      console.error(error, options.endpoint);
+      console.error("HTTP FETCH $ajax error", error, options.endpoint);
       this.dispatch({type: "error-" + options.endpoint, error});
     });
   //return window.$.ajax(options);

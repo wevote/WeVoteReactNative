@@ -173,7 +173,9 @@ export default class SocialSignIn extends Component {
             });
 
             FacebookActions.getFacebookData(accessToken);
-            VoterActions.voterRetrieve();  // Load the voter, so they will be available on the Ballot tab, New October 26, 2017
+            if (!VoterStore.isVoterFound ())  {
+              VoterActions.voterRetrieve();  // Load the voter, so they will be available on the Ballot tab, New October 26, 2017
+            }
             console.log("RNRF SocialSignIn  Actions.signIn({came_from: 'socialSignIn'})");
             Actions.signIn({
               came_from: 'socialSignIn',

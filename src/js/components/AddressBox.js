@@ -47,7 +47,7 @@ export default class AddressBox extends Component {
       console.log("AddressBox _onVoterStoreChange, VoterStore changed and Address round tripped -- calling toggleFunction. ");
       this.props.toggleFunction();
     } else {
-      console.log("AddressBox _onVoterStoreChange, VoterStore changed, but the Address has been not yet been saved. addressString = " + addressString);
+      console.log("AddressBox _onVoterStoreChange, VoterStore changed, but the Address has been not yet been saved. addressString = '" + addressString + "'");
     }
   }
 

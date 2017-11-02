@@ -122,7 +122,9 @@ export default class Ballot extends Component {
         //this.supportStoreListener = SupportStore.addListener(this._onBallotStoreChange.bind(this));
         this._onVoterStoreChange(); // We call this to properly set showBallotIntroModal
         this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-        VoterActions.voterRetrieve();  // New October 9, 2017
+        if (!VoterStore.isVoterFound ())  {
+          VoterActions.voterRetrieve();  // New October 9, 2017
+        }
         SupportActions.voterAllPositionsRetrieve();
         SupportActions.positionsCountForAllBallotItems();
         BallotActions.voterBallotListRetrieve();
@@ -385,15 +387,12 @@ export default class Ballot extends Component {
       console.log("ballot render retrieving ballot to Loading Wheel ");
       BallotActions.voterBallotListRetrieve();
 
-      return <LoadingWheel />;
-      {/*<View className="ballot">/!*     return from here -------------------------------------------------*!/*/}
-          {/*<View className="ballot__header">*/}
-            {/*<Text>*/}
-              {/*Your ballot could not be found. Please change your address.*/}
-            {/*</Text>*/}
-            {/*<LoadingWheel />;*/}
-          {/*</View>*/}
-        {/*</View>;*/}
+      return <View className="ballot">
+          <View className="ballot__header">
+            <Text>Loading your ballot. </Text>
+            <LoadingWheel/>
+          </View>
+        </View>;
     }
 
     const missing_address = false;

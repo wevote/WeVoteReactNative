@@ -1,4 +1,3 @@
-
 import Dispatcher from "../dispatcher/Dispatcher";
 import FluxMapStore from "flux/lib/FluxMapStore";
 import VoterActions from "../actions/VoterActions";
