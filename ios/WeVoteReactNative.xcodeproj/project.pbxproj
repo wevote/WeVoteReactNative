@@ -15,6 +15,7 @@
 		18B8690D4D744CDD987F09CC /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 501591194E7C43568D74CC56 /* FontAwesome.ttf */; };
 		3BA51843BC0F45479604C4AE /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B37640D78B945F7BAC9E773 /* MaterialIcons.ttf */; };
 		59B214D39ECE45549C0169FB /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4481BB39398A45EDB735F6D3 /* Octicons.ttf */; };
+		66076FCC1FAE40C9008B77AA /* libRNCookieManagerIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 667FB3D61F717C2600DFC717 /* libRNCookieManagerIOS.a */; };
 		662149791FA79A9E00107EB4 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		664998811F6DCE6C00355CC2 /* libOAuthManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66DB23EE1F6C740500B46473 /* libOAuthManager.a */; };
 		668814E81F9AC8A700EEBF2C /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 668814E91F9AC8A700EEBF2C /* Bolts.framework */; };
@@ -311,6 +312,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66076FCC1FAE40C9008B77AA /* libRNCookieManagerIOS.a in Frameworks */,
 				668815121F9AC9AE00EEBF2C /* React.framework in Frameworks */,
 				6688150C1F9AC97800EEBF2C /* FBSDKCoreKit.framework in Frameworks */,
 				6688150D1F9AC97800EEBF2C /* FBSDKLoginKit.framework in Frameworks */,
@@ -1078,7 +1080,11 @@
 					"values>",
 					"$(SRCROOT)/../node_modules/react-native-oauth/ios/OAuthManager",
 				);
-				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited)";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"<Multiple",
+					"values>",
+					"$(SRCROOT)/../node_modules/react-native-oauth/ios/OAuthManager",
+				);
 				INFOPLIST_FILE = WeVoteReactNative/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

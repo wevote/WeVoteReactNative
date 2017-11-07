@@ -14,8 +14,11 @@ import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
+import CookieStore from "../../stores/CookieStore";
 import HeaderTitle from "../../components/Header/Header"
 import styles from "../../stylesheets/BaseStyles"
+const logging = require("../../utils/logging");
+
 //import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 //import { browserHistory } from "react-router-native";
 //import Helmet from "react-helmet";
@@ -43,26 +46,28 @@ export default class SignIn extends Component {
       show_twitter_disconnect: false,
       newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
       notifications_saved_status: "",
+      waiting_for_voter_device_id: false,
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.updateVoterName = this.updateVoterName.bind(this);
+    this.getInitialDeviceId = this.getInitialDeviceId.bind(this);
   }
 
   static onEnter = () => {
-    console.log("RNRF onEnter to SignIn: currentScene = " + Actions.currentScene);
+    logging.rnrfLog("onEnter to SignIn: currentScene = " + Actions.currentScene);
     Actions.refresh({dummy: 'hello'});  // triggers componentWillReceiveProps
     // Actions.refs.signIn.forceUpdate();
   };
 
   static onExit = () => {
-    console.log("RNRF onExit from SignIn: currentScene = " + Actions.currentScene);
+    logging.rnrfLog("onExit from SignIn: currentScene = " + Actions.currentScene);
   };
 
   componentWillReceiveProps(nextProps) {
     // October 9, 2017: This is hacky, we need a refresh when we come back from the ballot tab, not sure why.
     if( nextProps.came_from === "ballot") {
-      console.log("RNRF componentWillReceiveProps, forcing update : currentScene = " + Actions.currentScene);
+      logging.rnrfLog("componentWillReceiveProps, forcing update : currentScene = " + Actions.currentScene);
       // Nov 2, 2017, removed, this.forceUpdate();
     }
   }
@@ -71,7 +76,10 @@ export default class SignIn extends Component {
   componentWillMount () {
     console.log("SignIn ++++ MOUNT");
 
-    if (!VoterStore.isVoterFound ())  {
+    this.setState({waiting_for_voter_device_id: true});
+    this.getInitialDeviceId().done();
+
+    if (!VoterStore.isVoterFound ()) {
       VoterActions.voterRetrieve();
     }
 
@@ -92,6 +100,16 @@ export default class SignIn extends Component {
         voter: VoterStore.getVoter(),
         newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
     });
+  }
+
+  async getInitialDeviceId() {
+    try {
+      await CookieStore.getItem('voter_device_id');
+      console.log("SignIn componentWillMount CookieStore getInitialDeviceId voter_device_id prefetched (if one exists)");
+      this.setState({waiting_for_voter_device_id: false});
+    } catch (error) { // log the error
+      console.log("SignIn componentWillMount CookieStore getInitialDeviceId error = ", error);
+    }
   }
 
   /*_onFacebookChange () {
@@ -162,11 +180,26 @@ export default class SignIn extends Component {
 
 
   render () {
+    if(this.state.waiting_for_voter_device_id) {
+      return <View className="ballot">
+        <View className="ballot__header">
+          <Text>Waiting for device initialization</Text>
+          <LoadingWheel/>
+        </View>
+      </View>;
+    }
+
+
+    if (!VoterStore.isVoterFound ())  {
+      VoterActions.voterRetrieve();
+    }
+
+
     if ( Actions.currentScene !== "signIn") {
-      console.log("SignIn =-=-=-=-=-=-=-=-=-= render () when NOT CURRENT, scene  = " + Actions.currentScene);
+      logging.renderLog("SignIn", "when NOT CURRENT, scene  = " + Actions.currentScene);
       return null;
     }
-    console.log("SignIn =================== render (), scene = " + Actions.currentScene);
+    logging.renderLog("SignIn", "scene = " + Actions.currentScene);
 
     /*10/9/17 Steve, My theory on this react-native-router-flux (RNRF) work around:
     You can navigate around in the  Stack Container while doing the sign-in Actions, but to go to the other tab (ballot)
@@ -175,8 +208,8 @@ export default class SignIn extends Component {
 
     const forward = this.props.forward_to_ballot || 'No Data';
     if( forward === true ) {
-      console.log("RNRF SignIn received this.props.forward_to_ballot = " + this.props.forward_to_ballot);
-      console.log("RNRF SignIn  Actions.ballot(}");
+      logging.rnrfLog("SignIn received this.props.forward_to_ballot = " + this.props.forward_to_ballot);
+      logging.rnrfLog("SignIn  Actions.ballot(}");
       Actions.ballot({came_from: 'signIn'});
       return <LoadingWheel />;
     }

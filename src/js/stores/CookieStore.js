@@ -1,53 +1,124 @@
-import Storage from '../../services/AsyncStorage'
-const Immutable = require('immutable');
+import { Platform } from 'react-native';
+import _ from "lodash";
+import CookieManager from 'react-native-cookies';
+const webAppConfig = require("../config");
+var Promise = require("bluebird");
+
 
 /*
-A storage class for cookie value strings.  Since in native, these are only for API calls, the path is always assumed to
-be "/".   For instant access during operation, all cookies are also stored in a map.
- */
+A wrapper class for react-native-cookies, that handles API cookies
+It could be expanded to handle cookies for any url...
+*/
 class CookieStore {
 
   constructor() {
-    let cookieMap = Immutable.Map({});
+    let url = webAppConfig.WE_VOTE_SERVER_ROOT_URL.substring(0, webAppConfig.WE_VOTE_SERVER_ROOT_URL.length -1);
     this.state = {
-      cookieMap: cookieMap,
-    };
+      urlString: url,
+      current_voter_device_id: '',
+    }
+  };
 
-    // Pre-pull the voter_device_id from Storage into the local map, so that we never need to deliver a promise
-    const prime_key = 'voter_device_id';
-    Storage.getItem(prime_key).then((value)=> {
-      if (value !== null && value.length > 0) {
-        // console.log("Cookie to map in constructor \'" + prime_key + "\'  " + value);
-        this.state.cookieMap = this.state.cookieMap.set(prime_key, value);
-      } else {
-        // console.log("Cookie for " + prime_key + 'was not found in Storage in constructor');
-      }
-    });
+
+  getCurrentVoterDeviceId(){
+    return this.state.current_voter_device_id;
   }
 
-  getItem(key){
-    if( this.state.cookieMap.has(key) ) {
-      // console.log("Cookie from map \'" + key + "\'  " + this.state.cookieMap.get(key));
-      return this.state.cookieMap.get(key);
+  getItem(key, url) {
+    if(key === 'voter_device_id' && this.state.current_voter_device_id.length > 0 ) {
+      return this.state.current_voter_device_id;
+    }
+
+    if (typeof(url) === 'undefined') {
+      url = this.state.urlString;
+    }
+
+    if (Platform.OS === 'ios') {
+      CookieManager.getAll()
+        .then((res) => {
+          if (_.has(res, key)) {
+            if(key === 'voter_device_id') {
+              console.log("voter_device_id value cached ", res[key].value);
+              this.state.current_voter_device_id = res[key].value;
+            }
+            return res[key].value;
+          }
+        });
     } else {
-      return Storage.getItem(key).then((value)=> {
-        // console.log("Cookie from Storage (updating cookieMap) \'" + key + "\'  " + value);
-        if (value !== null && value.length > 0)
-          this.state.cookieMap = this.state.cookieMap.set(key, value);
-      });
+      CookieManager.get(url)
+        .then((res) => {
+          if (_.has(res, key)) {
+            if(key === 'voter_device_id') {
+              console.log("voter_device_id value cached ", res[key].value);
+              this.state.current_voter_device_id = res[key].value;
+            }
+            return res[key].value;
+          }
+        });
     }
   }
 
   setItem(key, value) {
-    // console.log("setItem cookie to cookieMap (and storage) \'" + key + "\'  " + value);
-    this.state.cookieMap = this.state.cookieMap.set(key, value);
-    Storage.setItem(key, value);
+    cookieString = key + '=' + value + '; path=/; expires=2025-05-30T12:30:00.00-08:00;';
+
+    if (key == 'voter_device_id')
+      this.state.current_voter_device_id = value;
+
+    if (Platform.OS === 'ios') {
+      console.log("iOS iOS iOS iOS iOS iOS iOS iOS iOS value = ", value);
+      CookieManager.set({
+        name:   key,
+        value:  value,
+        domain: this.state.urlString,
+        origin: this.state.urlString,
+        path: '/',
+        version: '1',
+        expiration: '2025-05-30T12:30:00.00-08:00'
+      }).then((res) => {
+        if (webAppConfig.LOG_NATIVE_HTTP_REQUESTS) {
+          console.log(">>>>Set cookie iOS (" + this.state.urlString + ") " + cookieString);
+        }
+      });
+    } else {  // 'android'
+      CookieManager.setFromResponse(this.state.urlString, cookieString).then(() => {
+        if (webAppConfig.LOG_NATIVE_HTTP_REQUESTS) {
+          console.log(">>>>Set cookie Android (" + this.state.urlString + ") " + cookieString);
+        }
+      });
+    }
   }
 
   removeItem(key) {
-    this.state.cookieMap = this.state.cookieMap.deleteIn(key);
-    Storage.removeItem(key);
+    const cookieString = key + '=;expires=1970-01-02T00:00:00.00-08:00;';
+    CookieManager.setFromResponse(this.state.urlString, cookieString).then(() => {
+      if (webAppConfig.LOG_NATIVE_HTTP_REQUESTS) {
+        console.log(">>>>remove cookie (" + this.state.urlString + ") " + cookieString);
+      }
+    });
   }
+
+  logCookies(endpoint) {
+    if (webAppConfig.LOG_NATIVE_HTTP_REQUESTS) {
+      if (Platform.OS === 'ios') {
+        CookieManager.getAll()
+          .then((res) => {
+          console.log('>>>>All iOS cookies before $ajax call to (' + endpoint + ') =>', res);
+        });
+
+      } else {
+        CookieManager.get('https://www.facebook.com')
+          .then((res) => {
+            console.log('>>>>FACEBOOK Android cookies before $ajax call to (' + endpoint + ') =>', res);
+          });
+        CookieManager.get(this.state.urlString)
+          .then((res) => {
+            console.log('>>>>WeVoteAPI Android cookies before $ajax call to (' + endpoint + ') =>', res);
+          });
+      }
+    }
+  }
+
+
 }
 export default cookieStore = new CookieStore();
 

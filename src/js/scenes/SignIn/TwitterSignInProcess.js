@@ -10,7 +10,7 @@ import TwitterStore from "../../stores/TwitterStore";
 import VoterStore from "../../stores/VoterStore";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterActions from "../../actions/VoterActions";
-//import { browserHistory } from "react-router";
+const logging = require("../../utils/logging");
 //import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
 export default class TwitterSignInProcess extends Component {
@@ -83,7 +83,7 @@ export default class TwitterSignInProcess extends Component {
 
   voterMergeTwoAccountsByTwitterKey (twitter_secret_key, voter_has_data_to_preserve = true) {
     VoterActions.voterMergeTwoAccountsByTwitterKey(twitter_secret_key);
-    console.log("RNRF twitterSignInProcess  Actions.ballot({");
+    logging.rnrfLog("twitterSignInProcess  Actions.ballot({");
     Actions.ballot({
       came_from: 'TwitterSignInProcess voterMergeTwo',
       sign_in_message: 'You have successfully signed in with Twitter.',
@@ -118,10 +118,10 @@ export default class TwitterSignInProcess extends Component {
 
   render () {
     if ( Actions.currentScene !== "twitterSignInProcess") {
-      console.log("TwitterSignInProcess =-=-=-=-=-=-=-=-=-= render () when NOT CURRENT, scene  = " + Actions.currentScene);
+      logging.renderLog("TwitterSignInProcess", "when NOT CURRENT, scene  = " + Actions.currentScene);
       return null;
     }
-    console.log("TwitterSignInProcess =================== render (), scene = " + Actions.currentScene);
+    logging.renderLog("TwitterSignInProcess", "scene = " + Actions.currentScene);
 
     let {twitter_auth_response, yes_please_merge_accounts} = this.state;
 
@@ -132,14 +132,15 @@ export default class TwitterSignInProcess extends Component {
       !twitter_auth_response.twitter_retrieve_attempted ) {
       return <View className="ballot">
           <View className="ballot__header">
-            <Text>Waiting for Twitter to return</Text>
+            <Text>Twitter authentication was successful.</Text>
+            <Text>Waiting for Twitter to return with additional information.</Text>
             <LoadingWheel/>
           </View>
         </View>;
     }
 
     if( twitter_auth_response && twitter_auth_response.twitter_sign_in_verified ) {
-      console.log("RNRF twitterSignInProcess, twitter_auth_response && twitter_auth_response.twitter_sign_in_verified so Actions.ballot(with param) then LoadingWheel");
+      logging.rnrfLog("twitterSignInProcess, twitter_auth_response && twitter_auth_response.twitter_sign_in_verified so Actions.ballot(with param) then LoadingWheel");
       Actions.signIn({
         came_from: 'TwitterSignInProcess render',
         forward_to_ballot: true

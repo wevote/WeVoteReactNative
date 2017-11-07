@@ -7,6 +7,7 @@
 
 import * as request from "superagent";
 import CookieStore from '../stores/CookieStore';
+
 const url = require("url");
 const assign = require("object-assign");
 const webAppConfig = require("../config");
@@ -21,7 +22,7 @@ const defaults = {
   query: {},
   type: "GET",
   data: function () {
-    const id = CookieStore.getItem("voter_device_id");
+    const id = CookieStore.getCurrentVoterDeviceId();
     return id !== null && id.length > 0 ? {
       voter_device_id: id
     } : {};
@@ -33,28 +34,45 @@ const defaults = {
 export function $ajax (options) {
   if (!options.endpoint) throw new Error("$ajax missing endpoint option");
 
+  CookieStore.logCookies(options.endpoint);
+
   options.data = assign({}, defaults.data(), options.data || {});
   options.crossDomain = true;
   options.success = options.success || defaults.success;
   options.error = options.error || defaults.error;
   options.url = url.resolve(defaults.baseUrl, options.endpoint) + "/";
 
+  let test = defaults.data();
+
   if(options.data) {
     options.url += (options.url.indexOf('?') === -1 ? '?' : '&') + queryParams(options.data);
   }
-  return fetch(options.url)
+
+  if (options.url.indexOf('voter_device_id') === -1) {
+    const cookie = 'voter_device_id=' + CookieStore.getCurrentVoterDeviceId();
+    if (options.url.slice(-1) === '?') {
+      options.url += cookie;
+    } else {
+      options.url += '&' + cookie;
+    }
+  }
+
+  console.log("QQQQQQQQQQQQQ fetch options", options)
+  return fetch(options.url, {credentials: 'same-origin'})
     .then((response) => response.json())
     .then((responseJson) => {
-      let cookie = CookieStore.getItem("voter_device_id");
+      if (responseJson.hasOwnProperty('voter_device_id') && responseJson.voter_device_id.length > 0) {
+        console.log("service Setting new voter_device_id, to '" + responseJson.voter_device_id + "'" );
+        CookieStore.setItem('voter_device_id', responseJson.voter_device_id);
+      }
 
       if (webAppConfig.LOG_NATIVE_HTTP_REQUESTS) {
-        console.log("HTTP FETCH $ajax for (" + options.endpoint + ") with voter_device_id " +
-          ( typeof cookie === 'object' ? JSON.stringify(cookie) + " object " : cookie + " string"));
+        console.log(">>HTTP FETCH $ajax for (" + options.endpoint + ")");
         if (responseJson.hasOwnProperty('voter_device_id')) {
-          console.log("HTTP responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id + ' : ' +
+          console.log(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id + ' : ' +
             responseJson.status);
         } else {
-          console.log("HTTP responseJson:" + options.endpoint + ' : ' + responseJson.status);
+          console.log(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.status);
         }
       }
 
@@ -62,12 +80,17 @@ export function $ajax (options) {
       this.dispatch({ type: options.endpoint, res });
     })
     .catch((error) => {
-      console.error("HTTP FETCH $ajax error", error, options.endpoint);
+      console.error(">>HTTP FETCH $ajax error", error, options.endpoint);
       this.dispatch({type: "error-" + options.endpoint, error});
     });
-  //return window.$.ajax(options);
 }
 
+
+function queryParams(params) {
+  return Object.keys(params)
+    .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+    .join('&');
+}
 
 /*
 September 2017, this is Rohan's first pass at doing the Twitter oAuth redirect in a similar way to the way the WebApp
@@ -145,38 +168,33 @@ exactly the same" as in the WebApp, again not a big deal.
 //       Linking.openURL("").catch(err => console.error('An error occurred', err));
 //     });
 // }
-
-function queryParams(params) {
-  return Object.keys(params)
-  .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
-  .join('&');
-}
-
-export function get (options) {
-  let opts = assign(defaults, options);
-
-  opts.url = url.resolve(opts.baseUrl, opts.endpoint);
-  // We add voter_device_id to all endpoint calls
-  opts.query.voter_device_id = CookieStore.getItem("voter_device_id");
-
-  return new Promise( (resolve, reject) => new request.Request("GET", opts.url)
-    .accept(opts.dataType)
-    .query(opts.query)
-    .withCredentials()
-    .end((err, res) => {
-      if (err) {
-        if (opts.error instanceof Function === true)
-          opts.error(err || res.body);
-
-        reject(err);
-      } else {
-        if (opts.success instanceof Function === true)
-          opts.success(res.body);
-        else if (DEBUG)
-          console.warn(res.body);
-
-        resolve(res.body);
-      }
-    })
-  );
-}
+//
+// export function get (options) {
+//   let opts = assign(defaults, options);
+//
+//   opts.url = url.resolve(opts.baseUrl, opts.endpoint);
+//   // We add voter_device_id to all endpoint calls
+//   console.log("WE THOUGHT GET WAS DEPRECATED, BUT WE ARE CALLING IT FROM SOMEWHERE");
+//   opts.query.voter_device_id = CookieStore.getItem("voter_device_id");
+//
+//   return new Promise( (resolve, reject) => new request.Request("GET", opts.url)
+//     .accept(opts.dataType)
+//     .query(opts.query)
+//     .withCredentials()
+//     .end((err, res) => {
+//       if (err) {
+//         if (opts.error instanceof Function === true)
+//           opts.error(err || res.body);
+//
+//         reject(err);
+//       } else {
+//         if (opts.success instanceof Function === true)
+//           opts.success(res.body);
+//         else if (DEBUG)
+//           console.warn(res.body);
+//
+//         resolve(res.body);
+//       }
+//     })
+//   );
+// }

@@ -40,7 +40,8 @@ import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 //import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
 //import Slider from "react-slick";
 
-const web_app_config = require("../../config");
+const webAppConfig = require("../../config");
+const logging = require("../../utils/logging");
 
 export default class Ballot extends Component {
   static propTypes = {
@@ -80,7 +81,7 @@ export default class Ballot extends Component {
 
 
   static onEnter = () => {
-    console.log("RNRF onEnter to Ballot: currentScene = " + Actions.currentScene);
+    logging.rnrfLog("onEnter to Ballot: currentScene = " + Actions.currentScene);
     // React Navigation / RNRF Tabs do not re-render when displayed, so we need this...
     // Actions.refesh() forces componentWillReceiveProps() to be executed
     Actions.refresh({
@@ -89,7 +90,7 @@ export default class Ballot extends Component {
   };
 
   static onExit = () => {
-    console.log("RNRF onExit from Ballot: currentScene = " + Actions.currentScene);
+    logging.rnrfLog("onExit from Ballot: currentScene = " + Actions.currentScene);
     Actions.refresh({came_from: 'ballot', forward_to_ballot: false})
   };
 
@@ -99,7 +100,7 @@ export default class Ballot extends Component {
     this.setState({mounted: true});
     if (Actions.currentScene === 'ballot') {
       if (typeof BallotStore.ballot_properties === "undefined" || BallotStore.ballot_properties.ballot_found === false) { // No ballot found
-        console.log("RNRF Ballot had no voter so called  AddressSelectModal");
+        logging.rnrfLog("Ballot had no voter so called  AddressSelectModal");
         this.setState({showBallotSummaryModal: true});
         //Actions.location({came_from: 'ballot'});
         //browserHistory.push("settings/location");
@@ -112,7 +113,8 @@ export default class Ballot extends Component {
       }
 
       if (!this.ballotStoreListener) {
-        console.log("RNRF ballot had no ballotStoreListener so added listeners");
+        logging.rnrfLog("ballot had no ballotStoreListener so added listeners");
+
         // We need a ballotStoreListener here because we want the ballot to display before positions are received
         this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
         // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
@@ -152,14 +154,14 @@ export default class Ballot extends Component {
     let text_for_map_search = VoterStore.getAddressFromObjectOrTextForMapSearch();
     this.setState({ballot: this.getBallot(nextProps), ballot_type: ballot_type });
     if (this.props.entryTime !== nextProps.entryTime) {
-      console.log("RNRF componentWillReceiveProps in Ballot: this.forceUpdate()" );
+      logging.rnrfLog("componentWillReceiveProps in Ballot: this.forceUpdate()");
       if (text_for_map_search.length == 0 ) { // No voter found
-        console.log("RNRF Voter had no address so enabled AddressSelectModal");
+        logging.rnrfLog("Voter had no address so enabled AddressSelectModal");
         this.setState({showAddressSummaryModal: true});
         this.forceUpdate();
       }
       if (typeof BallotStore.ballot_properties === "undefined" || BallotStore.ballot_properties.ballot_found === false) { // No ballot found
-        console.log("RNRF Ballot had no ballot so called  BallotSelectModal");
+        logging.rnrfLog("Ballot had no ballot so called  BallotSelectModal");
         this.setState({showBallotSummaryModal: true});
         this.forceUpdate();
       }
@@ -347,7 +349,7 @@ export default class Ballot extends Component {
 
   // ------------------------------------------------------------------------------------------------------------------
   render () {
-    console.log("Ballot.js =================== render (), scene = " + Actions.currentScene);
+    logging.renderLog("Ballot.js", "scene = " + Actions.currentScene);
 
     if (this.state.waitingForBallot) {
       console.log("Ballot waitingForBallot is true, returning null");
@@ -401,7 +403,7 @@ export default class Ballot extends Component {
     const election_name = BallotStore.currentBallotElectionName;
     const election_date = BallotStore.currentBallotElectionDate;
     const polling_location_we_vote_id_source = BallotStore.currentBallotPollingLocationSource;
-    let ballot_returned_admin_edit_url = web_app_config.WE_VOTE_SERVER_ROOT_URL + "b/" + polling_location_we_vote_id_source + "/list_edit_by_polling_location/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
+    let ballot_returned_admin_edit_url = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "b/" + polling_location_we_vote_id_source + "/list_edit_by_polling_location/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     const emptyBallotButton = this.getFilterType() !== "none" && !missing_address ?
         <TouchableOpacity onPress={browserHistory.push('/ballot')}>

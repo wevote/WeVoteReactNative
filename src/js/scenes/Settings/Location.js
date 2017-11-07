@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { Actions } from 'react-native-router-flux';
 import AddressBox from "../../components/AddressBox";
+import { Text, View } from 'react-native';
+const logging = require("../../utils/logging");
 //import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 //import Helmet from "react-helmet";
-import { Text, View } from 'react-native';
+
 
 export default class Location extends Component {
   static propTypes = {
@@ -17,18 +19,18 @@ export default class Location extends Component {
   }
 
   static onEnter = () => {
-    console.log("RNRF onEnter to location: currentScene = " + Actions.currentScene);
+    logging.rnrfLog("onEnter to location: currentScene = " + Actions.currentScene);
   };
 
   static onExit = () => {
-    console.log("RNRF onExit from location: currentScene = " + Actions.currentScene);
+    logging.rnrfLog("onExit from location: currentScene = " + Actions.currentScene);
     Actions.refresh({came_from: 'location', forward_to_ballot: false})
   };
 
 
   render () {
     // console.log("Settings/Location");
-    console.log("Location.js =================== render (), scene = " + Actions.currentScene);
+    logging.renderLog("Location.js", "scene = " + Actions.currentScene);
 
     return <View>
         <AddressBox {...this.props} saveUrl="/ballot" />
