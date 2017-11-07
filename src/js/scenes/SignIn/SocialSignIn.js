@@ -12,8 +12,9 @@ import VoterStore from "../../stores/VoterStore";
 import FacebookStore from "../../stores/FacebookStore";
 import {AccessToken} from "react-native-fbsdk";
 
-const WebAppConfig = require("../../config");
+const webAppConfig = require("../../config");
 const lodash_get = require('lodash.get');
+const logging = require("../../utils/logging");
 
 let oauthManager = null;
 
@@ -33,11 +34,11 @@ export default class SocialSignIn extends Component {
   }
 
   static onEnter = () => {
-    console.log("RNRF onEnter to SocialSignIn: currentScene = " + Actions.currentScene);
+    logging.rnrfLog("onEnter to SocialSignIn: currentScene = " + Actions.currentScene);
   };
 
   static onExit = () => {
-    console.log("RNRF onExit from SocialSignIn: currentScene = " + Actions.currentScene);
+    logging.rnrfLog("onExit from SocialSignIn: currentScene = " + Actions.currentScene);
   };
 
 
@@ -59,16 +60,16 @@ export default class SocialSignIn extends Component {
   }
 
   initializeOAuthManager() {
-    if (!WebAppConfig.SOCIAL_AUTH_TWITTER_KEY) {   // also known as the TWITTER_CONSUMER_KEY
+    if (!webAppConfig.SOCIAL_AUTH_TWITTER_KEY) {   // also known as the TWITTER_CONSUMER_KEY
       console.log("Missing SOCIAL_AUTH_TWITTER_KEY from src/js/config.js");
     }
-    if (!WebAppConfig.SOCIAL_AUTH_TWITTER_SECRET) {  // also known as the TWITTER_CONSUMER_SECRET
+    if (!webAppConfig.SOCIAL_AUTH_TWITTER_SECRET) {  // also known as the TWITTER_CONSUMER_SECRET
       console.log("Missing SOCIAL_AUTH_TWITTER_SECRET from src/js/config.js");
     }
-    if (!WebAppConfig.SOCIAL_AUTH_FACEBOOK_KEY) {
+    if (!webAppConfig.SOCIAL_AUTH_FACEBOOK_KEY) {
       console.log("Missing SOCIAL_AUTH_FACEBOOK_KEY from src/js/config.js");
     }
-    if (!WebAppConfig.SOCIAL_AUTH_FACEBOOK_SECRET) {
+    if (!webAppConfig.SOCIAL_AUTH_FACEBOOK_SECRET) {
       console.log("Missing SOCIAL_AUTH_FACEBOOK_SECRET from src/js/config.js");
     }
 
@@ -80,15 +81,15 @@ export default class SocialSignIn extends Component {
       oauthManager = new OAuthManager('WeVoteReactNative');
       oauthManager.configure({
         twitter: {
-          consumer_key: WebAppConfig.SOCIAL_AUTH_TWITTER_KEY,
-          consumer_secret: WebAppConfig.SOCIAL_AUTH_TWITTER_SECRET,
+          consumer_key: webAppConfig.SOCIAL_AUTH_TWITTER_KEY,
+          consumer_secret: webAppConfig.SOCIAL_AUTH_TWITTER_SECRET,
           callback_url: (Platform.OS === 'ios') ? "wevotetwitterscheme://twitter_sign_in" : "http://localhost/twitter",
         },
         facebook: {
-          client_id: WebAppConfig.SOCIAL_AUTH_FACEBOOK_KEY,
-          client_secret: WebAppConfig.SOCIAL_AUTH_FACEBOOK_SECRET,
-          //callback_url: (Platform.OS === 'ios') ? "http://localhost/fb" + WebAppConfig.SOCIAL_AUTH_FACEBOOK_KEY  : "http://localhost/facebook",  //http://localhost:3000/  "://authorize"
-          callback_url: (Platform.OS === 'ios') ? "fb" + WebAppConfig.SOCIAL_AUTH_FACEBOOK_KEY + "://authorize" : "http://localhost/facebook",
+          client_id: webAppConfig.SOCIAL_AUTH_FACEBOOK_KEY,
+          client_secret: webAppConfig.SOCIAL_AUTH_FACEBOOK_SECRET,
+          //callback_url: (Platform.OS === 'ios') ? "http://localhost/fb" + webAppConfig.SOCIAL_AUTH_FACEBOOK_KEY  : "http://localhost/facebook",  //http://localhost:3000/  "://authorize"
+          callback_url: (Platform.OS === 'ios') ? "fb" + webAppConfig.SOCIAL_AUTH_FACEBOOK_KEY + "://authorize" : "http://localhost/facebook",
         }
       });
     }
@@ -143,7 +144,7 @@ export default class SocialSignIn extends Component {
             let consumer = lodash_get(resp, "response.credentials.consumerKey");
 
             TwitterActions.twitterNativeSignInSave(token, secret);  // Save to postgres
-            console.log("RNRF SocialSignIn  Actions.twitterSignInProcess({navigated_away: false})");
+            logging.rnrfLog("SocialSignIn  Actions.twitterSignInProcess({navigated_away: false})");
             Actions.twitterSignInProcess({came_from: 'socialSignIn'});
           } else {
             let accessToken = lodash_get(resp, "response.credentials.accessToken") || false;
@@ -176,7 +177,7 @@ export default class SocialSignIn extends Component {
             if (!VoterStore.isVoterFound ())  {
               VoterActions.voterRetrieve();  // Load the voter, so they will be available on the Ballot tab, New October 26, 2017
             }
-            console.log("RNRF SocialSignIn  Actions.signIn({came_from: 'socialSignIn'})");
+            logging.rnrfLog("SocialSignIn  Actions.signIn({came_from: 'socialSignIn'})");
             Actions.signIn({
               came_from: 'socialSignIn',
               forward_to_ballot: true
@@ -218,11 +219,10 @@ export default class SocialSignIn extends Component {
 
   render () {
     if ( ( Actions.currentScene !== "socialSignIn") && ( Actions.currentScene !== "signIn") ) {
-      console.log("SocialSignIn =-=-=-=-=-=-=-=-=-= render () when NOT CURRENT, scene  = " + Actions.currentScene);
+      logging.renderLog("SocialSignIn", "when NOT CURRENT, scene  = " + Actions.currentScene);
       return null;
     }
-    console.log("SocialSignIn =================== render (), scene = " + Actions.currentScene);
-    console.log("SocialSignIn =================== render (), this.state.hasMounted = " + this.state.hasMounted);
+    logging.renderLog("SocialSignIn", "scene = " + Actions.currentScene + "  hasMounted = " + this.state.hasMounted);
 
 
     let onPressFunction = null;

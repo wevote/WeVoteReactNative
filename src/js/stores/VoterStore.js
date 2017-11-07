@@ -357,7 +357,7 @@ class VoterStore extends FluxMapStore {
           voter_device_id = action.res.voter_device_id;
           if (voter_device_id) {
             if (current_voter_device_id !== voter_device_id) {
-              // console.log("Setting new voter_device_id");
+              console.log("VoterStore Setting new voter_device_id, from ", current_voter_device_id, " to ", voter_device_id );
               CookieStore.setItem("voter_device_id", voter_device_id);
             }
             VoterActions.voterAddressRetrieve(voter_device_id);

@@ -9,6 +9,7 @@ module.exports = {
   },
 
   setVoterDeviceIdCookie (id) {
+    console.log("VoterSessionActions Setting new voter_device_id to ", id );
     CookieStore.setItem("voter_device_id", id);
   }
 };

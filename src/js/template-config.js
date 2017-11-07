@@ -20,10 +20,10 @@ module.exports = {
   // WE_VOTE_SERVER_ADMIN_ROOT_URL: "http://127.0.0.1:8000/admin/",
   // WE_VOTE_SERVER_API_ROOT_URL: "http://127.0.0.1:8000/apis/v1/",
 
-
-
   DEBUG_MODE: false,
   LOG_NATIVE_HTTP_REQUESTS: false,
+  LOG_RNRF_ROUTING: true,
+  LOG_RENDER_EVENTS: true,
 
   // Use 1 or 0 as opposed to true or false
   test: {
