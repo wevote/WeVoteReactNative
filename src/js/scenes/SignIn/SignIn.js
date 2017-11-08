@@ -46,7 +46,8 @@ export default class SignIn extends Component {
       show_twitter_disconnect: false,
       newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
       notifications_saved_status: "",
-      waiting_for_voter_device_id: false,
+      waiting_for_voter_device_id: true,
+      initialized_voter_device_id: false,  // As of November 2017, This SignIn mounts multiple times
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -76,12 +77,10 @@ export default class SignIn extends Component {
   componentWillMount () {
     console.log("SignIn ++++ MOUNT");
 
+    // TODO:  November 2017, This assumes that the signin tab is the initial tab, we should move this to a separate
+    //    initialization route that sets up the cookies, we could even go back to Async storage if it would be easier
     this.setState({waiting_for_voter_device_id: true});
-    this.getInitialDeviceId().done();
-
-    if (!VoterStore.isVoterFound ()) {
-      VoterActions.voterRetrieve();
-    }
+    this.getInitialDeviceId();
 
     this._onVoterStoreChange();
     //this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
@@ -102,14 +101,19 @@ export default class SignIn extends Component {
     });
   }
 
-  async getInitialDeviceId() {
-    try {
-      await CookieStore.getItem('voter_device_id');
-      console.log("SignIn componentWillMount CookieStore getInitialDeviceId voter_device_id prefetched (if one exists)");
+  getInitialDeviceId () {
+    if (CookieStore.getCurrentVoterDeviceId().length > 0) {
       this.setState({waiting_for_voter_device_id: false});
-    } catch (error) { // log the error
-      console.log("SignIn componentWillMount CookieStore getInitialDeviceId error = ", error);
+      this.setState({initialized_voter_device_id: true});
+      console.log("SignIn getInitialDeviceId found cached voter_device_id ", CookieStore.getCurrentVoterDeviceId());
+      return;
     }
+
+    return CookieStore.getItem('voter_device_id').then(function (res) {
+      this.setState({waiting_for_voter_device_id: false});
+      this.setState({initialized_voter_device_id: true});
+      console.log("SignIn getInitialDeviceId voter_device_id attempt prefetch", res);
+    }.bind(this));
   }
 
   /*_onFacebookChange () {
@@ -180,7 +184,14 @@ export default class SignIn extends Component {
 
 
   render () {
-    if(this.state.waiting_for_voter_device_id) {
+    if ( Actions.currentScene !== "signIn") {
+      logging.renderLog("SignIn", "when NOT CURRENT, scene  = " + Actions.currentScene);
+      return null;
+    }
+
+    logging.renderLog("SignIn", "scene = " + Actions.currentScene);
+
+    if(this.state.waiting_for_voter_device_id  && ! this.state.initialized_voter_device_id) {
       return <View className="ballot">
         <View className="ballot__header">
           <Text>Waiting for device initialization</Text>
@@ -189,17 +200,10 @@ export default class SignIn extends Component {
       </View>;
     }
 
-
     if (!VoterStore.isVoterFound ())  {
+      console.log("SignIn.js, voterRetrieve in render()");
       VoterActions.voterRetrieve();
     }
-
-
-    if ( Actions.currentScene !== "signIn") {
-      logging.renderLog("SignIn", "when NOT CURRENT, scene  = " + Actions.currentScene);
-      return null;
-    }
-    logging.renderLog("SignIn", "scene = " + Actions.currentScene);
 
     /*10/9/17 Steve, My theory on this react-native-router-flux (RNRF) work around:
     You can navigate around in the  Stack Container while doing the sign-in Actions, but to go to the other tab (ballot)
