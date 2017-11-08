@@ -29,6 +29,8 @@ I recommend this method because then you have easier access to the XCode console
     ~~/Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcodeproj~~
 
 
+![Selecting the xcworkspace file](https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/iOS%20SelectWorkspace.png "Selecting the xcworkspace file")
+
 
 3. Click the "Play" (sideways triangle button), and this opens the iOS Simulator.
 
