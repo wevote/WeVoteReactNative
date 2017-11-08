@@ -28,6 +28,7 @@ I recommend this method because then you have easier access to the XCode console
     /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcworkspace
 
 ![Welcome to Xcode](https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Welcome%20To%20Xcode.png | width=400)
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Welcome%20To%20Xcode.png" alt="alt text" width="400" >
 ![Selecting the xcworkspace file](https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/iOS%20SelectWorkspace.png "Selecting the xcworkspace file")
 
 
