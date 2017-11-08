@@ -26,9 +26,8 @@ I recommend this method because then you have easier access to the XCode console
 
 
     /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcworkspace
-    ~~/Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcodeproj~~
 
-
+![Welcome to Xcode](https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Welcome%20To%20Xcode.png)
 ![Selecting the xcworkspace file](https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/iOS%20SelectWorkspace.png "Selecting the xcworkspace file")
 
 
