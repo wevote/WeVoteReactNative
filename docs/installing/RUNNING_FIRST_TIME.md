@@ -24,13 +24,13 @@ I recommend this method because then you have easier access to the XCode console
 
 2. From within XCode, open this project.  **Be sure to open the xcworkspace!**  (not the xcodeproj!):
 
-    /Users/\<YOUR NAME HERE\>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcworkspace
+    `/Users/\<YOUR NAME HERE\>/MyProjects/WeVoteReactNative/ios/WeVoteReactNative.xcworkspace`
 
-Don't pick a project from the reverse blue history list above, those are xcodeproj's not the xcodeproj files that you need to use.
+Don't pick a project from the reverse blue history list on the top right of the dialog, those are xcodeproj's not the xcodeproj files that you need to use.
 
 <img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Welcome%20To%20Xcode.png" alt="alt text" width="600" >
 
-Clic the "Open another project..." link at the bottom, then select the WeVoteReactNative.xcworkspace entry.
+Clic the "Open another project..." link at the bottom right, then select the WeVoteReactNative.xcworkspace entry.
 
 <img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/iOS%20SelectWorkspace.png" alt="alt text" width="600" >
 
