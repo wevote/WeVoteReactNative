@@ -11,6 +11,8 @@ import CookieStore from '../stores/CookieStore';
 const url = require("url");
 const assign = require("object-assign");
 const webAppConfig = require("../config");
+const logging = require("../utils/logging");
+
 
 const DEBUG = false;
 
@@ -49,31 +51,35 @@ export function $ajax (options) {
   }
 
   if (options.url.indexOf('voter_device_id') === -1) {
-    const cookie = 'voter_device_id=' + CookieStore.getCurrentVoterDeviceId();
-    if (options.url.slice(-1) === '?') {
-      options.url += cookie;
+    if( CookieStore.getCurrentVoterDeviceId().length > 0 ) {
+      const cookie = 'voter_device_id=' + CookieStore.getCurrentVoterDeviceId();
+      logging.httpLog("$ajax sent cookie ", cookie);
+      if (options.url.slice(-1) === '?') {
+        options.url += cookie;
+      } else {
+        options.url += '&' + cookie;
+      }
     } else {
-      options.url += '&' + cookie;
+      logging.httpLog("$ajax cookie, No voter_device_id found in service.js/ajax");
     }
   }
 
-  console.log("QQQQQQQQQQQQQ fetch options", options)
+  //console.log("FETCH options", options)
   return fetch(options.url, {credentials: 'same-origin'})
     .then((response) => response.json())
     .then((responseJson) => {
       if (responseJson.hasOwnProperty('voter_device_id') && responseJson.voter_device_id.length > 0) {
-        console.log("service Setting new voter_device_id, to '" + responseJson.voter_device_id + "'" );
+        // The following console log should be permanent, do not delete it
+        console.log("service Setting new voter_device_id, to '" + responseJson.voter_device_id + "'" );  // Do not delete
         CookieStore.setItem('voter_device_id', responseJson.voter_device_id);
       }
 
-      if (webAppConfig.LOG_NATIVE_HTTP_REQUESTS) {
-        console.log(">>HTTP FETCH $ajax for (" + options.endpoint + ")");
-        if (responseJson.hasOwnProperty('voter_device_id')) {
-          console.log(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id + ' : ' +
-            responseJson.status);
-        } else {
-          console.log(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.status);
-        }
+      logging.httpLog(">>HTTP FETCH $ajax for (" + options.endpoint + ")");
+      if (responseJson.hasOwnProperty('voter_device_id')) {
+        logging.httpLog(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id + ' : ' +
+          responseJson.status);
+      } else {
+        logging.httpLog(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.status);
       }
 
       const res = responseJson;

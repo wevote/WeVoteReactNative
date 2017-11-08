@@ -14,3 +14,14 @@ export function renderLog(fileName, suffix) {
   }
 }
 
+//  Log http requests and cookie CHANGES
+export function httpLog(text, res) {
+  if (webAppConfig.LOG_NATIVE_HTTP_REQUESTS) {
+    if (res) {
+      console.log(text, res);
+    } else {
+      console.log(text);
+    }
+  }
+}
+

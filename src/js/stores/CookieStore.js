@@ -2,8 +2,8 @@ import { Platform } from 'react-native';
 import _ from "lodash";
 import CookieManager from 'react-native-cookies';
 const webAppConfig = require("../config");
-var Promise = require("bluebird");
-
+const Promise = require("bluebird");
+const logging = require("../utils/logging");
 
 /*
 A wrapper class for react-native-cookies, that handles API cookies
@@ -16,7 +16,7 @@ class CookieStore {
     this.state = {
       urlString: url,
       current_voter_device_id: '',
-    }
+    };
   };
 
 
@@ -25,76 +25,86 @@ class CookieStore {
   }
 
   getItem(key, url) {
-    if(key === 'voter_device_id' && this.state.current_voter_device_id.length > 0 ) {
+    if (key === 'voter_device_id' && this.state.current_voter_device_id.length > 0) {
       return this.state.current_voter_device_id;
     }
+    return this.getPromisedItem(key, url);
+  }
 
+  getPromisedItem (key, url) {
     if (typeof(url) === 'undefined') {
       url = this.state.urlString;
     }
 
     if (Platform.OS === 'ios') {
-      CookieManager.getAll()
+      return CookieManager.getAll()
         .then((res) => {
           if (_.has(res, key)) {
             if(key === 'voter_device_id') {
-              console.log("voter_device_id value cached ", res[key].value);
+              logging.httpLog("INITIALIZATION:  voter_device_id cookie set with cached value ", res[key].value);
               this.state.current_voter_device_id = res[key].value;
             }
             return res[key].value;
           }
         });
     } else {
-      CookieManager.get(url)
-        .then((res) => {
+      return CookieManager.get(url)
+        .then( function (res) {
           if (_.has(res, key)) {
             if(key === 'voter_device_id') {
-              console.log("voter_device_id value cached ", res[key].value);
-              this.state.current_voter_device_id = res[key].value;
+              logging.httpLog("INITIALIZATION:  voter_device_id cookie set with cached value ", res[key]);
+              this.state.current_voter_device_id = res[key];
             }
-            return res[key].value;
+            return res[key];
           }
-        });
+        }.bind(this));
     }
   }
 
-  setItem(key, value) {
+  setItem (key, value) {
     cookieString = key + '=' + value + '; path=/; expires=2025-05-30T12:30:00.00-08:00;';
 
-    if (key == 'voter_device_id')
+    if (key === 'voter_device_id') {
+      if( value === this.state.current_voter_device_id ) {
+        logging.httpLog(">>>>Set cookie iOS, value for voter_device_id already cached, no need to set cookie = ", value);
+        return;
+      }
       this.state.current_voter_device_id = value;
+    }
 
     if (Platform.OS === 'ios') {
-      console.log("iOS iOS iOS iOS iOS iOS iOS iOS iOS value = ", value);
+      const domain = new URL(this.state.urlString).hostname;
+
       CookieManager.set({
         name:   key,
         value:  value,
-        domain: this.state.urlString,
-        origin: this.state.urlString,
+        domain: domain,
+        origin: domain,
         path: '/',
         version: '1',
         expiration: '2025-05-30T12:30:00.00-08:00'
       }).then((res) => {
-        if (webAppConfig.LOG_NATIVE_HTTP_REQUESTS) {
-          console.log(">>>>Set cookie iOS (" + this.state.urlString + ") " + cookieString);
-        }
+          logging.httpLog(">>>>Set cookie iOS (" + this.state.urlString + ") " + cookieString);
       });
     } else {  // 'android'
       CookieManager.setFromResponse(this.state.urlString, cookieString).then(() => {
-        if (webAppConfig.LOG_NATIVE_HTTP_REQUESTS) {
-          console.log(">>>>Set cookie Android (" + this.state.urlString + ") " + cookieString);
-        }
+          logging.httpLog(">>>>Set cookie Android (" + this.state.urlString + ") " + cookieString);
       });
     }
   }
 
   removeItem(key) {
-    const cookieString = key + '=;expires=1970-01-02T00:00:00.00-08:00;';
-    CookieManager.setFromResponse(this.state.urlString, cookieString).then(() => {
-      if (webAppConfig.LOG_NATIVE_HTTP_REQUESTS) {
-        console.log(">>>>remove cookie (" + this.state.urlString + ") " + cookieString);
-      }
-    });
+    if (Platform.OS === 'ios') {
+      CookieManager.clearByName(key)
+        .then(() => {
+          logging.httpLog(">>>>remove cookie (" + this.state.urlString + ") " + key);
+        });
+    } else {  // 'android'
+      const cookieString = key + '=;expires=1970-01-02T00:00:00.00-08:00;';
+      CookieManager.setFromResponse(this.state.urlString, cookieString).then(() => {
+        logging.httpLog(">>>>remove cookie (" + this.state.urlString + ") " + cookieString);
+      });
+   }
   }
 
   logCookies(endpoint) {
@@ -102,22 +112,21 @@ class CookieStore {
       if (Platform.OS === 'ios') {
         CookieManager.getAll()
           .then((res) => {
-          console.log('>>>>All iOS cookies before $ajax call to (' + endpoint + ') =>', res);
+            logging.httpLog('>>>>All iOS cookies before $ajax call to (' + endpoint + ') =>', res);
         });
 
       } else {
         CookieManager.get('https://www.facebook.com')
           .then((res) => {
-            console.log('>>>>FACEBOOK Android cookies before $ajax call to (' + endpoint + ') =>', res);
+            logging.httpLog('>>>>FACEBOOK Android cookies before $ajax call to (' + endpoint + ') =>', res);
           });
         CookieManager.get(this.state.urlString)
           .then((res) => {
-            console.log('>>>>WeVoteAPI Android cookies before $ajax call to (' + endpoint + ') =>', res);
+            logging.httpLog('>>>>WeVoteAPI Android cookies before $ajax call to (' + endpoint + ') =>', res);
           });
       }
     }
   }
-
 
 }
 export default cookieStore = new CookieStore();
