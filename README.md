@@ -78,9 +78,9 @@ These are some videos which'll give you a brief overview of React Native.
 
 3. iOS and Android Specific Instructions
 
-3a. [Installation for iOS Development](ENVIRONMENT_IOS.md)
+3a. [Installation for iOS Development](docs/installing/ENVIRONMENT_IOS.md)
 
-3b. [Installation for Android Development](ENVIRONMENT_ANDROID.md)
+3b. [Installation for Android Development](docs/installing/ENVIRONMENT_ANDROID.md)
 
 4. [Running WeVoteReactNative for the First Time](docs/installing/RUNNING_FIRST_TIME.md)
 

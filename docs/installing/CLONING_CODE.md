@@ -3,7 +3,7 @@
 
 ## Set up your environment
 
-Make sure you have gone through [Step 1: Preparing the Environment on Your Machine](docs/installing/ENVIRONMENT.md) 
+Make sure you have gone through [Step 1: Preparing the Environment on Your Machine](ENVIRONMENT.md) 
 and created a place to put all of the code from Github:
 
     $ mkdir /Users/<YOUR NAME HERE>/MyProjects/

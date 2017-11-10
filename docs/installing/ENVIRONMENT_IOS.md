@@ -201,6 +201,6 @@ Run (Play) button do to a full rebuild
 
 ---
 
-Next: [Bringing Code to Your Machine](CLONING_CODE.md)
+Next: [Running WeVoteReactNative for the First Time](RUNNING_FIRST_TIME.md)
 
 [Go back to Readme Home](../../README.md)
