@@ -96,10 +96,13 @@ There are all sorts of issues/solutions in the sheet that will be necessary unti
 [Android Setup from react-native release notes](https://facebook.github.io/react-native/releases/0.45/docs/android-setup.html)
 
 Start up Android Studio
+
 File Menu, Open, Navigate to your android directory in your WeVoteReactNative project and 
 press Ok
+
 Run your project by opening the Run menu, Edit configurations
-In the upper left hand corner of the dialog, press the '+' and select Gradle
+
+In the upper left hand corner of the dialog, press the '+' and select Gradle. TODO: Gradle settings needed here
 
 
 ### Genymotion

@@ -21,12 +21,14 @@ https://github.com/\<YOUR GITHUB NAME\>/WeVoteReactNative
 
 
     (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects
+    
     (WebAppEnv) $ git clone https://github.com/<YOUR USERNAME HERE>/WeVoteReactNative.git
 
 4. cd into your local WeVoteReactNative repository folder, and set up a remote for upstream.
 
 
     (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative
+    
     (WebAppEnv) $ git remote add upstream git@github.com:wevote/WeVoteReactNative.git
 
 ### Needed if you have NOT installed WebApp previously
@@ -42,7 +44,7 @@ https://github.com/\<YOUR GITHUB NAME\>/WeVoteReactNative
 
 ## Other notes:
 
-This project has an active Wiki page with some uptodate notes.  Take a look at [ReactNativeWiki](https://github.com/wevote/WeVoteReactNative/wiki)
+This project has an active Wiki page with some up-to-date notes.  Take a look at [ReactNativeWiki](https://github.com/wevote/WeVoteReactNative/wiki)
 
 This list of preferred libraries might be dated (as of September 27, 2017): 
 
@@ -71,13 +73,18 @@ tags like `<div>`.  In the case of each `<div>` from the WebApp code, we will in
 
 I've commented out most of the libraries which cannot be used within the files.
 
-Please ping @RohanVB on slack if there's any need for clarification.
+Please ping #react-native on We Vote's Slack if there's any need for clarification.
 
 
 
 ---
 
-Next: [Running WeVoteReactNative for the First Time](RUNNING_FIRST_TIME.md)
+Next:
+
+3a. [Installation for iOS Development](ENVIRONMENT_IOS.md)
+
+3b. [Installation for Android Development](ENVIRONMENT_ANDROID.md)
+
 
 [Go back to Readme Home](../../README.md)
 
