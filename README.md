@@ -76,7 +76,13 @@ These are some videos which'll give you a brief overview of React Native.
 
 2. [Bringing Code to Your Machine](docs/installing/CLONING_CODE.md)
 
-3. [Running WeVoteReactNative for the First Time](docs/installing/RUNNING_FIRST_TIME.md)
+3. iOS and Android Specific Instructions
+
+3a. [Installation for iOS Development](ENVIRONMENT_IOS.md)
+
+3b. [Installation for Android Development](ENVIRONMENT_ANDROID.md)
+
+4. [Running WeVoteReactNative for the First Time](docs/installing/RUNNING_FIRST_TIME.md)
 
 ## Working with WeVoteReactNative
 1. [Working with WeVoteReactNative Day-to-Day](docs/working/README_WORKING_WITH_REACT_NATIVE.md)
