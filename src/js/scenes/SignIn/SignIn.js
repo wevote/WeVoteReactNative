@@ -75,7 +75,7 @@ export default class SignIn extends Component {
 
   // Doesn't work in react-native? // componentDidMount () {
   componentWillMount () {
-    console.log("SignIn ++++ MOUNT");
+    console.log("SignIn ++++ MOUNT currentScene = " + Actions.currentScene);
 
     // TODO:  November 2017, This assumes that the signin tab is the initial tab, we should move this to a separate
     //    initialization route that sets up the cookies, we could even go back to Async storage if it would be easier
@@ -85,6 +85,13 @@ export default class SignIn extends Component {
     this._onVoterStoreChange();
     //this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    const forward = this.props.forward_to_ballot || false;
+    if( forward === true ) {
+      logging.rnrfLog("SignIn received this.props.forward_to_ballot = " + this.props.forward_to_ballot);
+      logging.rnrfLog("SignIn  Actions.ballot(}");
+      Actions.ballot({came_from: 'signIn'});
+    }
+
   }
 
   componentWillUnmount () {
@@ -209,14 +216,6 @@ export default class SignIn extends Component {
     You can navigate around in the  Stack Container while doing the sign-in Actions, but to go to the other tab (ballot)
     you need to be in the signIn tab component.  If someone finds a simpler way to do this, please change over to your
     simpler way */
-
-    const forward = this.props.forward_to_ballot || 'No Data';
-    if( forward === true ) {
-      logging.rnrfLog("SignIn received this.props.forward_to_ballot = " + this.props.forward_to_ballot);
-      logging.rnrfLog("SignIn  Actions.ballot(}");
-      Actions.ballot({came_from: 'signIn'});
-      return <LoadingWheel />;
-    }
 
     if (!this.state.voter){
       return <LoadingWheel />;

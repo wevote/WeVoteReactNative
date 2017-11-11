@@ -25,9 +25,9 @@ export default class BallotChoiceButtons extends Component {
 
     return ( <View style={styles.buttonRow}>
                   {console.log(this.state.support)}
-                  <TouchableNativeFeedback onPress={() => {this.setState({support: true})}}><View><Image source={this.state.support?support:supportBlank}></Image></View></TouchableNativeFeedback>
+                  <TouchableNativeFeedback onPress={() => {this.setState({support: true})}}><View><Image source={{uri: this.state.support?support:supportBlank}}></Image></View></TouchableNativeFeedback>
 
-                  <TouchableNativeFeedback onPress={() => {this.setState({support: false})}}><View><Image source={(!this.state.support && this.state.support !== undefined)?oppose:opposeBlank}></Image></View></TouchableNativeFeedback>
+                  <TouchableNativeFeedback onPress={() => {this.setState({support: false})}}><View><Image source={{uri: (!this.state.support && this.state.support !== undefined) ? oppose: opposeBlank}}></Image></View></TouchableNativeFeedback>
 
                   <TouchableNativeFeedback><View><Text>Comment</Text></View></TouchableNativeFeedback>
 

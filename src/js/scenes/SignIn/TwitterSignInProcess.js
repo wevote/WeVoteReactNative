@@ -43,16 +43,24 @@ export default class TwitterSignInProcess extends Component {
 
   _onTwitterStoreChange () {
     console.log("TwitterSignInProcess _onTwitterStoreChange() AAAAAAAAAAAAA");
-    this.setState({
-      twitter_auth_response: TwitterStore.getTwitterAuthResponse(),
-      saving: false
-    });
     if( TwitterStore.get().twitter_sign_in_found ) {
       console.log("TwitterSignInProcess _onTwitterStoreChange() TwitterStore.get().twitter_sign_in_found DID DID DID succeed ");
       VoterActions.voterRetrieve();  // Load the voter, so they will be available on the Ballot tab, New October 31, 2017
     } else {
       console.log("TwitterSignInProcess _onTwitterStoreChange() TwitterStore.get().twitter_sign_in_found did NOT succeed ");
     }
+    const twitter_auth_response = TwitterStore.getTwitterAuthResponse();
+    if( twitter_auth_response && twitter_auth_response.twitter_sign_in_verified ) {
+      logging.rnrfLog("twitterSignInProcess, twitter_auth_response && twitter_auth_response.twitter_sign_in_verified so Actions.ballot(with param) then LoadingWheel");
+      Actions.signIn({
+        came_from: 'TwitterSignInProcess render',
+        forward_to_ballot: true
+      });
+    }
+    this.setState({
+        twitter_auth_response: twitter_auth_response,
+        saving: false
+    });
   }
 
   _onVoterStoreChange () {
@@ -137,15 +145,6 @@ export default class TwitterSignInProcess extends Component {
             <LoadingWheel/>
           </View>
         </View>;
-    }
-
-    if( twitter_auth_response && twitter_auth_response.twitter_sign_in_verified ) {
-      logging.rnrfLog("twitterSignInProcess, twitter_auth_response && twitter_auth_response.twitter_sign_in_verified so Actions.ballot(with param) then LoadingWheel");
-      Actions.signIn({
-        came_from: 'TwitterSignInProcess render',
-        forward_to_ballot: true
-      });
-      return <LoadingWheel />;
     }
 
     console.log("=== Passed initial gate ===");
