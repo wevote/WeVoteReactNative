@@ -86,8 +86,7 @@ export default class ItemSupportOpposeCounts extends Component {
 
       <View className="network-positions__oppose">
         <View className="network-positions__count u-push--xs">
-          {!isEmpty ? oppose_count : null}
-          <Text className="sr-only"> Oppose</Text>
+          <Text className="sr-only"> {!isEmpty ? oppose_count : 0} Oppose</Text>
         </View>
         {/* 9/27/16 hack
 

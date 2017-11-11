@@ -342,12 +342,6 @@ export default class Ballot extends Component {
     }
   }
 
-  // Test code, feel free to delete if you are working on adding features to this class
-  static steveCount = 0;
-  doSomething () {
-    console.log("pressed: " + ++Ballot.steveCount);
-  }
-
   // ------------------------------------------------------------------------------------------------------------------
   render () {
     logging.renderLog("Ballot.js", "scene = " + Actions.currentScene);
@@ -375,12 +369,6 @@ export default class Ballot extends Component {
           {(Actions.currentScene === 'ballot') ?
             <SelectAddressModal show={this.state.showSelectAddressModal}
                                 toggleFunction={this._toggleSelectAddressModal} /> : null }
-
-          {/* This is a test button, October 2017, anyone working on getting this page going should feel free to delete it */}
-          <TouchableOpacity style = {styles.button} onPress={this.doSomething.bind(this)}>
-            <Text style = {styles.buttonText}>Test Button</Text>
-          </TouchableOpacity>
-          {/* End of test button, October 2017 */}
 
         </View>
       </View>;
@@ -465,10 +453,10 @@ export default class Ballot extends Component {
       {emptyBallot}
       <View className="BallotList">
         { in_ready_to_vote_mode ?
-          ballot.map( (item) => <View>
+          ballot.map( (item) => <View key={item.we_vote_id}>
             <BallotItemReadyToVote key={item.we_vote_id} {...item} />
           </View>) :
-          ballot.map( (item) => <View>
+          ballot.map( (item) => <View key={item.we_vote_id}>
             <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
                                                       _toggleMeasureModal={this._toggleMeasureModal}
                                                       key={item.we_vote_id}

@@ -7,7 +7,11 @@ In the iOS simulator press Command+D to get the simulator debugger window (Comma
 
 <img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/iOS%20Debugger%20Menu.png" alt="alt text" width="600" >
 
+There is a very similar menu in Android.  When you turn on "Remote debugging" in iOS the chrome tools will launch, in 
+android you may have to launch them yourself `http://localhost:8081/debugger-ui`
 
+HTTP/Ajax/XHR requests are hard to debug in simulators, since the requests go through proxy simulators.  In config.js if
+you enable LOG_NATIVE_HTTP_REQUESTS to true, much of the request info will end up in the console log in the debugger.
 
 ## Viewing server logs
   If you would like to see the server logs while developing, you can follow these steps.

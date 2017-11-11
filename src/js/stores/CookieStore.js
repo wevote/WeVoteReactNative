@@ -66,7 +66,8 @@ class CookieStore {
 
     if (key === 'voter_device_id') {
       if( value === this.state.current_voter_device_id ) {
-        logging.httpLog(">>>>Set cookie iOS, value for voter_device_id already cached, no need to set cookie = ", value);
+        // Please don't delete this logger
+        // logging.httpLog(">>>>Set cookie iOS, value for voter_device_id already cached, no need to set cookie = ", value);
         return;
       }
       this.state.current_voter_device_id = value;
@@ -112,17 +113,20 @@ class CookieStore {
       if (Platform.OS === 'ios') {
         CookieManager.getAll()
           .then((res) => {
-            logging.httpLog('>>>>All iOS cookies before $ajax call to (' + endpoint + ') =>', res);
+            // Please don't delete this logger
+            // logging.httpLog('>>>>All iOS cookies before $ajax call to (' + endpoint + ') =>', res);
         });
 
       } else {
         CookieManager.get('https://www.facebook.com')
           .then((res) => {
-            logging.httpLog('>>>>FACEBOOK Android cookies before $ajax call to (' + endpoint + ') =>', res);
+            // Please don't delete this logger
+            // logging.httpLog('>>>>FACEBOOK Android cookies before $ajax call to (' + endpoint + ') =>', res);
           });
         CookieManager.get(this.state.urlString)
           .then((res) => {
-            logging.httpLog('>>>>WeVoteAPI Android cookies before $ajax call to (' + endpoint + ') =>', res);
+            // Please don't delete this logger
+            // logging.httpLog('>>>>WeVoteAPI Android cookies before $ajax call to (' + endpoint + ') =>', res);
           });
       }
     }

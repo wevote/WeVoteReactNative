@@ -81,6 +81,7 @@ export function $ajax (options) {
       } else {
         logging.httpLog(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.status);
       }
+      logging.httpLog(">>HTTP response:", responseJson);
 
       const res = responseJson;
       this.dispatch({ type: options.endpoint, res });
