@@ -4,12 +4,17 @@ const isIos = (Platform.OS === 'ios');
 
 const LIVE_SERVER = false;  // is this the live production server?  (false for developers with local api servers)
 
+const USING_AVD_ANDROID = true;   // Only set to false if you are using Genymotion on Android
+
 const SERVER_ROOT_URL = LIVE_SERVER ? "https://api.wevoteusa.org/" :
-  isIos ? "http://127.0.0.1:8000/" : "http://10.0.3.2:8000/";
+  isIos ? "http://127.0.0.1:8000/" :
+    USING_AVD_ANDROID ? "http://10.0.2.2:8000/" : "http://10.0.3.2:8000/";
 const SERVER_ADMIN_ROOT_URL = LIVE_SERVER ? "https://api.wevoteusa.org/admin/" :
-  isIos ? "http://127.0.0.1:8000/admin/" : "http://10.0.3.2:8000/admin/";
+  isIos ? "http://127.0.0.1:8000/admin/" :
+    USING_AVD_ANDROID ? "http://10.0.2.2:8000/admin/" : "http://10.0.3.2:8000/admin/";
 const SERVER_API_ROOT_URL = LIVE_SERVER ? "https://api.wevoteusa.org/apis/v1/" :
-  isIos ? "http://127.0.0.1:8000/apis/v1/" : "http://10.0.3.2:8000/apis/v1/";
+  isIos ? "http://127.0.0.1:8000/apis/v1/" :
+    USING_AVD_ANDROID ? "http://10.0.2.2:8000/apis/v1/" : "http://10.0.3.2:8000/apis/v1/";
 const URL_PROTOCOL = LIVE_SERVER ? "https://" : "http://";
 const HOSTNAME = LIVE_SERVER ? "WeVote.US" : "localhost:3000";
 
@@ -20,11 +25,6 @@ module.exports = {
   WE_VOTE_SERVER_ROOT_URL:       SERVER_ROOT_URL,
   WE_VOTE_SERVER_ADMIN_ROOT_URL: SERVER_ADMIN_ROOT_URL,
   WE_VOTE_SERVER_API_ROOT_URL:   SERVER_API_ROOT_URL,
-
-  DEBUG_MODE: true,
-  LOG_NATIVE_HTTP_REQUESTS: true,
-  LOG_RNRF_ROUTING: true,
-  LOG_RENDER_EVENTS: true,
 
   DEBUG_MODE: false,
   LOG_NATIVE_HTTP_REQUESTS: false,
