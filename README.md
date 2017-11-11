@@ -82,12 +82,16 @@ These are some videos which'll give you a brief overview of React Native.
 
 3b. [Installation for Android Development](docs/installing/ENVIRONMENT_ANDROID.md)
 
-4. [Running WeVoteReactNative for the First Time](docs/installing/RUNNING_FIRST_TIME.md)
+4a. [Running WeVoteReactNative iOS for the First Time](docs/installing/RUNNING_FIRST_TIME_IOS.md)
+
+4b. [Running WeVoteReactNative Android for the First Time](docs/installing/RUNNING_FIRST_TIME_ANDROID.md)
 
 ## Working with WeVoteReactNative
 1. [Working with WeVoteReactNative Day-to-Day](docs/working/README_WORKING_WITH_REACT_NATIVE.md)
 
-2. [Debugging Tools and Tips](docs/working/DEBUGGING_TOOLS.md)
+2a. [Debugging Tools and Tips iOS](docs/working/DEBUGGING_TOOLS_IOS.md)
+
+2b. [Debugging Tools and Tips Android](docs/working/DEBUGGING_TOOLS_ANDROID.md)
 
 3. [Issues and Reporting Bugs](docs/working/ISSUES.md)
 

@@ -1,4 +1,4 @@
-# Working with WeVoteReactNative Day-to-Day
+# Working with WeVoteReactNative Day-to-Day iOS
 
 If you are returning to work on WeVoteReactNative and other developers have made changes, follow these steps.
 
@@ -14,7 +14,7 @@ Navigate to the directory and run from the command line:
     (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative
     (WebAppEnv) $ react-native run-ios
 
-Or, better yet, run [WeVoteReactNative from XCode](../installing/RUNNING_FIRST_TIME.md).
+Or, better yet, run [WeVoteReactNative iOS from XCode](../installing/RUNNING_FIRST_TIME_IOS.md).
 
 ## Watch your memory
 If you see your JavaScript reload times go from a couple of seconds, to much much longer, you are 
@@ -60,6 +60,6 @@ the PyCharm IDE. How you do this depends on the development environment you use.
 
 ---
 
-Next: [Debugging Tools and Tips](DEBUGGING_TOOLS.md)
+Next: [Debugging Tools and Tips iOS](DEBUGGING_TOOLS_IOS.md)
 
 [Go back to Readme Home](../../README.md)

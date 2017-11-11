@@ -73,7 +73,9 @@ TODO: Add instructions for merging with develop via command line
 
 ## Test Before Creating Pull Request
 
-[Run WeVoteReactNative](RUNNING_FIRST_TIME.md) to make sure your new code is working.
+[Run WeVoteReactNative iOS](RUNNING_FIRST_TIME_IOS.md) to make sure your new code is working.
+
+[Run WeVoteReactNative Android](RUNNING_FIRST_TIME_ANDROID.md) to make sure your new code is working.
 
 ## Commit:
 * Make sure you comply with the [.editorconfig](http://editorconfig.org/) 

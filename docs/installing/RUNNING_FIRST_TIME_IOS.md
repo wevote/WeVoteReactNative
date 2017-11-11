@@ -1,9 +1,9 @@
-# Running WeVoteReactNative for the First Time
+# Running WeVoteReactNative on iOS for the First Time
 [Go back to Readme Home](../../README.md)
 
 Please make sure you have read:
 
-* [Preparing the Environment on Your Machine](ENVIRONMENT.md)
+* [Preparing the Environment on Your Machine](ENVIRONMENT_IOS.md)
 
 * [Bringing Code to Your Machine](CLONING_CODE.md)
 
@@ -30,7 +30,7 @@ Don't pick a project from the reverse blue history list on the top right of the 
 
 <img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Welcome%20To%20Xcode.png" alt="alt text" width="600" >
 
-Clic the "Open another project..." link at the bottom right, then select the WeVoteReactNative.xcworkspace entry.
+Click the "Open another project..." link at the bottom right, then select the WeVoteReactNative.xcworkspace entry.
 
 <img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/iOS%20SelectWorkspace.png" alt="alt text" width="600" >
 
@@ -55,9 +55,11 @@ If your build is failing due to an issue with RCTWebSocket, you may have to foll
 
 3. Select "All" and "Combined" on the second level of the top navbar below "Build Settings".
 
-4. Look for "Apple LLVM 8.0 - Custom Compiler Flags" and remove all the flags under "Other warning flags". You can do this by double clicking the existing flags and pressing the minus button to remove them individually.
+4. Look for "Apple LLVM 8.0 - Custom Compiler Flags" and remove all the flags under "Other warning flags". Y
+ou can do this by double clicking the existing flags and pressing the minus button to remove them individually.
 
-If your build fails due to an error with the message `Ignoring return value of function declared with warn_unused_result attribute`, proceed as instructed below:
+If your build fails due to an error with the message `Ignoring return value of function declared with warn_unused_result attribute`, 
+proceed as instructed below:
 
 1. Cmd+space to bring up spotlight search, type in and double click "RCTWebSocket.M".
 
@@ -88,35 +90,6 @@ If your build fails due to an error with the message `Ignoring return value of f
   //assert(result == 0);
   (void)SecRandomCopyBytes(kSecRandomDefault, keyBytes.length, keyBytes.mutableBytes);
 ```
-
-## Android
-See our ReactNative wiki [Android Cheat Sheet](https://github.com/wevote/WeVoteReactNative/wiki/Android-Cheat-Sheet)
-There are all sorts of issues/solutions in the sheet that will be necessary until some packages get fixed. 
-
-[Android Setup from react-native release notes](https://facebook.github.io/react-native/releases/0.45/docs/android-setup.html)
-
-Start up Android Studio
-
-File Menu, Open, Navigate to your android directory in your WeVoteReactNative project and 
-press Ok
-
-Run your project by opening the Run menu, Edit configurations
-
-In the upper left hand corner of the dialog, press the '+' and select Gradle. TODO: Gradle settings needed here
-
-
-### Genymotion
-If you can't get the Android emulator that comes with the Android Studio working, the third-party alternative [Genymotion](https://www.genymotion.com/) works very well.
-Genymotion is a purchased product, but when your Trial period runs out, you can select "Genymotion for personal use" which
-is a free license.  When setting up your run configuration in on the General tab, under "Deployment Target Options",
-select "USB Device" (even though it isn't a USB device).  When about to run, start the OSX
-"Genymotion" application, and press start (after configuring a device of your choice, I used a Google Nexus6, and 
-Android 7.0 Nougat, since I had trouble with 8.0).
- 
-
-### Missing requirements
-
-Since we're using external packages like `react-native-elements`, some dependency issues may arise. The work-around for this is to identify which dependencies are required by doing `npm install` and then adding the missing dependencies by `npm install --save <pkg_name>@<pkg_version>`
 
 
 ****

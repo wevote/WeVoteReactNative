@@ -31,6 +31,8 @@ In Android Studio, open `WeVoteReactNative/android`
 
 If you get any errors regarding missing files, click to add those.
 
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Install_Build_Tools.png" alt="alt text" width="600" >
+
 In Android Studio, go to "Android Studio" menu. Choose "Preferences", and then open "System Settings". Choose these options, and then click the "SDK Tools" tab.
 
 <img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Android_Install_SDK.png" alt="alt text" width="600" >
@@ -43,10 +45,21 @@ Confirm the changes:
 
 <img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Android_Install_SDK_Confirm.png" alt="alt text" width="600" >
 
+Now add simulator hardware by clicking on the "AVD Manager":
+
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/AVD_Manager_Icon.png" alt="alt text" width="141" >
+
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/AVD_Select_Hardware.png" alt="alt text" width="600" >
+
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Select_System_Image.png" alt="alt text" width="407" >
+
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Verify_Configuration.png" alt="alt text" width="372" >
+
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Verify_Configuration2.png" alt="alt text" width="320" >
 
 ---
 
-Next: [Running WeVoteReactNative for the First Time](RUNNING_FIRST_TIME.md)
+Next: [Running WeVoteReactNative Android for the First Time](RUNNING_FIRST_TIME_ANDROID.md)
 
 
 [Go back to Readme Home](../../README.md)

@@ -201,6 +201,6 @@ Run (Play) button do to a full rebuild
 
 ---
 
-Next: [Running WeVoteReactNative for the First Time](RUNNING_FIRST_TIME.md)
+Next: [Running WeVoteReactNative iOS for the First Time](RUNNING_FIRST_TIME_IOS.md)
 
 [Go back to Readme Home](../../README.md)
