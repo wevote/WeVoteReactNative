@@ -50,10 +50,12 @@ export default class OfficeItemCompressed extends Component {
   }
 
   _onGuideStoreChange (){
+    console.log("  OfficeItemCompressed _onGuideStoreChange");
     this.setState({ transitioning: false });
   }
 
   _onSupportStoreChange () {
+    console.log("  OfficeItemCompressed _onGuideStoreChange");
     this.setState({ transitioning: false });
   }
 

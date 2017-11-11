@@ -127,10 +127,11 @@ export default class Ballot extends Component {
         if (!VoterStore.isVoterFound ())  {
           VoterActions.voterRetrieve();  // New October 9, 2017
         }
-        SupportActions.voterAllPositionsRetrieve();
-        SupportActions.positionsCountForAllBallotItems();
-        BallotActions.voterBallotListRetrieve();
+        // Steve 11/11/17 SupportActions.voterAllPositionsRetrieve();
+        // Steve 11/11/17 SupportActions.positionsCountForAllBallotItems();
+        // Steve 11/11/17 BallotActions.voterBallotListRetrieve();
         this.setState({waitingForBallot: true});
+        console.log("STEVE      waitingForBallot: true    in  componentWillMount")
       }
     }
   }

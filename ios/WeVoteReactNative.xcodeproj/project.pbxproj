@@ -16,7 +16,6 @@
 		3BA51843BC0F45479604C4AE /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B37640D78B945F7BAC9E773 /* MaterialIcons.ttf */; };
 		59B214D39ECE45549C0169FB /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4481BB39398A45EDB735F6D3 /* Octicons.ttf */; };
 		66076FCC1FAE40C9008B77AA /* libRNCookieManagerIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 667FB3D61F717C2600DFC717 /* libRNCookieManagerIOS.a */; };
-		662149791FA79A9E00107EB4 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		664998811F6DCE6C00355CC2 /* libOAuthManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66DB23EE1F6C740500B46473 /* libOAuthManager.a */; };
 		668814E81F9AC8A700EEBF2C /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 668814E91F9AC8A700EEBF2C /* Bolts.framework */; };
 		6688150A1F9AC93F00EEBF2C /* DCTAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6688150B1F9AC93F00EEBF2C /* DCTAuth.framework */; };
@@ -320,7 +319,6 @@
 				6688150A1F9AC93F00EEBF2C /* DCTAuth.framework in Frameworks */,
 				668814E81F9AC8A700EEBF2C /* Bolts.framework in Frameworks */,
 				664998811F6DCE6C00355CC2 /* libOAuthManager.a in Frameworks */,
-				662149791FA79A9E00107EB4 /* libRCTAnimation.a in Frameworks */,
 				A525FEC738FB91892AB4A07B /* Pods_WeVoteReactNative.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
