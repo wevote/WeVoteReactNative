@@ -22,11 +22,11 @@ PODS:
   - boost/string_algorithms-includes (1.59.0)
   - DCTAuth (3.0)
   - DoubleConversion (1.1.5)
-  - FBSDKCoreKit (4.27.1):
+  - FBSDKCoreKit (4.28.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.27.1):
+  - FBSDKLoginKit (4.28.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.27.1):
+  - FBSDKShareKit (4.28.0):
     - FBSDKCoreKit
   - Folly (2016.09.26.00):
     - boost
@@ -135,9 +135,9 @@ SPEC CHECKSUMS:
   boost: 30a15ffb6d9aa4646dd3caffc960753f4cb4ca4e
   DCTAuth: 8add154decd00335d62917828896bba790ce47fd
   DoubleConversion: 08fd92ee44beec5d61445039bf9440fc7d277cd8
-  FBSDKCoreKit: 03365dad5d790249196ffad8be4f6d8a2d98f932
-  FBSDKLoginKit: 66ff53b73cffd967ab773e32fac39e90a60e6d46
-  FBSDKShareKit: 6a6a0ef9e850c741e4e1d7a7d21335205e997ec1
+  FBSDKCoreKit: ca961e279113f691fd83dc634c0bbad9d4e3f370
+  FBSDKLoginKit: b077381c27d800f21661757e8140cf2c80a91e4a
+  FBSDKShareKit: 4f525556e0df4cf0f574cb3f01c675434f29d477
   Folly: b7db7556bc4bb23f0d6b5cc093da8810f87499f1
   GLog: a1afff4ac9b8446d17a1e8a293f96f6dd1a8c589
   React: fbe1a006550fb55871cb377ba7741f5d1cfff733
@@ -146,6 +146,6 @@ SPEC CHECKSUMS:
   react-native-fbsdklogin: d4c1e156516ac8c17dd46224531fa76ace3d0fb1
   Yoga: ff8531e8cf9f7ec92a75dd44286a68c4a084c507
 
-PODFILE CHECKSUM: 306d46a0cd9d9104094f6e90557a2d95ea303cfa
+PODFILE CHECKSUM: 2d89301dc98852945b82d7e681aee2bf40632884
 
 COCOAPODS: 1.3.1

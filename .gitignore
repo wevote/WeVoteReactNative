@@ -24,7 +24,7 @@ config.js
 #
 .idea
 .gradle
-
+android/local.properties
 
 # node.js
 #
@@ -47,3 +47,6 @@ buck-out/
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
+.deco/
+components/
+ios/Pods/
