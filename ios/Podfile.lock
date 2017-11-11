@@ -56,10 +56,6 @@ PODS:
     - FBSDKCoreKit
     - FBSDKLoginKit
     - React
-  - react-native-fbsdkshare (0.0.8):
-    - FBSDKCoreKit
-    - FBSDKShareKit
-    - React
   - React/Core (0.47.2):
     - Yoga (= 0.47.2.React)
   - React/CxxBridge (0.47.2):
@@ -75,6 +71,8 @@ PODS:
     - React/RCTWebSocket
   - React/jschelpers (0.47.2):
     - Folly (= 2016.09.26.00)
+  - React/RCTAnimation (0.47.2):
+    - React/Core
   - React/RCTImage (0.47.2):
     - React/Core
     - React/RCTNetwork
@@ -96,10 +94,10 @@ DEPENDENCIES:
   - react-native-fbsdk (from `../node_modules/react-native-fbsdk/ios`)
   - react-native-fbsdkcore (from `../node_modules/react-native-fbsdkcore`)
   - react-native-fbsdklogin (from `../node_modules/react-native-fbsdklogin`)
-  - react-native-fbsdkshare (from `../node_modules/react-native-fbsdkshare`)
   - React/Core (from `../node_modules/react-native`)
   - React/CxxBridge (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTAnimation (from `../node_modules/react-native`)
   - React/RCTImage (from `../node_modules/react-native`)
   - React/RCTLinkingIOS (from `../node_modules/react-native`)
   - React/RCTNetwork (from `../node_modules/react-native`)
@@ -124,8 +122,6 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native-fbsdkcore
   react-native-fbsdklogin:
     :path: ../node_modules/react-native-fbsdklogin
-  react-native-fbsdkshare:
-    :path: ../node_modules/react-native-fbsdkshare
   Yoga:
     :path: ../node_modules/react-native/ReactCommon/yoga
 
@@ -148,9 +144,8 @@ SPEC CHECKSUMS:
   react-native-fbsdk: 6287fcddc3162c6e458e0e8a633188e5b51b4ebd
   react-native-fbsdkcore: 41561900e8f26faffdf150aae1b2495605487f5c
   react-native-fbsdklogin: d4c1e156516ac8c17dd46224531fa76ace3d0fb1
-  react-native-fbsdkshare: 6f4fe6174e0225ff81132d5d64345646338ac6da
   Yoga: ff8531e8cf9f7ec92a75dd44286a68c4a084c507
 
-PODFILE CHECKSUM: fcc393792fe0e3d7e9807f2331082ede6f3f0301
+PODFILE CHECKSUM: 306d46a0cd9d9104094f6e90557a2d95ea303cfa
 
 COCOAPODS: 1.3.1

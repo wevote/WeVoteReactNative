@@ -86,7 +86,8 @@ export function $ajax (options) {
       this.dispatch({ type: options.endpoint, res });
     })
     .catch((error) => {
-      console.error(">>HTTP FETCH $ajax error", error, options.endpoint);
+      // Steve 11/11/17 only for iphonedevcamp console.error(">>HTTP FETCH $ajax error", error, options.endpoint);
+      console.log(">>HTTP FETCH $ajax error", error, options.endpoint);
       this.dispatch({type: "error-" + options.endpoint, error});
     });
 }
