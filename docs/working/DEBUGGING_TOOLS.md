@@ -1,6 +1,14 @@
 # Debugging Tools and Tips
 [Go back to Readme Home](../../README.md)
 
+## The Google Chrome DevTools is available for react-native
+
+In the iOS simulator press Command+D to get the simulator debugger window (Command+M for Android)
+
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/iOS%20Debugger%20Menu.png" alt="alt text" width="600" >
+
+
+
 ## Viewing server logs
   If you would like to see the server logs while developing, you can follow these steps.
 
