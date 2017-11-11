@@ -3,7 +3,7 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
+  TouchableOpacity, ScrollView
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -451,7 +451,7 @@ export default class Ballot extends Component {
         </View>
       </View>
       {emptyBallot}
-      <View className="BallotList">
+      <ScrollView className="BallotList">
         { in_ready_to_vote_mode ?
           ballot.map( (item) => <View key={item.we_vote_id}>
             <BallotItemReadyToVote key={item.we_vote_id} {...item} />
@@ -467,7 +467,7 @@ export default class Ballot extends Component {
           ballot.map( (item) => <Text> {item.ballot_item_display_name}</Text> ) : null
         */}
 
-      </View>
+      </ScrollView>
 
     </View>;
   }

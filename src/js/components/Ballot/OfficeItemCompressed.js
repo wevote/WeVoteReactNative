@@ -106,7 +106,9 @@ export default class OfficeItemCompressed extends Component {
                 onPress={ this.props.link_to_ballot_item_page ?
                           ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
                           null }>
-              <Image source={{uri: one_candidate.candidate_photo_url_large}} style={{width: 48, height: 48}} />
+              {one_candidate.candidate_photo_url_large ?
+                <Image source={{uri: one_candidate.candidate_photo_url_large}} style={{width: 48, height: 48}} />
+                : null }
               <Text style={ballotStyles.titleText} className="card-main__candidate-name u-f4">&nbsp; {one_candidate.ballot_item_display_name} </Text>
             </TouchableOpacity>
 
