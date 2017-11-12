@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import GuideStore from "../../stores/GuideStore";
-import ImageHandler from "../ImageHandler";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
 import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
@@ -11,6 +10,7 @@ import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 import ballotStyles from "../../stylesheets/BallotStyles"
+//import ImageHandler from "../ImageHandler";
 //import { Link } from "react-router-native";
 //import { Link, browserHistory } from "react-router";
 
@@ -83,10 +83,10 @@ export default class OfficeItemCompressed extends Component {
           { this.props.link_to_ballot_item_page ?
             <View style={{flexDirection: 'row'}}>
               {/*<Link to={officeLink}>*/}
-                <Text style={ballotStyles.titleText}> {ballot_item_display_name} </Text>
+                <Text numberOfLines={1} ellipsizeMode='tail' style={ballotStyles.officeTitleText}> {ballot_item_display_name} </Text>
               {/*</Link>*/}
             </View> :
-            <Text> {ballot_item_display_name} </Text>
+            <Text numberOfLines={1} ellipsizeMode='tail'> {ballot_item_display_name} </Text>
           }
         </View>
         <View style={{alignSelf: 'flex-end'}}>
@@ -100,16 +100,14 @@ export default class OfficeItemCompressed extends Component {
         <View key={one_candidate.we_vote_id} className="u-stack--md">
           <View className="u-flex u-items-center u-flex-wrap u-justify-between">
             {/* *** Candidate name *** */}
-            {/* November 2, 2017, getting about 36 duplicate keys here for each candidate, and it is really hurting us
-              console.log("OfficeItemCompressed key", one_candidate.we_vote_id) */}
-            <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'space-between'}} className="u-flex u-cursor--pointer u-min-50"
+            <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'space-between'}}
                 onPress={ this.props.link_to_ballot_item_page ?
                           ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
                           null }>
               {one_candidate.candidate_photo_url_large ?
-                <Image source={{uri: one_candidate.candidate_photo_url_large}} style={{width: 48, height: 48}} />
+                <Image source={{uri: one_candidate.candidate_photo_url_large}} style={ballotStyles.candidatePhoto} />
                 : null }
-              <Text style={ballotStyles.titleText} className="card-main__candidate-name u-f4">&nbsp; {one_candidate.ballot_item_display_name} </Text>
+              <Text numberOfLines={1} ellipsizeMode='tail' style={ballotStyles.titleText} className="card-main__candidate-name u-f4">&nbsp; {one_candidate.ballot_item_display_name} </Text>
             </TouchableOpacity>
 
             {/* *** "Positions in your Network" bar OR items you can follow *** */}
@@ -158,7 +156,7 @@ export default class OfficeItemCompressed extends Component {
       </View>
 
       { !this.state.display_all_candidates_flag && remaining_candidates_to_display_count > 0 ?
-          <Text onPress={this.toggleDisplayAllCandidates} className="u-items-center">
+          <Text numberOfLines={1} ellipsizeMode='tail' onPress={this.toggleDisplayAllCandidates} className="u-items-center">
             Click&nbsp;to&nbsp;show&nbsp;{remaining_candidates_to_display_count}&nbsp;more&nbsp;candidates...</Text>
           : null
       }

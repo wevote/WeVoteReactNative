@@ -13,9 +13,15 @@ const ballotStyles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#ffffff',
   },
-  titleText: {
+  officeTitleText: {
     fontFamily: 'Arial',
     fontSize: 20,
+    fontWeight: 'bold',
+    color: '#48BBEC',
+  },
+  titleText: {
+    fontFamily: 'Arial',
+    fontSize: 15,
     fontWeight: 'bold',
     color: '#48BBEC',
   },
@@ -33,6 +39,10 @@ const ballotStyles = StyleSheet.create({
     fontSize: 15,
     color: '#48BBEC',
   },
+  candidatePhoto: {
+    width: 48,
+    height: 48
+  }
 
 });
 
