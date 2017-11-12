@@ -91,7 +91,6 @@ export default class SignIn extends Component {
       logging.rnrfLog("SignIn  Actions.ballot(}");
       Actions.ballot({came_from: 'signIn'});
     }
-
   }
 
   componentWillUnmount () {
@@ -179,19 +178,19 @@ export default class SignIn extends Component {
   }
 
   updateNewsletterOptIn (value) {
-      if (value) {
-        VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
-        this.setState({ newsletter_opt_in: true });
-      } else {
-        VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_ZERO, VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
-        this.setState({ newsletter_opt_in: false });
-      }
-      this.setState({ notifications_saved_status: "Saved" });
+    if (value) {
+      VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
+      this.setState({ newsletter_opt_in: true });
+    } else {
+      VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_ZERO, VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
+      this.setState({ newsletter_opt_in: false });
+    }
+    this.setState({ notifications_saved_status: "Saved" });
   }
 
 
   render () {
-    if ( Actions.currentScene !== "signIn") {
+    if (Actions.currentScene !== "signIn") {
       logging.renderLog("SignIn", "when NOT CURRENT, scene  = " + Actions.currentScene);
       return null;
     }
@@ -207,7 +206,7 @@ export default class SignIn extends Component {
       </View>;
     }
 
-    if (!VoterStore.isVoterFound ())  {
+    if (!VoterStore.isVoterFound())  {
       console.log("SignIn.js, voterRetrieve in render()");
       VoterActions.voterRetrieve();
     }
@@ -244,115 +243,43 @@ export default class SignIn extends Component {
       }
     }
 
-	return(
-	  <View>
-		<View>
-		    {this.state.voter.signed_in_twitter && this.state.voter.signed_in_facebook ?
-              null :
-              <HeaderTitle headerText = {your_account_title} />
-            }
+    let t = this.state.voter.signed_in_twitter;
+    let f = this.state.voter.signed_in_facebook;
+
+    return <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10 }}>
+        <View style={{
+          flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'center',
+          backgroundColor: 'white',
+          padding: 20 }}>
+
+
+          <View>
             {this.state.voter.is_signed_in ?
               <Text>{your_account_explanation}</Text> :
-              <Text>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post anything automatically.</Text>
+              <Text>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post
+                anything automatically.</Text>
             }
-            {!this.state.voter.signed_in_twitter || !this.state.voter.signed_in_facebook ?
-              <View >
-                {this.state.voter.signed_in_twitter ?
-                  null :
-                  <View>
-                    <SocialSignIn signIn authenticator={'twitter'} />
-                    <SocialSignIn signIn authenticator={'facebook'} />
-                    {/* the two signOuts, may just be temporary for testing -- Oct 2017 */}
-                    <SocialSignIn signOut authenticator={'twitter'} buttonText={"Twitter Sign Out"} />
-                    <SocialSignIn signOut authenticator={'facebook'} buttonText={"Facebook Sign Out"} />
-                  </View>
-                }
-                {/*&nbsp;*/}
-                {this.state.voter.signed_in_facebook ?
-                  null : null
-                  /*FacebookSignIn />*/
-                }
-              </View> :
-              null
-            }
-            {this.state.voter.is_signed_in ?
-              <View>
-                  <Text style={styles.title}>Your Account</Text>
-                  <Text style={styles.titleText}>First Name</Text>
-                  <TextInput style={{height: 40, width: width-100, borderColor: 'lightgray', borderWidth: 0.3}}
-                    placeholder={"First Name"}
-                    onChangeText={(value) => this.setState({first_name: value,
-                                               name_saved_status: "Saving First Name..."})}
-                    onSubmitEditing={this.handleKeyPress}
-                    value={this.state.first_name}
-                  />
-                  <Text style={styles.titleText}>Last Name</Text>
-                  <TextInput style={{height: 40, width: width-100, borderColor: 'lightgray', borderWidth: 0.3}}
-                    placeholder={"Last Name"}
-                    onChangeText={(value) => this.setState({last_name: value,
-                                                name_saved_status: "Saving Last Name..."})}
-                    onSubmitEditing={this.handleKeyPress}
-                    value={this.state.last_name}
-                  />
-                  <Text>{this.state.name_saved_status}</Text>
-                  <Text style={styles.title}>Notification Settings</Text>
-                  <Text>I would like to receive the We Vote newsletter </Text>
-                  <Switch onValueChange={(value) => this.updateNewsletterOptIn(value)} value={this.state.newsletter_opt_in}/>
-                  <Text>{this.state.notifications_saved_status}</Text>
-              </View> :
-			  null
-			}
-
-            {this.state.voter.is_signed_in ?
-              <View>
-                <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
-                    <Text style={{alignSelf: 'flex-start', fontSize: 20}}>Currently Signed In</Text>
-                    <Text style = {{alignSelf: 'flex-end', color: '#48BBEC'}} onPress={VoterSessionActions.voterSignOut}>Sign Out</Text>
-                </View>
-                <View style={{flexDirection: 'row'}}>
-                  {this.state.voter.signed_in_twitter ?
-                    <TouchableOpacity style = {styles.button} onPress={VoterSessionActions.voterSignOut}>
-                      <Text style = {styles.buttonText}>@{this.state.voter.twitter_screen_name}</Text>
-                    </TouchableOpacity> :
-                    null
-                  }
-                  <Text>&nbsp;</Text>
-                  {this.state.voter.signed_in_facebook ?
-                    <TouchableOpacity style = {styles.button} onPress={VoterSessionActions.voterSignOut}>
-                      <Text style = {styles.buttonText}>Facebook</Text>
-                    </TouchableOpacity> :
-                    null
-                  }
-                  {this.state.voter.signed_in_email ?
-                    <TouchableOpacity style = {styles.button} onPress={VoterSessionActions.voterSignOut}>
-                      <Text style = {styles.buttonText}>Sign Out</Text>
-                    </TouchableOpacity> :
-                    null
-                  }
-                </View>
-                {this.state.voter.signed_in_twitter && (this.state.voter.signed_in_facebook || this.state.voter.signed_in_with_email) ?
-                  <View>{this.state.show_twitter_disconnect ?
-                    <View>
-                      <TouchableOpacity style = {styles.dangerButton} onPress={this.voterSplitIntoTwoAccounts.bind(this)}>
-                        <Text style = {styles.buttonText}>Disconnect @{this.state.voter.twitter_screen_name} from this account</Text>
-                      </TouchableOpacity>
-                    </View> :
-                    <View>
-                      <Text style={{marginBottom: 10}} onPress={this.toggleTwitterDisconnectOpen.bind(this)}>un-link twitter</Text>
-                    </View>
-                  }</View> :
-                  null
-                }
-              </View>:
-              null
-            }
-      {/*
-        // October 3, 2017: Dale says don't need Sign In With Email for now
-        <VoterEmailAddressEntry />
-        */}
+          </View>
+          {/* November 13, 2017
+          We want to be able to respond to voter object indications of sign in here, but the data is not showing up in
+          this.state.voter.signed_in_twitter || !this.state.voter.signed_in_facebook */}
+          <View style={{flex: 1, flexDirection: 'column', paddingTop: 15}}>
+            <View>
+              <SocialSignIn signIn authenticator={'twitter'} buttonText={"Sign In"} />
+              <SocialSignIn signIn authenticator={'facebook'} buttonText={"Sign In"} />
+              {/* the two signOuts, may just be temporary for testing -- Oct 2017 */}
+              <SocialSignIn signOut authenticator={'twitter'} buttonText={"Sign Out"} />
+              <SocialSignIn signOut authenticator={'facebook'} buttonText={"Sign Out"} />
+            </View>
+          </View>
         </View>
-      </View>
-    );
-  }
-}
-
+    </View>;
+  } // render
+} // class

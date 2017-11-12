@@ -28,10 +28,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#48BBEC',
     borderColor: '#48BBEC',
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 6,
     marginBottom: 10,
+    paddingRight: 16,
+    paddingLeft: 5,
     alignSelf: 'flex-start',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    width: 150
+  },
+  facebookButton: {
+    height: 36,
+    backgroundColor: '#3b5998',
+    borderColor: '#3b5998',
+    borderWidth: 1,
+    borderRadius: 6,
+    marginBottom: 10,
+    paddingRight: 16,
+    paddingLeft: 5,
+    alignSelf: 'flex-start',
+    justifyContent: 'center',
+    width: 150
+  },
+  facebookIcon: {
+    width: 24,
+    height: 24,
+    marginTop: 6, marginRight: 4, marginLeft:4
   },
   dangerButton: {
     height: 36,
