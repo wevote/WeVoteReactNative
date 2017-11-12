@@ -47,12 +47,17 @@ you enable LOG_NATIVE_HTTP_REQUESTS to true, much of the request info will end u
 
 ## Some pictures of a working Android Studio setup
 
-<img src="https://github.com/wevote/WeVoteReactNative/tree/develop/docs/images/Android%20Studio%20Main%20Screen.png" alt="alt text" width="500" >
-<img src="https://github.com/wevote/WeVoteReactNative/tree/develop/docs/images/Android%20Studio%20Proj%20Structure%20SDK%20Tab.png" alt="alt text" width="500" >
-<img src="https://github.com/wevote/WeVoteReactNative/tree/develop/docs/images/Android%20Studio%20Run%20Config%20General%20Tab.png" alt="alt text" width="500" >
-<img src="https://github.com/wevote/WeVoteReactNative/tree/develop/docs/images/Android%20Studio%20Run%20Config%20Misc%20Tab.png" alt="alt text" width="500" >
-<img src="https://github.com/wevote/WeVoteReactNative/tree/develop/docs/images/Android%20Studio%20Run%20Config%20Debug%20Tab.png" alt="alt text" width="500" >
-<img src="https://github.com/wevote/WeVoteReactNative/tree/develop/docs/images/Android%20Studio%20Run%20Config%20Profiling%20Tab.png" alt="alt text" width="500" >
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Android%20Studio%20Main%20Screen.png" alt="alt text" width="500" >
+
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Android%20Studio%20Proj%20Structure%20SDK%20Tab.png" alt="alt text" width="500" >
+
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Android%20Studio%20Run%20Config%20General%20Tab.png" alt="alt text" width="500" >
+
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Android%20Studio%20Run%20Config%20Misc%20Tab.png" alt="alt text" width="500" >
+
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Android%20Studio%20Run%20Config%20Debug%20Tab.png" alt="alt text" width="500" >
+
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Android%20Studio%20Run%20Config%20Profiling%20Tab.png" alt="alt text" width="500" >
 
 
 
