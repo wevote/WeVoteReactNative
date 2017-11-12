@@ -346,8 +346,8 @@ export default class Ballot extends Component {
   render () {
     logging.renderLog("Ballot.js", "scene = " + Actions.currentScene);
 
-    if (this.state.waitingForBallot) {
-      console.log("Ballot waitingForBallot is true, returning null");
+    if (this.state.waitingForBallot && Actions.currentScene != 'ballot') {
+      console.log("Ballot waitingForBallot is true with the scene not being current, so returning null");
       return null;
     }
 
