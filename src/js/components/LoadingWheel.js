@@ -27,12 +27,12 @@ export default class LoadingWheel extends Component {
       <View style={styles.outerGrayPane} >
         <View style={styles.innerWhitePane} >
           { textLines.map( (item) => <Text style={styles.titlePaddedText} key={item} >{item}</Text> ) }
+          <ActivityIndicator
+                animating = {this.state.animating}
+                color = '#bc2b78'
+                size = "large"
+                style = {styles.activityIndicator} />
         </View>
-        <ActivityIndicator
-              animating = {this.state.animating}
-              color = '#bc2b78'
-              size = "large"
-              style = {styles.activityIndicator} />
       </View>
     );
   }
