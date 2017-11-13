@@ -28,7 +28,7 @@ export default class BookmarkToggle extends Component {
     this.voterStoreListener.remove();
   }
 
-  // componentDidMount ()  Doesn't work in react-native?
+  // componentDidMount ()  doesn't work in react-native
   componentWillMount () {
     this.token = BookmarkStore.addListener(this._onChange.bind(this));
     this._onChange();
@@ -38,7 +38,7 @@ export default class BookmarkToggle extends Component {
   }
 
   _onChange () {
-    this.setState({ is_bookmarked: BookmarkStore.get(this.props.we_vote_id) || false});
+    this.setState({ is_bookmarked: BookmarkStore.getBookmark(this.props.we_vote_id) || false});
   }
 
   _onVoterStoreChange () {
@@ -73,7 +73,7 @@ export default class BookmarkToggle extends Component {
     });
   }
 
-	render () {
+  render () {
     if (this.state.is_bookmarked === undefined){
       return <View className="bookmark-action" />;
     }
@@ -107,7 +107,7 @@ export default class BookmarkToggle extends Component {
                 <Icon name="bookmark" size={24} color="lightgray" onPress={this.BookmarkClick.bind(this)}/> :
                 <Icon name="bookmark-o" size={24} color="grey" onPress={this.BookmarkClick.bind(this)}/>
               }
-            { this.state.showBookmarkToggleHelpModal ? BookmarkToggleHelpModal : null }
-          </View>;
-	}
+      { this.state.showBookmarkToggleHelpModal ? BookmarkToggleHelpModal : null }
+    </View>;
+  }
 }

@@ -6,6 +6,7 @@ import VoterActions from "../actions/VoterActions";
 import FriendActions from "../actions/FriendActions";
 
 class FacebookStore extends FluxMapStore {
+  
   getInitialState (){
     return {
       authData: {},
@@ -111,14 +112,15 @@ class FacebookStore extends FluxMapStore {
         console.log("FACEBOOK_LOGGED_IN action.data:", action.data);
         FacebookActions.voterFacebookSignInAuth(action.data.authResponse);
         FacebookActions.getFacebookData();
+        state.authData = action.data;
         return {
-          ...state,
-          authData: action.data
+          ...state
         };
 
       case FacebookConstants.FACEBOOK_ACCESS_TOKEN:
+        state.facebook_access_token = action.data;
         return {
-          facebook_access_token: action.data
+          ...state
         };
 
       case FacebookConstants.FACEBOOK_RECEIVED_DATA:
@@ -126,12 +128,13 @@ class FacebookStore extends FluxMapStore {
         console.log("FACEBOOK_RECEIVED_DATA action.data:", action.data);
         FacebookActions.voterFacebookSignInData(action.data);
         // October 2017, why emailData... seems vestigial
+        state.emailData = action.data;
         return {
-          ...state,
-          emailData: action.data
+          ...state
         };
 
       case FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS:
+        // console.log("FacebookStore, FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS");
         // Cache the data in the API server
         // FacebookActions.getFacebookInvitableFriendsList(action.data.id);
         let facebook_friends_not_exist = false;
@@ -143,11 +146,11 @@ class FacebookStore extends FluxMapStore {
           facebook_friends_not_exist = true;
         }
         // console.log("FACEBOOK_RECEIVED_INVITABLE_FRIENDS: ", facebook_invitable_friends_list);
+        state.facebookInvitableFriendsList = facebook_invitable_friends_list;
+        state.facebookFriendsNotExist = facebook_friends_not_exist;
+        state.facebookInvitableFriendsRetrieved = facebook_invitable_friends_retrieved;
         return {
-          ...state,
-          facebookInvitableFriendsList: facebook_invitable_friends_list,
-          facebookFriendsNotExist: facebook_friends_not_exist,
-          facebookInvitableFriendsRetrieved: facebook_invitable_friends_retrieved
+          ...state
         };
 
       case FacebookConstants.FACEBOOK_READ_APP_REQUESTS:
@@ -163,40 +166,43 @@ class FacebookStore extends FluxMapStore {
           app_request_already_processed = true;
         }
         // console.log("app_request_already_processed", app_request_already_processed);
+        state.appRequestAlreadyProcessed = app_request_already_processed;
         return {
-          ...state,
-          appRequestAlreadyProcessed: app_request_already_processed
+          ...state
         };
 
       case FacebookConstants.FACEBOOK_DELETE_APP_REQUEST:
         return {
-          ...state,
+          ...state
         };
 
       case "voterFacebookSignInRetrieve":
         console.log("FacebookStore voterFacebookSignInRetrieve, facebook_sign_in_verified: ", action.res.facebook_sign_in_verified);
         if (action.res.facebook_sign_in_verified) {
           VoterActions.voterRetrieve();
+          /* Sept 6, 2017, has been replaced by facebook Game API friends list
+          FacebookActions.facebookFriendsAction();
+          */
         }
+        state.voter_device_id = action.res.voter_device_id;
+        state.voter_has_data_to_preserve = action.res.voter_has_data_to_preserve;
+        state.facebook_retrieve_attempted = action.res.facebook_retrieve_attempted;
+        state.facebook_sign_in_found = action.res.facebook_sign_in_found;
+        state.facebook_sign_in_verified = action.res.facebook_sign_in_verified;
+        state.facebook_sign_in_failed = action.res.facebook_sign_in_failed;
+        state.facebook_secret_key = action.res.facebook_secret_key;
+        // state.yes_please_merge_accounts = action.res.yes_please_merge_accounts;
+        state.existing_facebook_account_found = action.res.existing_facebook_account_found;
+        state.voter_we_vote_id_attached_to_facebook = action.res.voter_we_vote_id_attached_to_facebook;
+        state.voter_we_vote_id_attached_to_facebook_email = action.res.voter_we_vote_id_attached_to_facebook_email;
+        // state.facebook_email = action.res.facebook_email;
+        // state.facebook_first_name = action.res.facebook_first_name;
+        // state.facebook_middle_name = action.res.facebook_middle_name;
+        // state.facebook_last_name = action.res.facebook_last_name;
+        state.facebook_profile_image_url_https = action.res.facebook_profile_image_url_https;
+        state.facebook_friends_list = action.res.facebook_friends_list;
         return {
-          ...state,
-          voter_device_id: action.res.voter_device_id,
-          voter_has_data_to_preserve: action.res.voter_has_data_to_preserve,
-          facebook_retrieve_attempted: action.res.facebook_retrieve_attempted,
-          facebook_sign_in_found: action.res.facebook_sign_in_found,
-          facebook_sign_in_verified: action.res.facebook_sign_in_verified,
-          facebook_sign_in_failed: action.res.facebook_sign_in_failed,
-          facebook_secret_key: action.res.facebook_secret_key,
-          // yes_please_merge_accounts: action.res.yes_please_merge_accounts,
-          existing_facebook_account_found: action.res.existing_facebook_account_found,
-          voter_we_vote_id_attached_to_facebook: action.res.voter_we_vote_id_attached_to_facebook,
-          voter_we_vote_id_attached_to_facebook_email: action.res.voter_we_vote_id_attached_to_facebook_email,
-          // facebook_email: action.res.facebook_email,
-          // facebook_first_name: action.res.facebook_first_name,
-          // facebook_middle_name: action.res.facebook_middle_name,
-          // facebook_last_name: action.res.facebook_last_name,
-          facebook_profile_image_url_https: action.res.facebook_profile_image_url_https,
-          facebook_friends_list: action.res.facebook_friends_list,
+          ...state
         };
 
       case "voterFacebookSignInSave":
@@ -207,7 +213,9 @@ class FacebookStore extends FluxMapStore {
           // console.log("FacebookStore voterFacebookSignInSave, voter exists");
           FacebookActions.voterFacebookSignInRetrieve();
         }
-        return state;
+        return {
+          ...state
+        };
 
       case "voterSignOut":
         return {
@@ -218,17 +226,21 @@ class FacebookStore extends FluxMapStore {
 
       /* Sept 6, 2017, has been replaced by facebook Game API friends list */
       case "facebookFriendsAction":
+        state.facebook_friends_using_we_vote_list = action.res.facebook_friends_using_we_vote_list;
         return {
-          ...state,
-          facebook_friends_using_we_vote_list: action.res.facebook_friends_using_we_vote_list,
-         };
+          ...state
+        };
 
       case FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT:
         this.disconnectFromFacebook();
-        return state;
+        return {
+          ...state
+        };
 
       default:
-        return state;
+        return {
+          ...state
+        };
       }
     }
   }

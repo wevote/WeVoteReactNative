@@ -83,8 +83,16 @@ export function extractTwitterHandleFromTextString (raw_string) {
  */
 export function mergeTwoObjectLists (obj1, obj2) {
     var obj3 = {};
-    for (var attribute_name1 in obj1) { obj3[attribute_name1] = obj1[attribute_name1]; }
-    for (var attribute_name2 in obj2) { obj3[attribute_name2] = obj2[attribute_name2]; }
+    for (var attribute_name1 in obj1) {
+        if (obj1.hasOwnProperty(attribute_name1)) {
+            obj3[attribute_name1] = obj1[attribute_name1];
+        }
+    }
+    for (var attribute_name2 in obj2) {
+        if (obj2.hasOwnProperty(attribute_name2)) {
+            obj3[attribute_name2] = obj2[attribute_name2];
+        }
+    }
     return obj3;
 }
 

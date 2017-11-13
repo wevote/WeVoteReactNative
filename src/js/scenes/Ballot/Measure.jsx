@@ -27,7 +27,7 @@ export default class Measure extends Component {
       measure_we_vote_id: this.props.params.measure_we_vote_id,
       // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-      // guides_to_follow_list: GuideStore.toFollowListForBallotItemById(this.props.params.measure_we_vote_id)
+      // guides_to_follow_list: VoterGuideStore.toFollowListForBallotItemById(this.props.params.measure_we_vote_id)
       guides_to_follow_list: VoterGuideStore.toFollowListForBallotItem()
     };
   }
@@ -36,10 +36,10 @@ export default class Measure extends Component {
     this.measureStoreListener = MeasureStore.addListener(this._onMeasureStoreChange.bind(this));
     var { measure_we_vote_id } = this.props.params;
 
-    MeasureActions.retrieve(measure_we_vote_id);
+    MeasureActions.measureRetrieve(measure_we_vote_id);
 
-    this.guideStoreListener = VoterGuideStore.addListener(this._onGuideStoreChange.bind(this));
-    VoterGuideActions.retrieveGuidesToFollowByBallotItem(measure_we_vote_id, "MEASURE");
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(measure_we_vote_id, "MEASURE");
 
     // Make sure supportProps exist for this Measure when browser comes straight to measure page
     SupportActions.retrievePositionsCountsForOneBallotItem(measure_we_vote_id);
@@ -51,9 +51,9 @@ export default class Measure extends Component {
     // When a new candidate is passed in, update this component to show the new data
     this.setState({measure_we_vote_id: nextProps.params.measure_we_vote_id});
 
-    MeasureActions.retrieve(nextProps.params.measure_we_vote_id);
+    MeasureActions.measureRetrieve(nextProps.params.measure_we_vote_id);
 
-    VoterGuideActions.retrieveGuidesToFollowByBallotItem(nextProps.params.measure_we_vote_id, "MEASURE");
+    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.measure_we_vote_id, "MEASURE");
 
     // Display the measure's name in the search box
     // var { measure } = this.state;
@@ -63,14 +63,14 @@ export default class Measure extends Component {
 
   componentWillUnmount () {
     this.measureStoreListener.remove();
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
-  _onGuideStoreChange (){
+  _onVoterGuideStoreChange (){
     // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
     this.setState({ guides_to_follow_list: VoterGuideStore.toFollowListForBallotItem() });
-    MeasureActions.retrieve(this.state.measure_we_vote_id);
+    MeasureActions.measureRetrieve(this.state.measure_we_vote_id);
   }
 
   _onMeasureStoreChange (){

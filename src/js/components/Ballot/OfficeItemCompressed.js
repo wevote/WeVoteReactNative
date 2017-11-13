@@ -12,7 +12,6 @@ import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 import ballotStyles from "../../stylesheets/BallotStyles"
-//import ImageHandler from "../ImageHandler";
 //import { Link } from "react-router-native";
 //import { Link, browserHistory } from "react-router";
 
@@ -41,8 +40,8 @@ export default class OfficeItemCompressed extends Component {
   }
 
   componentDidMount () {
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onGuideStoreChange.bind(this));
-    this._onGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this._onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
   }
 
@@ -51,13 +50,11 @@ export default class OfficeItemCompressed extends Component {
     this.supportStoreListener.remove();
   }
 
-  _onGuideStoreChange (){
-    console.log("  OfficeItemCompressed _onGuideStoreChange");
+  _onVoterGuideStoreChange (){
     this.setState({ transitioning: false });
   }
 
   _onSupportStoreChange () {
-    console.log("  OfficeItemCompressed _onGuideStoreChange");
     this.setState({ transitioning: false });
   }
 

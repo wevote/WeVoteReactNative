@@ -25,6 +25,7 @@ class VoterStore extends FluxMapStore {
   }
 
   getVoter (){
+    // console.log("VoterStore, this.getState().voter: ", this.getState().voter);
     return this.getState().voter;
   }
 
@@ -170,7 +171,9 @@ class VoterStore extends FluxMapStore {
             }
           }
         }
-        return state;
+        return {
+          ...state
+        };
 
       case "organizationSuggestionTasks":
         if (action.res.success) {
@@ -184,37 +187,33 @@ class VoterStore extends FluxMapStore {
             VoterGuideActions.voterGuidesToFollowRetrieve(this.election_id());
           }
         }
-        return state;
+        return {
+          ...state
+        };
 
       case "positionListForVoter":
         if (action.res.show_only_this_election) {
           let position_list_for_one_election = action.res.position_list;
-          return {
-            ...state,
-            voter: {
-              ...state.voter,
-              position_list_for_one_election: position_list_for_one_election
-            }
-          };
+          if (state.voter === undefined) {
+            state.voter = {};
+          }
+          state.voter.position_list_for_one_election = position_list_for_one_election;
         } else if (action.res.show_all_other_elections) {
           let position_list_for_all_except_one_election = action.res.position_list;
-          return {
-            ...state,
-            voter: {
-              ...state.voter,
-              position_list_for_all_except_one_election: position_list_for_all_except_one_election
-            }
-          };
+          if (state.voter === undefined) {
+            state.voter = {};
+          }
+          state.voter.position_list_for_all_except_one_election = position_list_for_all_except_one_election;
         } else {
           let position_list = action.res.position_list;
-          return {
-            ...state,
-            voter: {
-              ...state.voter,
-              position_list: position_list
-            }
-          };
+          if (state.voter === undefined) {
+            state.voter = {};
+          }
+          state.voter.position_list = position_list;
         }
+        return {
+          ...state
+        };
 
       case "twitterRetrieveIdsIFollow":
         // console.log("twitterRetrieveIdsIFollow")
@@ -222,96 +221,90 @@ class VoterStore extends FluxMapStore {
           VoterActions.organizationSuggestionTasks("UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW",
           "FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
         }
-        return state;
+        return {
+          ...state
+        };
 
       case "voterAddressRetrieve":
+        state.address = action.res;
         return {
-          ...state,
-          address: action.res
+          ...state
         };
 
       case "voterAddressSave":
-        if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
-          return {
-            ...state,
-            address: {
-              text_for_map_search: action.res.text_for_map_search,
-              google_civic_election_id: action.res.google_civic_election_id
-            }
-          };
-        } else {
+        if (action.res.status !== "SIMPLE_ADDRESS_SAVE") {
           BallotActions.voterBallotItemsRetrieve();
           SupportActions.positionsCountForAllBallotItems(action.res.google_civic_election_id);
-          return {
-            ...state,
-            address: {
-              text_for_map_search: action.res.text_for_map_search,
-              google_civic_election_id: action.res.google_civic_election_id
-            }
-          };
         }
+        state.address = {
+          text_for_map_search: action.res.text_for_map_search,
+          google_civic_election_id: action.res.google_civic_election_id
+        };
+        return {
+          ...state
+        };
 
       case "voterEmailAddressRetrieve":
+        state.email_address_list = action.res.email_address_list;
         return {
-          ...state,
-          email_address_list: action.res.email_address_list,
+          ...state
         };
 
       case "voterEmailAddressSave":
         VoterActions.voterRetrieve();
+        state.email_address_list = action.res.email_address_list;
+        state.email_address_status = {
+          email_verify_attempted: action.res.email_verify_attempted,
+          email_address_already_owned_by_other_voter: action.res.email_address_already_owned_by_other_voter,
+          email_address_created: action.res.email_address_created,
+          email_address_deleted: action.res.email_address_deleted,
+          verification_email_sent: action.res.verification_email_sent,
+          link_to_sign_in_email_sent: action.res.link_to_sign_in_email_sent,
+        };
         return {
-          ...state,
-          email_address_list: action.res.email_address_list,
-          email_address_status: {
-            email_verify_attempted: action.res.email_verify_attempted,
-            email_address_already_owned_by_other_voter: action.res.email_address_already_owned_by_other_voter,
-            email_address_created: action.res.email_address_created,
-            email_address_deleted: action.res.email_address_deleted,
-            verification_email_sent: action.res.verification_email_sent,
-            link_to_sign_in_email_sent: action.res.link_to_sign_in_email_sent,
-          }
+          ...state
         };
 
       case "voterEmailAddressSignIn":
         VoterActions.voterRetrieve();
+        state.email_sign_in_status = {
+          email_sign_in_attempted: action.res.email_sign_in_attempted,
+          email_ownership_is_verified: action.res.email_ownership_is_verified,
+          email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
+          email_address_found: action.res.email_address_found,
+          yes_please_merge_accounts: action.res.yes_please_merge_accounts,
+          voter_we_vote_id_from_secret_key: action.res.voter_we_vote_id_from_secret_key,
+          voter_merge_two_accounts_attempted: false,
+        };
         return {
-          ...state,
-          email_sign_in_status: {
-            email_sign_in_attempted: action.res.email_sign_in_attempted,
-            email_ownership_is_verified: action.res.email_ownership_is_verified,
-            email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
-            email_address_found: action.res.email_address_found,
-            yes_please_merge_accounts: action.res.yes_please_merge_accounts,
-            voter_we_vote_id_from_secret_key: action.res.voter_we_vote_id_from_secret_key,
-            voter_merge_two_accounts_attempted: false,
-          }
+          ...state
         };
 
       case "voterEmailAddressVerify":
         VoterActions.voterRetrieve();
+        state.email_address_status = {
+          email_ownership_is_verified: action.res.email_ownership_is_verified,
+          email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
+          email_verify_attempted: action.res.email_verify_attempted,
+          email_address_found: action.res.email_address_found,
+        };
+        state.email_sign_in_status = {
+          email_ownership_is_verified: action.res.email_ownership_is_verified,
+          email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
+          email_sign_in_attempted: action.res.email_verify_attempted,
+          email_address_found: action.res.email_address_found,
+        };
         return {
-          ...state,
-          email_address_status: {
-            email_ownership_is_verified: action.res.email_ownership_is_verified,
-            email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
-            email_verify_attempted: action.res.email_verify_attempted,
-            email_address_found: action.res.email_address_found,
-          },
-          email_sign_in_status: {
-            email_ownership_is_verified: action.res.email_ownership_is_verified,
-            email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
-            email_sign_in_attempted: action.res.email_verify_attempted,
-            email_address_found: action.res.email_address_found,
-          }
+          ...state
         };
 
       case "voterFacebookSaveToCurrentAccount":
         VoterActions.voterRetrieve();
+        state.facebook_sign_in_status = {
+          facebook_account_created: action.res.facebook_account_created,
+        };
         return {
-          ...state,
-          facebook_sign_in_status: {
-            facebook_account_created: action.res.facebook_account_created,
-          }
+          ...state
         };
 
       case "voterMergeTwoAccounts":
@@ -325,23 +318,23 @@ class VoterStore extends FluxMapStore {
         FriendActions.friendInvitationsSentToMe();
         FriendActions.friendInvitationsProcessed();
         BallotActions.voterBallotItemsRetrieve();
+        state.email_sign_in_status = {
+          email_ownership_is_verified: true,
+          email_secret_key_belongs_to_this_voter: true,
+          email_sign_in_attempted: true,
+          email_address_found: true,
+          yes_please_merge_accounts: false,
+          voter_we_vote_id_from_secret_key: "",
+          voter_merge_two_accounts_attempted: true,
+        };
+        state.facebook_sign_in_status = {
+          voter_merge_two_accounts_attempted: true,  // TODO DALE is this needed?
+        };
+        state.twitter_sign_in_status = {
+          voter_merge_two_accounts_attempted: true,  // TODO DALE is this needed?
+        };
         return {
-          ...state,
-          email_sign_in_status: {
-            email_ownership_is_verified: true,
-            email_secret_key_belongs_to_this_voter: true,
-            email_sign_in_attempted: true,
-            email_address_found: true,
-            yes_please_merge_accounts: false,
-            voter_we_vote_id_from_secret_key: "",
-            voter_merge_two_accounts_attempted: true,
-          },
-          facebook_sign_in_status: {
-            voter_merge_two_accounts_attempted: true,  // TODO DALE is this needed?
-          },
-          twitter_sign_in_status: {
-            voter_merge_two_accounts_attempted: true,  // TODO DALE is this needed?
-          }
+          ...state
         };
 
       case "voterRetrieve":
@@ -364,10 +357,10 @@ class VoterStore extends FluxMapStore {
           }
         }
 
+        state.voter = action.res;
+        state.voter_found = action.res.voter_found;
         return {
-          ...state,
-          voter: action.res,
-          voter_found: action.res.voter_found,
+          ...state
         };
 
       case "voterSignOut":
@@ -379,46 +372,51 @@ class VoterStore extends FluxMapStore {
         FriendActions.friendInvitationsSentToMe();
         FriendActions.friendInvitationsProcessed();
         BallotActions.voterBallotItemsRetrieve();
+        state.email_address_status = {
+          email_ownership_is_verified: false,
+          email_secret_key_belongs_to_this_voter: false,
+          email_verify_attempted: false,
+          email_address_found: false
+        };
         return {
-          ...state,
-          email_address_status: {
-            email_ownership_is_verified: false,
-            email_secret_key_belongs_to_this_voter: false,
-            email_verify_attempted: false,
-            email_address_found: false
-          }
+          ...state
         };
 
       case "voterTwitterSaveToCurrentAccount":
         VoterActions.voterRetrieve();
+        state.twitter_sign_in_status = {
+          twitter_account_created: action.res.twitter_account_created,
+        };
         return {
-          ...state,
-          twitter_sign_in_status: {
-            twitter_account_created: action.res.twitter_account_created,
-          }
+          ...state
         };
 
       case "voterUpdate":
         const {first_name, last_name, email, interface_status_flags, notification_settings_flags, voter_donation_history_list} = action.res;
+        if (state.voter === undefined) {
+          state.voter = {};
+        }
+        // With this we are only updating the values we change with a voterUpdate call.
+        state.voter.first_name = first_name ? first_name : state.voter.first_name;
+        state.voter.last_name = last_name ? last_name : state.voter.last_name;
+        state.voter.facebook_email = email ? email : state.voter.email;
+        state.voter.interface_status_flags = interface_status_flags ? interface_status_flags : state.voter.interface_status_flags;
+        state.voter.notification_settings_flags = notification_settings_flags ? notification_settings_flags : state.voter.notification_settings_flags;
+        state.voter.voter_donation_history_list = voter_donation_history_list ? voter_donation_history_list : state.voter.voter_donation_history_list;
         return {
-          ...state,
-          voter: {...state.voter,
-            // With this we are only updating the values we change with a voterUpdate call.
-            first_name: first_name ? first_name : state.voter.first_name,
-            last_name: last_name ? last_name : state.voter.last_name,
-            facebook_email: email ? email : state.voter.email,
-            interface_status_flags: interface_status_flags ? interface_status_flags : state.voter.interface_status_flags,
-            notification_settings_flags: notification_settings_flags ? notification_settings_flags : state.voter.notification_settings_flags,
-            voter_donation_history_list: voter_donation_history_list ? voter_donation_history_list : state.voter.voter_donation_history_list,
-          }
+          ...state
         };
 
       case "error-voterRetrieve" || "error-voterAddressRetrieve" || "error-voterAddressSave":
         console.log(action);
-        return state;
+        return {
+          ...state
+        };
 
       default:
-        return state;
+        return {
+          ...state
+        };
     }
   }
 }
