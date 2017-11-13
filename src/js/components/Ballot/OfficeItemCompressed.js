@@ -102,14 +102,12 @@ export default class OfficeItemCompressed extends Component {
         <View key={one_candidate.we_vote_id} className="u-stack--md">
           <View className="u-flex u-items-center u-flex-wrap u-justify-between">
             {/* *** Candidate name *** */}
-            <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'space-between'}}
-                onPress={ this.props.link_to_ballot_item_page ?
-                          ()=>{browserHistory.push("/candidate/" + one_candidate.we_vote_id);} :
-                          null }>
+            <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               {one_candidate.candidate_photo_url_large ?
                 <Image source={{uri: one_candidate.candidate_photo_url_large}} style={ballotStyles.candidatePhoto} />
                 : null }
-              <Text numberOfLines={1} ellipsizeMode='tail' style={ballotStyles.titleText} className="card-main__candidate-name u-f4">&nbsp; {one_candidate.ballot_item_display_name} </Text>
+              <Text numberOfLines={1} ellipsizeMode='tail' onPress={() => Actions.candidate({candidate_we_vote_id: one_candidate.we_vote_id})}
+                    style={ballotStyles.titleText} className="card-main__candidate-name u-f4">&nbsp; {one_candidate.ballot_item_display_name} </Text>
             </TouchableOpacity>
 
             {/* *** "Positions in your Network" bar OR items you can follow *** */}
