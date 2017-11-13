@@ -8,6 +8,7 @@ import VoterStore from "../stores/VoterStore";
 
 class VoterGuideStore extends FluxMapStore {
 
+  // The store keeps nested attributes of voter guides in all_cached_voter_guides, whereas the followed, ignoring, to_follow are just lists of ids.
   getInitialState () {
     return {
       all_cached_voter_guides: {}, // Dictionary with organization_we_vote_id as key and the voter_guide as value
@@ -90,20 +91,22 @@ class VoterGuideStore extends FluxMapStore {
     switch (action.type) {
 
       case "voterAddressSave":
-        if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
-          return state;
-        } else {
+        if (action.res.status !== "SIMPLE_ADDRESS_SAVE") {
           google_civic_election_id = action.res.google_civic_election_id;
           VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);
           VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);
-          return state;
         }
+        return {
+          ...state
+        };
 
       case "voterAddressRetrieve": // refresh guides when you change address
         google_civic_election_id = action.res.google_civic_election_id;
         VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);
         VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);
-        return state;
+        return {
+          ...state
+        };
 
       case "voterFollowAllOrganizationsFollowedByOrganization":
         voter_linked_organization_we_vote_id = VoterStore.getVoter().linked_organization_we_vote_id;
@@ -123,7 +126,9 @@ class VoterGuideStore extends FluxMapStore {
         SupportActions.positionsCountForAllBallotItems();
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
-        return state;
+        return {
+          ...state
+        };
 
       case "voterGuidesToFollowRetrieve":
         voter_guides = action.res.voter_guides;
@@ -136,7 +141,9 @@ class VoterGuideStore extends FluxMapStore {
         // If no voter guides found , and it's not a search query, retrieve results for all elections
         if (is_empty && election_id_exists && !search_term_exists ) {
           VoterGuideActions.voterGuidesToFollowRetrieve(0);
-          return state;
+          return {
+            ...state
+          };
         }
 
         all_cached_voter_guides = state.all_cached_voter_guides;
@@ -165,12 +172,12 @@ class VoterGuideStore extends FluxMapStore {
           organization_we_vote_ids_to_follow_ballot_items_dict[action.res.ballot_item_we_vote_id] = updated_voter_guide_ids_for_one_ballot_item;
           // console.log("updated_voter_guide_ids_for_one_ballot_item: ", updated_voter_guide_ids_for_one_ballot_item);
 
+          state.ballot_has_guides = search_term_exists || election_id_exists;
+          state.organization_we_vote_ids_to_follow_for_latest_ballot_item = updated_voter_guide_ids_for_one_ballot_item;
+          state.organization_we_vote_ids_to_follow_ballot_items_dict = organization_we_vote_ids_to_follow_ballot_items_dict;
+          state.all_cached_voter_guides = all_cached_voter_guides;
           return {
-            ...state,
-            ballot_has_guides: search_term_exists || election_id_exists,
-            organization_we_vote_ids_to_follow_for_latest_ballot_item: updated_voter_guide_ids_for_one_ballot_item,
-            organization_we_vote_ids_to_follow_ballot_items_dict: organization_we_vote_ids_to_follow_ballot_items_dict,
-            all_cached_voter_guides: all_cached_voter_guides
+            ...state
           };
         } else {
           // Go voter_guide-by-voter_guide and add them to each ballot_item
@@ -180,13 +187,39 @@ class VoterGuideStore extends FluxMapStore {
           let ballot_items_we_are_tracking = Object.keys(organization_we_vote_ids_to_follow_ballot_items_dict);
           let current_list = [];
           let new_list = [];
-          let ballot_item_we_vote_ids_this_org_supports;
           let guide_we_vote_ids_processed = [];
 
           voter_guides.forEach( one_voter_guide => {
-            ballot_item_we_vote_ids_this_org_supports = one_voter_guide.ballot_item_we_vote_ids_this_org_supports;
-            if (ballot_item_we_vote_ids_this_org_supports) {
-              ballot_item_we_vote_ids_this_org_supports.forEach(one_ballot_item_we_vote_id => {
+            if (one_voter_guide.ballot_item_we_vote_ids_this_org_supports) {
+              one_voter_guide.ballot_item_we_vote_ids_this_org_supports.forEach(one_ballot_item_we_vote_id => {
+                if (ballot_items_we_are_tracking.includes(one_ballot_item_we_vote_id)) {
+                  current_list = organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id];
+                  current_list.push(one_voter_guide.organization_we_vote_id);
+                  organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = current_list;
+                } else {
+                  new_list = [];
+                  new_list.push(one_voter_guide.organization_we_vote_id);
+                  organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = new_list;
+                }
+                ballot_items_we_are_tracking = Object.keys(organization_we_vote_ids_to_follow_ballot_items_dict);
+              });
+            }
+            if (one_voter_guide.ballot_item_we_vote_ids_this_org_info_only) {
+              one_voter_guide.ballot_item_we_vote_ids_this_org_info_only.forEach(one_ballot_item_we_vote_id => {
+                if (ballot_items_we_are_tracking.includes(one_ballot_item_we_vote_id)) {
+                  current_list = organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id];
+                  current_list.push(one_voter_guide.organization_we_vote_id);
+                  organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = current_list;
+                } else {
+                  new_list = [];
+                  new_list.push(one_voter_guide.organization_we_vote_id);
+                  organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = new_list;
+                }
+                ballot_items_we_are_tracking = Object.keys(organization_we_vote_ids_to_follow_ballot_items_dict);
+              });
+            }
+            if (one_voter_guide.ballot_item_we_vote_ids_this_org_opposes) {
+              one_voter_guide.ballot_item_we_vote_ids_this_org_opposes.forEach(one_ballot_item_we_vote_id => {
                 if (ballot_items_we_are_tracking.includes(one_ballot_item_we_vote_id)) {
                   current_list = organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id];
                   current_list.push(one_voter_guide.organization_we_vote_id);
@@ -214,24 +247,23 @@ class VoterGuideStore extends FluxMapStore {
           });
 
           if (filter_voter_guides_by_issue) {
+            state.ballot_has_guides = search_term_exists || election_id_exists;
+            state.organization_we_vote_ids_to_follow_ballot_items_dict = organization_we_vote_ids_to_follow_ballot_items_dict;
+            state.organization_we_vote_ids_to_follow_by_issues_followed = organization_we_vote_ids_to_follow_by_issues_followed;
+            state.all_cached_voter_guides = all_cached_voter_guides;
             return {
-              ...state,
-              ballot_has_guides: search_term_exists || election_id_exists,
-              organization_we_vote_ids_to_follow_ballot_items_dict: organization_we_vote_ids_to_follow_ballot_items_dict,
-              organization_we_vote_ids_to_follow_by_issues_followed: organization_we_vote_ids_to_follow_by_issues_followed,
-              all_cached_voter_guides: all_cached_voter_guides
+              ...state
             };
           } else {
             // This is for when, there is a default voter guides to follow
+            state.ballot_has_guides = search_term_exists || election_id_exists;
+            state.organization_we_vote_ids_to_follow_all = organization_we_vote_id_list_from_voter_guides_returned;
+            state.organization_we_vote_ids_to_follow_ballot_items_dict = organization_we_vote_ids_to_follow_ballot_items_dict;
+            state.all_cached_voter_guides = all_cached_voter_guides;
             return {
-              ...state,
-              ballot_has_guides: search_term_exists || election_id_exists,
-              organization_we_vote_ids_to_follow_all: organization_we_vote_id_list_from_voter_guides_returned,
-              organization_we_vote_ids_to_follow_ballot_items_dict: organization_we_vote_ids_to_follow_ballot_items_dict,
-              all_cached_voter_guides: all_cached_voter_guides
+              ...state
             };
           }
-
         }
 
       case "voterGuidesFollowedRetrieve":
@@ -244,10 +276,10 @@ class VoterGuideStore extends FluxMapStore {
           all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
           organization_we_vote_ids_voter_is_following.push(one_voter_guide.organization_we_vote_id);
         });
+        state.organization_we_vote_ids_voter_is_following = organization_we_vote_ids_voter_is_following;
+        state.all_cached_voter_guides = all_cached_voter_guides;
         return {
-          ...state,
-          organization_we_vote_ids_voter_is_following: organization_we_vote_ids_voter_is_following,
-          all_cached_voter_guides: all_cached_voter_guides
+          ...state
         };
 
       case "voterGuideFollowersRetrieve":
@@ -257,9 +289,9 @@ class VoterGuideStore extends FluxMapStore {
         voter_guides.forEach( one_voter_guide => {
           all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
         });
+        state.all_cached_voter_guides = all_cached_voter_guides;
         return {
-          ...state,
-          all_cached_voter_guides: all_cached_voter_guides
+          ...state
         };
 
       case "voterGuidesIgnoredRetrieve":
@@ -269,9 +301,9 @@ class VoterGuideStore extends FluxMapStore {
         voter_guides.forEach( one_voter_guide => {
           all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
         });
+        state.all_cached_voter_guides = all_cached_voter_guides;
         return {
-          ...state,
-          all_cached_voter_guides: all_cached_voter_guides
+          ...state
         };
 
       case "voterGuidesFollowedByOrganizationRetrieve":
@@ -288,9 +320,9 @@ class VoterGuideStore extends FluxMapStore {
           voter_guides.forEach(one_voter_guide => {
             organization_we_vote_ids_to_follow_organization_recommendation_dict[organization_we_vote_id_for_voter_guide_owner].push(one_voter_guide.organization_we_vote_id);
           });
+          state.organization_we_vote_ids_to_follow_organization_recommendation_dict = organization_we_vote_ids_to_follow_organization_recommendation_dict;
           return {
-            ...state,
-            organization_we_vote_ids_to_follow_organization_recommendation_dict: organization_we_vote_ids_to_follow_organization_recommendation_dict,
+            ...state
           };
         } else {
           // console.log("voterGuidesFollowedByOrganizationRetrieve NO election_id, organization_we_vote_id_for_voter_guide_owner: ", organization_we_vote_id_for_voter_guide_owner);
@@ -299,10 +331,10 @@ class VoterGuideStore extends FluxMapStore {
             all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
             organization_we_vote_ids_to_follow_organization_recommendation_dict[organization_we_vote_id_for_voter_guide_owner].push(one_voter_guide.organization_we_vote_id);
           });
+          state.all_cached_voter_guides = all_cached_voter_guides;
+          state.organization_we_vote_ids_to_follow_organization_recommendation_dict = organization_we_vote_ids_to_follow_organization_recommendation_dict;
           return {
-            ...state,
-            all_cached_voter_guides: all_cached_voter_guides,
-            organization_we_vote_ids_to_follow_organization_recommendation_dict: organization_we_vote_ids_to_follow_organization_recommendation_dict,
+            ...state
           };
         }
 
@@ -313,10 +345,10 @@ class VoterGuideStore extends FluxMapStore {
         voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
+        state.organization_we_vote_ids_to_follow_all = state.organization_we_vote_ids_to_follow_all.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; });
+        state.organization_we_vote_ids_to_follow_for_latest_ballot_item = state.organization_we_vote_ids_to_follow_for_latest_ballot_item.filter(existing_org_we_vote_id => {return existing_org_we_vote_id !== organization_we_vote_id; });
         return {
-          ...state,
-          organization_we_vote_ids_to_follow_all: state.organization_we_vote_ids_to_follow_all.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
-          organization_we_vote_ids_to_follow_for_latest_ballot_item: state.organization_we_vote_ids_to_follow_for_latest_ballot_item.filter(existing_org_we_vote_id => {return existing_org_we_vote_id !== organization_we_vote_id; }),
+          ...state
         };
 
       case "organizationStopFollowing":
@@ -326,9 +358,9 @@ class VoterGuideStore extends FluxMapStore {
         voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
+        state.organization_we_vote_ids_to_follow_all = state.organization_we_vote_ids_to_follow_all.concat(organization_we_vote_id);
         return {
-          ...state,
-          organization_we_vote_ids_to_follow_all: state.organization_we_vote_ids_to_follow_all.concat(organization_we_vote_id)
+          ...state
         };
 
       case "organizationFollowIgnore":
@@ -338,14 +370,16 @@ class VoterGuideStore extends FluxMapStore {
         voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
         // organization_we_vote_id is the organization that was just followed
         organization_we_vote_id = action.res.organization_we_vote_id;
+        state.organization_we_vote_ids_to_follow_all = state.organization_we_vote_ids_to_follow_all.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; });
+        state.organization_we_vote_ids_to_follow_for_latest_ballot_item = state.organization_we_vote_ids_to_follow_for_latest_ballot_item.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; });
         return {
-          ...state,
-          organization_we_vote_ids_to_follow_all: state.organization_we_vote_ids_to_follow_all.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
-          organization_we_vote_ids_to_follow_for_latest_ballot_item: state.organization_we_vote_ids_to_follow_for_latest_ballot_item.filter( existing_org_we_vote_id => { return existing_org_we_vote_id !== organization_we_vote_id; }),
+          ...state
         };
 
       default:
-        return state;
+        return {
+          ...state
+        };
     }
   }
 }

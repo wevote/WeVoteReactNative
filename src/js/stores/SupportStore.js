@@ -3,9 +3,9 @@ var FluxMapStore = require("flux/lib/FluxMapStore");
 const assign = require("object-assign");
 import { mergeTwoObjectLists } from "../utils/textFormat";
 import SupportActions from "../actions/SupportActions";
-import BallotActions from "../actions/BallotActions";
 
 class SupportStore extends FluxMapStore {
+
   getInitialState () {
     return {
       voter_supports: {},
@@ -32,7 +32,7 @@ class SupportStore extends FluxMapStore {
   }
 
   get supportList (){
-    return this.getState().voter_supports;
+    return this.getState().voter_supports || {};
   }
 
   get opposeList (){
@@ -78,8 +78,11 @@ class SupportStore extends FluxMapStore {
 
   reduce (state, action) {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (!action.res || !action.res.success)
-      return state;
+    if (!action.res || !action.res.success) {
+      return {
+        ...state
+      };
+    }
 
     let ballot_item_we_vote_id = "";
     if (action.res.ballot_item_we_vote_id) {
@@ -89,20 +92,21 @@ class SupportStore extends FluxMapStore {
     switch (action.type) {
 
       case "voterAddressRetrieve":
-        //BallotActions.voterBallotItemsRetrieve();
         SupportActions.voterAllPositionsRetrieve();
         SupportActions.positionsCountForAllBallotItems();
-        return state;
+        return {
+          ...state
+        };
 
       case "voterAllPositionsRetrieve":
         // is_support is a property coming from 'position_list' in the incoming response
         // this.state.voter_supports is an updated hash with the contents of position list['is_support']
+        state.voter_supports = this.parseListToHash("is_support", action.res.position_list);
+        state.voter_opposes = this.parseListToHash("is_oppose", action.res.position_list);
+        state.voter_statement_text = this.parseListToHash("statement_text", action.res.position_list);
+        state.is_public_position = this.parseListToHash("is_public_position", action.res.position_list);
         return {
-          ...state,
-          voter_supports: this.parseListToHash("is_support", action.res.position_list),
-          voter_opposes: this.parseListToHash("is_oppose", action.res.position_list),
-          voter_statement_text: this.parseListToHash("statement_text", action.res.position_list),
-          is_public_position: this.parseListToHash("is_public_position", action.res.position_list)
+          ...state
         };
 
       case "positionsCountForAllBallotItems":
@@ -112,10 +116,10 @@ class SupportStore extends FluxMapStore {
         var existing_support_counts = state.support_counts !== undefined ? state.support_counts : [];
 
         // Duplicate values in the second array will overwrite those in the first
+        state.oppose_counts = mergeTwoObjectLists(existing_oppose_counts, new_oppose_counts);
+        state.support_counts = mergeTwoObjectLists(existing_support_counts, new_support_counts);
         return {
-          ...state,
-          oppose_counts: mergeTwoObjectLists(existing_oppose_counts, new_oppose_counts),
-          support_counts: mergeTwoObjectLists(existing_support_counts, new_support_counts)
+          ...state
         };
 
       case "positionsCountForOneBallotItem":
@@ -125,64 +129,66 @@ class SupportStore extends FluxMapStore {
         var existing_support_counts2 = state.support_counts !== undefined ? state.support_counts : [];
 
         // Duplicate values in the second array will overwrite those in the first
+        state.oppose_counts = mergeTwoObjectLists(existing_oppose_counts2, new_one_oppose_count);
+        state.support_counts = mergeTwoObjectLists(existing_support_counts2, new_one_support_count);
         return {
-          ...state,
-          oppose_counts: mergeTwoObjectLists(existing_oppose_counts2, new_one_oppose_count),
-          support_counts: mergeTwoObjectLists(existing_support_counts2, new_one_support_count)
+          ...state
         };
 
       case "voterOpposingSave":
-        return {
-          ...state,
-          voter_supports: assign({}, state.voter_supports, { [ballot_item_we_vote_id]: false }),
-          voter_opposes: assign({}, state.voter_opposes, { [ballot_item_we_vote_id]: true }),
-          support_counts: state.voter_supports[ballot_item_we_vote_id] ?
+        state.voter_supports = assign({}, state.voter_supports, { [ballot_item_we_vote_id]: false });
+        state.voter_opposes = assign({}, state.voter_opposes, { [ballot_item_we_vote_id]: true });
+        state.support_counts = state.voter_supports[ballot_item_we_vote_id] ?
                         this.listWithChangedCount(state.support_counts, ballot_item_we_vote_id, -1 ) :
-                        state.support_counts,
-          oppose_counts: this.listWithChangedCount(state.oppose_counts, ballot_item_we_vote_id, 1)
+                        state.support_counts;
+        state.oppose_counts = this.listWithChangedCount(state.oppose_counts, ballot_item_we_vote_id, 1);
+        return {
+          ...state
         };
 
       case "voterStopOpposingSave":
+        state.voter_opposes = assign({}, state.voter_opposes, { [ballot_item_we_vote_id]: false });
+        state.oppose_counts = this.listWithChangedCount(state.oppose_counts, ballot_item_we_vote_id, -1);
         return {
-          ...state,
-          voter_opposes: assign({}, state.voter_opposes, { [ballot_item_we_vote_id]: false }),
-          oppose_counts: this.listWithChangedCount(state.oppose_counts, ballot_item_we_vote_id, -1)
+          ...state
         };
 
       case "voterSupportingSave":
-        return {
-          ...state,
-          voter_supports: assign({}, state.voter_supports, { [ballot_item_we_vote_id]: true }),
-          voter_opposes: assign({}, state.voter_opposes, { [ballot_item_we_vote_id]: false }),
-          support_counts: this.listWithChangedCount(state.support_counts, ballot_item_we_vote_id, 1),
-          oppose_counts: state.voter_opposes[ballot_item_we_vote_id] ?
+        state.voter_supports = assign({}, state.voter_supports, { [ballot_item_we_vote_id]: true });
+        state.voter_opposes = assign({}, state.voter_opposes, { [ballot_item_we_vote_id]: false });
+        state.support_counts = this.listWithChangedCount(state.support_counts, ballot_item_we_vote_id, 1);
+        state.oppose_counts = state.voter_opposes[ballot_item_we_vote_id] ?
                         this.listWithChangedCount(state.oppose_counts, ballot_item_we_vote_id, -1) :
-                        state.oppose_counts,
+                        state.oppose_counts;
+        return {
+          ...state
         };
 
       case "voterStopSupportingSave":
+        state.voter_supports = assign({}, state.voter_supports, { [ballot_item_we_vote_id]: false });
+        state.support_counts = this.listWithChangedCount(state.support_counts, ballot_item_we_vote_id, -1);
         return {
-          ...state,
-          voter_supports: assign({}, state.voter_supports, { [ballot_item_we_vote_id]: false }),
-          support_counts: this.listWithChangedCount(state.support_counts, ballot_item_we_vote_id, -1)
+          ...state
         };
 
       case "voterPositionCommentSave":
         // Add the comment to the list in memory
+        state.voter_statement_text = this.statementListWithChanges(state.voter_statement_text, ballot_item_we_vote_id, action.res.statement_text);
         return {
-          ...state,
-          voter_statement_text: this.statementListWithChanges(state.voter_statement_text, ballot_item_we_vote_id, action.res.statement_text),
+          ...state
         };
 
       case "voterPositionVisibilitySave":
         // Add the visibility to the list in memory
+        state.is_public_position = this.isForPublicListWithChanges(state.is_public_position, ballot_item_we_vote_id, action.res.is_public_position);
         return {
-          ...state,
-          is_public_position: this.isForPublicListWithChanges(state.is_public_position, ballot_item_we_vote_id, action.res.is_public_position)
+          ...state
         };
 
       default:
-        return state;
+        return {
+          ...state
+        };
     }
   }
 }

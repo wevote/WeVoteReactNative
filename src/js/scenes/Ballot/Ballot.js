@@ -105,9 +105,10 @@ export default class Ballot extends Component {
         //Actions.location({came_from: 'ballot'});
         //browserHistory.push("settings/location");
       } else {
-        let ballot = this.getBallot(this.props);
+        let ballot_type = this.props.type ? this.props.type : "all";
+        console.log("ballot = " + this.getBallotByBallotType(ballot_type));
+        let ballot = this.getBallotByBallotType(ballot_type);
         if (ballot !== undefined) {
-          let ballot_type = "all";
           this.setState({ballot: ballot, ballot_type: ballot_type});
         }
       }
@@ -119,7 +120,7 @@ export default class Ballot extends Component {
         this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
         // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
         // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
-        this.voterGuideStoreListener = VoterGuideStore.addListener(this._onGuideStoreChange.bind(this));
+        this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
         // Oct 31, 2017 ... Typo:  BallotStoreChange? So commenting it out.
         //this.supportStoreListener = SupportStore.addListener(this._onBallotStoreChange.bind(this));
         this._onVoterStoreChange(); // We call this to properly set showBallotIntroModal
@@ -144,6 +145,8 @@ export default class Ballot extends Component {
     } else {
       if (this.ballotStoreListener)
         this.ballotStoreListener.remove();
+      if (this.voterGuideStoreListener)
+        this.voterGuideStoreListener.remove();
       if (this.voterStoreListener)
         this.voterStoreListener.remove();
       // this.supportStoreListener.remove();
@@ -151,9 +154,10 @@ export default class Ballot extends Component {
   }
 
   componentWillReceiveProps (nextProps){
-    let ballot_type = "all";
+    let ballot_type = nextProps.type ? nextProps.type : "all";
     let text_for_map_search = VoterStore.getAddressFromObjectOrTextForMapSearch();
-    this.setState({ballot: this.getBallot(nextProps), ballot_type: ballot_type });
+    // console.log("ballot_type: ", ballot_type, ", ballot = " + this.getBallotByBallotType(ballot_type));
+    this.setState({ballot: this.getBallotByBallotType(ballot_type), ballot_type: ballot_type });
     if (this.props.entryTime !== nextProps.entryTime) {
       logging.rnrfLog("componentWillReceiveProps in Ballot: this.forceUpdate()");
       if (text_for_map_search.length == 0 ) { // No voter found
@@ -171,7 +175,7 @@ export default class Ballot extends Component {
 
   _toggleCandidateModal (candidate_for_modal) {
     if (candidate_for_modal) {
-      VoterGuideActions.retrieveGuidesToFollowByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
+      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
       candidate_for_modal.voter_guides_to_follow_for_latest_ballot_item = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidate_for_modal.we_vote_id);
     }
 
@@ -195,7 +199,7 @@ export default class Ballot extends Component {
 
   _toggleMeasureModal (measureForModal) {
     if (measureForModal) {
-      VoterGuideActions.retrieveGuidesToFollowByBallotItem(measureForModal.measure_we_vote_id, "MEASURE");
+      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(measureForModal.measure_we_vote_id, "MEASURE");
     }
     this.setState({
       measure_for_modal: measureForModal,
@@ -240,20 +244,23 @@ export default class Ballot extends Component {
   }
 
   _onBallotStoreChange (){
+    console.log("Ballot.js _onBallotStoreChange");
     if (this.state.mounted) {
       if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) { // Ballot is found but ballot is empty
+        console.log("Ballot.js trying to redirect to ballot/empty");
         browserHistory.push("ballot/empty");
       } else {
-        //let ballot_type = this.props.location.query ? this.props.location.query.type : "all";
+        //let ballot_type = this.props.type ? this.props.type : "all";
         let ballot_type = "all";
-        // console.log("ballot = " + this.getBallot(this.props))
-        this.setState({ballot: this.getBallot(this.props), ballot_type: ballot_type});
+        // console.log("ballot = " + this.getBallotByBallotType(ballot_type));
+        // console.log("Ballot.js setting state with ballot and ballot_type");
+        this.setState({ballot: this.getBallotByBallotType(ballot_type), ballot_type: ballot_type});
       }
-      this.setState({ballotElectionList: BallotStore.ballotList(), waitingForBallot: false});
+      this.setState({ballotElectionList: BallotStore.ballotElectionList(), waitingForBallot: false});
     }
   }
 
-  _onGuideStoreChange (){
+  _onVoterGuideStoreChange (){
     // Update the data for the modal to include the position of the organization related to this ballot item
     if (this.state.candidate_for_modal) {
       this.setState({
@@ -291,8 +298,7 @@ export default class Ballot extends Component {
     }
   }
 
-  getBallot (props){
-    let ballot_type = "all";
+  getBallotByBallotType (ballot_type){
     switch (ballot_type) {
       case "filterRemaining":
         return BallotStore.ballot_remaining_choices;
@@ -375,8 +381,8 @@ export default class Ballot extends Component {
     }
 
     if (!ballot) {
-      console.log("ballot render retrieving ballot to Loading Wheel ");
-      BallotActions.voterBallotListRetrieve();
+      console.log("Ballot.js, no ballot found so displaying Loading Wheel ");
+      // BallotActions.voterBallotListRetrieve(); // This will create an infinite loop
 
       return <LoadingWheel text={'Loading your ballot.'} />;
     }

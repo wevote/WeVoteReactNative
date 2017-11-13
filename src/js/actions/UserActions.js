@@ -10,6 +10,7 @@ import {RECEIVE_BALLOT} from './BallotActions';
 import UserService from '../../services/UserService'
 import AuthService from '../../services/AuthService'
 
+// TODO: Migrate the contents of this file into VoterActions
 export default saveAddress = (address) => {
   return (dispatch, state) => {
     UserService.saveAddress(address).then((data) => {

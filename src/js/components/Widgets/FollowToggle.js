@@ -20,18 +20,18 @@ export default class FollowToggle extends Component {
   }
 
   componentDidMount (){
-    this.guideStoreListener = VoterGuideStore.addListener(this._onGuideStoreChange.bind(this));
-    this._onGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onVoterGuideStoreChange.bind(this));
+    this._onVoterGuideStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this._onVoterStoreChange();
   }
 
   componentWillUnmount (){
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  _onGuideStoreChange (){
+  _onVoterGuideStoreChange (){
     this.setState({ is_following: VoterGuideStore.isFollowing(this.props.we_vote_id)});
   }
 

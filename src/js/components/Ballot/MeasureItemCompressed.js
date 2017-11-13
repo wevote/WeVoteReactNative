@@ -150,7 +150,7 @@ export default class MeasureItemCompressed extends Component {
                 <View onPress={ this.props.link_to_ballot_item_page ?
                       ()=>{this.props._toggleMeasureModal(measure_for_modal);} : null } >
                   {/* Show possible voter guides to follow */}
-                  { VoterGuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id) && GuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id).length !== 0 ? null
+                  { VoterGuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id) && VoterGuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id).length !== 0 ? null
                     /*<ItemTinyOpinionsToFollow ballotItemWeVoteId={we_vote_id}
                                               organizationsToFollow={VoterGuideStore.getVoterGuidesToFollowForBallotItemId(we_vote_id)}
                                               maximumOrganizationDisplay={this.state.maximum_organization_display}/>*/ :

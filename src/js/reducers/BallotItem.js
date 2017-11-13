@@ -1,9 +1,9 @@
 import {RECEIVE_BALLOT, RECEIVE_BALLOT_ITEM_INFO} from '../actions/BallotActions'
 
-export default function Ballots(state = {ballotList: null, error: null, fetching: false}, action) {
+export default function Ballots(state = {ballotElectionList: null, error: null, fetching: false}, action) {
   switch(action.type) {
     case RECEIVE_BALLOT:
-      return {...state, ballotList: action.data.ballot_item_list};
+      return {...state, ballotElectionList: action.data.ballot_item_list};
     default:
       return state;
   }

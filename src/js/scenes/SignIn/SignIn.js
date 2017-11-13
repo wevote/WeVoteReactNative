@@ -8,26 +8,18 @@ import {
   Dimensions,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import AnalyticsActions from "../../actions/AnalyticsActions";
+import CookieStore from "../../stores/CookieStore";
+import HeaderTitle from "../../components/Header/Header"
 import LoadingWheel from "../../components/LoadingWheel";
 import SocialSignIn from "./SocialSignIn";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
+import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
-import CookieStore from "../../stores/CookieStore";
-import HeaderTitle from "../../components/Header/Header"
 import styles from "../../stylesheets/BaseStyles"
 const logging = require("../../utils/logging");
-
-//import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
-//import { browserHistory } from "react-router-native";
-//import Helmet from "react-helmet";
-//import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
-//import FacebookActions from "../../actions/FacebookActions";
-//import FacebookStore from "../../stores/FacebookStore";
-//import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
-//import TwitterActions from "../../actions/TwitterActions";
-
 
 const delay_before_user_name_update_api_call = 1200;
 
@@ -51,13 +43,14 @@ export default class SignIn extends Component {
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.updateVoterName = this.updateVoterName.bind(this);
     this.getInitialDeviceId = this.getInitialDeviceId.bind(this);
+    this.updateNewsletterOptIn = this.updateNewsletterOptIn.bind(this);
+    this.updateVoterName = this.updateVoterName.bind(this);
   }
 
   static onEnter = () => {
     logging.rnrfLog("onEnter to SignIn: currentScene = " + Actions.currentScene);
-    Actions.refresh({dummy: 'hello'});  // triggers componentWillReceiveProps
+    Actions.refresh({dummy: 'hello'});  // this action triggers componentWillReceiveProps
     // Actions.refs.signIn.forceUpdate();
   };
 
@@ -65,15 +58,8 @@ export default class SignIn extends Component {
     logging.rnrfLog("onExit from SignIn: currentScene = " + Actions.currentScene);
   };
 
-  componentWillReceiveProps(nextProps) {
-    // October 9, 2017: This is hacky, we need a refresh when we come back from the ballot tab, not sure why.
-    if( nextProps.came_from === "ballot") {
-      logging.rnrfLog("componentWillReceiveProps, forcing update : currentScene = " + Actions.currentScene);
-      // Nov 2, 2017, removed, this.forceUpdate();
-    }
-  }
-
-  // Doesn't work in react-native? // componentDidMount () {
+  // Set up this component upon first entry
+  // componentDidMount is used in WebApp
   componentWillMount () {
     console.log("SignIn ++++ MOUNT currentScene = " + Actions.currentScene);
 
@@ -85,11 +71,21 @@ export default class SignIn extends Component {
     this._onVoterStoreChange();
     //this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
     const forward = this.props.forward_to_ballot || false;
     if( forward === true ) {
       logging.rnrfLog("SignIn received this.props.forward_to_ballot = " + this.props.forward_to_ballot);
       logging.rnrfLog("SignIn  Actions.ballot(}");
       Actions.ballot({came_from: 'signIn'});
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log("SignIn componentWillReceiveProps");
+    // October 9, 2017: This is hacky, we need a refresh when we come back from the ballot tab, not sure why.
+    if( nextProps.came_from === "ballot") {
+      logging.rnrfLog("componentWillReceiveProps, forcing update : currentScene = " + Actions.currentScene);
+      // Nov 2, 2017, removed, this.forceUpdate();
     }
   }
 
@@ -101,13 +97,22 @@ export default class SignIn extends Component {
   }
 
   _onVoterStoreChange () {
+    // console.log("SignIn _onVoterStoreChange");
+    if (VoterStore.isVoterFound() && !this.state.initial_name_loaded) {
       this.setState({
+        first_name: VoterStore.getFirstName(),
+        last_name: VoterStore.getLastName(),
+        initial_name_loaded: true,
         voter: VoterStore.getVoter(),
-        newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
-    });
+        newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN)
+      });
+    } else {
+      this.setState({voter: VoterStore.getVoter()});
+    }
   }
 
   getInitialDeviceId () {
+    console.log("SignIn getInitialDeviceId");
     if (CookieStore.getCurrentVoterDeviceId().length > 0) {
       this.setState({waiting_for_voter_device_id: false});
       this.setState({initialized_voter_device_id: true});
@@ -122,7 +127,8 @@ export default class SignIn extends Component {
     }.bind(this));
   }
 
-  /*_onFacebookChange () {
+  /*
+  _onFacebookChange () {
     this.setState({
       facebook_auth_response: FacebookStore.getFacebookAuthResponse(),
     });
@@ -142,6 +148,7 @@ export default class SignIn extends Component {
     }
   }
   */
+
   toggleTwitterDisconnectOpen () {
     this.setState({show_twitter_disconnect: true});
   }
@@ -177,8 +184,8 @@ export default class SignIn extends Component {
     }
   }
 
-  updateNewsletterOptIn (value) {
-    if (value) {
+  updateNewsletterOptIn (newsletter_opt_in) {
+    if (newsletter_opt_in) {
       VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
       this.setState({ newsletter_opt_in: true });
     } else {
@@ -238,7 +245,7 @@ export default class SignIn extends Component {
       page_title = "Your Account - We Vote";
       if (this.state.voter.signed_in_facebook && !this.state.voter.signed_in_twitter) {
         your_account_title = "Have Twitter Too?";
-        your_account_explanation = "By adding your Twitter account to your We Vote profile, you get access to the this.state.voter guides of everyone you follow.";
+        your_account_explanation = "By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.";
       } else if (this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook) {
         your_account_title = "Have Facebook Too?";
         your_account_explanation = "By adding Facebook to your We Vote profile, it is easier to invite friends.";

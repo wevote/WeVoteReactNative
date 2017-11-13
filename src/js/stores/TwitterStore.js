@@ -1,15 +1,20 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 import FluxMapStore from "flux/lib/FluxMapStore";
-import VoterActions from "../actions/VoterActions";
+import CandidateActions from "../actions/CandidateActions";
+import OrganizationActions from "../actions/OrganizationActions";
 import TwitterActions from "../actions/TwitterActions";
-//import CandidateActions from "../actions/CandidateActions";
-//import OrganizationActions from "../actions/OrganizationActions";
-const assign = require("object-assign");
+import VoterActions from "../actions/VoterActions";
 
 class TwitterStore extends FluxMapStore {
 
-  get () {
+  getInitialState () {
     return {
+      success: true,
+    };
+  }
+
+  get () {
+    let twitter_store_data = {
       kind_of_owner: this.getState().kindOfOwner || "",
       owner_we_vote_id: this.getState().ownerWeVoteId || "",
       twitter_handle: this.getState().twitterHandle || "",
@@ -34,8 +39,10 @@ class TwitterStore extends FluxMapStore {
       we_vote_hosted_profile_image_url_large: this.getState().we_vote_hosted_profile_image_url_large || "",
       we_vote_hosted_profile_image_url_medium: this.getState().we_vote_hosted_profile_image_url_medium || "",
       we_vote_hosted_profile_image_url_tiny: this.getState().we_vote_hosted_profile_image_url_tiny || "",
-
     };
+    console.log("twitter_store_data: ", twitter_store_data);
+
+    return twitter_store_data;
   }
 
   get kindOfOwner (){
@@ -44,6 +51,10 @@ class TwitterStore extends FluxMapStore {
 
   get ownerWeVoteId (){
     return this.getState().owner_we_vote_id;
+  }
+
+  get twitterHandle (){
+    return this.getState().twitter_handle;
   }
 
   get status (){
@@ -73,30 +84,32 @@ class TwitterStore extends FluxMapStore {
     //   return state;
     // }
 
-
     switch (action.type) {
 
       case "twitterIdentityRetrieve":
+        console.log("TwitterStore::twitterIdentityRetrieve, action.res:", action.res);
         if (action.res.kind_of_owner === "ORGANIZATION") {
           OrganizationActions.organizationRetrieve(action.res.owner_we_vote_id);
         } else if (action.res.kind_of_owner === "CANDIDATE") {
-          CandidateActions.retrieve(action.res.owner_we_vote_id);
+          CandidateActions.candidateRetrieve(action.res.owner_we_vote_id);
+          CandidateActions.positionListForBallotItem(action.res.owner_we_vote_id);
         }
 
+        state.kind_of_owner = action.res.kind_of_owner;
+        state.owner_we_vote_id = action.res.owner_we_vote_id;
+        state.twitter_handle = action.res.twitter_handle;
+        state.twitter_description = action.res.twitter_description;
+        state.twitter_followers_count = action.res.twitter_followers_count;
+        state.twitter_name = action.res.twitter_name;
+        state.twitter_photo_url = action.res.twitter_photo_url;
+        state.twitter_user_website = action.res.twitter_user_website;
+        state.status = action.res.status;
         return {
-          ...state,
-          kind_of_owner: action.res.kind_of_owner,
-          owner_we_vote_id: action.res.owner_we_vote_id,
-          twitter_handle: action.res.twitter_handle,
-          twitter_description: action.res.twitter_description,
-          twitter_followers_count: action.res.twitter_followers_count,
-          twitter_name: action.res.twitter_name,
-          twitter_photo_url: action.res.twitter_photo_url,
-          twitter_user_website: action.res.twitter_user_website,
-          status: action.res.status
+          ...state
         };
 
       case "twitterNativeSignInSave":
+        console.log("TwitterStore::twitterNativeSignInSave, action.res:", action.res);
         if (action.res.success) {
           TwitterActions.twitterSignInRetrieve();
         }
@@ -109,32 +122,40 @@ class TwitterStore extends FluxMapStore {
           twitter_secret_key: action.res.twitter_secret_key,
         };
 
+        // state.voter_device_id = action.res.voter_device_id;
+        // state.twitter_handle = action.res.twitter_handle;
+        // state.twitter_handle_found = action.res.twitter_handle_found;
+        // state.twitter_secret_key = action.res.twitter_secret_key;
+        // return state;
 
       case "twitterSignInRetrieve":
+        console.log("TwitterStore::twitterSignInRetrieve, action.res:", action.res);
         if (action.res.twitter_sign_in_verified) {
           VoterActions.voterRetrieve();
           VoterActions.twitterRetrieveIdsIfollow();
         }
+        state.existing_twitter_account_found = action.res.existing_twitter_account_found;
+        state.twitter_profile_image_url_https = action.res.twitter_profile_image_url_https;
+        state.twitter_retrieve_attempted = action.res.twitter_retrieve_attempted;
+        state.twitter_secret_key = action.res.twitter_secret_key;
+        state.twitter_sign_in_failed = action.res.twitter_sign_in_failed;
+        state.twitter_sign_in_found = action.res.twitter_sign_in_found;
+        state.twitter_sign_in_verified = action.res.twitter_sign_in_verified;
+        state.voter_device_id = action.res.voter_device_id;
+        state.voter_has_data_to_preserve = action.res.voter_has_data_to_preserve;
+        state.voter_we_vote_id = action.res.voter_we_vote_id;
+        state.voter_we_vote_id_attached_to_twitter = action.res.voter_we_vote_id_attached_to_twitter;
+        state.we_vote_hosted_profile_image_url_large = action.res.we_vote_hosted_profile_image_url_large;
+        state.we_vote_hosted_profile_image_url_medium = action.res.we_vote_hosted_profile_image_url_medium;
+        state.we_vote_hosted_profile_image_url_tiny = action.res.we_vote_hosted_profile_image_url_tiny;
         return {
-          ...state,
-          existing_twitter_account_found: action.res.existing_twitter_account_found,
-          twitter_profile_image_url_https: action.res.twitter_profile_image_url_https,
-          twitter_retrieve_attempted: action.res.twitter_retrieve_attempted,
-          twitter_secret_key: action.res.twitter_secret_key,
-          twitter_sign_in_failed: action.res.twitter_sign_in_failed,
-          twitter_sign_in_found: action.res.twitter_sign_in_found,
-          twitter_sign_in_verified: action.res.twitter_sign_in_verified,
-          voter_device_id: action.res.voter_device_id,
-          voter_has_data_to_preserve: action.res.voter_has_data_to_preserve,
-          voter_we_vote_id: action.res.voter_we_vote_id,
-          voter_we_vote_id_attached_to_twitter: action.res.voter_we_vote_id_attached_to_twitter,
-          we_vote_hosted_profile_image_url_large: action.res.we_vote_hosted_profile_image_url_large,
-          we_vote_hosted_profile_image_url_medium: action.res.we_vote_hosted_profile_image_url_medium,
-          we_vote_hosted_profile_image_url_tiny: action.res.we_vote_hosted_profile_image_url_tiny,
+          ...state
         };
 
       default:
-        return state;
+        return {
+          ...state
+        };
     }
   }
 }
