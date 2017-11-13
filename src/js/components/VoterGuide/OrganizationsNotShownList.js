@@ -17,7 +17,7 @@ export default class OrganizationsNotShownList extends Component {
 
   render () {
     if (!this.props.orgs_not_shown_list){
-      return <View>{LoadingWheel}</View>;
+      return <LoadingWheel text={'Loading organizations.'} />;
     }
 
     const organizations_not_shown_display = this.props.orgs_not_shown_list.map( (one_organization) => {

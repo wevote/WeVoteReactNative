@@ -92,7 +92,7 @@ export default class AddressBox extends Component {
 
   render () {
     if (this.state.loading) {
-      return <LoadingWheel />;
+      return <LoadingWheel text={'Loading address'}/>;
     }
     let {height, width} = Dimensions.get('window');
     return <View style={{

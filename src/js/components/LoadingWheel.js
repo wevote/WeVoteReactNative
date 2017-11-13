@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ActivityIndicator, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import styles from "../stylesheets/BaseStyles"
 
 export default class LoadingWheel extends Component {
 
@@ -11,60 +12,34 @@ export default class LoadingWheel extends Component {
     };
   }
 
-  // In ReactNative, this does not promptly unmount if a modal is called, as a result it throws:
-  // ExceptionsManager.js:73 Warning: Can only update a mounted or mounting component. This usually means you called
-  // setState, replaceState, or forceUpdate on an unmounted component. This is a no-op.
-  // Please check the code for the LoadingWheel component.
-  // Removing 10/31/17
-  // closeActivityIndicator () {
-  //   setTimeout(() => {
-  //     if(this.state.mounted) {
-  //       this.setState({animating: false});
-  //     }
-  //   }, 6000);
-  // }
-  //
-  // componentDidMount () {
-  //   this.closeActivityIndicator()
-  // }
-  //
-  // componentWillMount () {
-  //   this.setState({mounted: true});
-  // }
-  //
-  // componentWillUnmount (){
-  //   this.setState({mounted: false});
-  // }
-
-
-    render() {
+  render() {
     const animating = this.state.animating;
+    let textLines = null;
+    if (!this.props.text ) {
+      textLines = ['HEY developer, be sure to add some text to describe the reason for the wheel!', 'soon!'];
+    } else {
+      textLines = this.props.text;
+    }
+    if (!Array.isArray(this.props.text)) {
+      textLines = [textLines];
+    }
+
     return (
-      <View style = {styles.container}>
+      <View style={styles.outerGrayPane} >
+        <View style={styles.innerWhitePane} >
+          { textLines.map( (item) =>
+              <Text style={styles.titleText} key={item} >{item}</Text>
+           )
+          }
+        </View>
         <ActivityIndicator
-          animating = {animating}
-          color = '#bc2b78'
-          size = "large"
-          style = {styles.activityIndicator}
-        />
+              animating = {animating}
+              color = '#bc2b78'
+              size = "large"
+              style = {styles.activityIndicator} />
       </View>
-    )
+    );
   }
 }
 
 
-const styles = StyleSheet.create ({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 70
-  },
-  
-  activityIndicator: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 80
-  }
-});

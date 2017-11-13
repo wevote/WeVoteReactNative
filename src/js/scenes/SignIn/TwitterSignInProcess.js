@@ -138,14 +138,8 @@ export default class TwitterSignInProcess extends Component {
     if (this.state.saving ||
       !twitter_auth_response ||
       !twitter_auth_response.twitter_retrieve_attempted ) {
-      return <View className="ballot">
-          <View className="ballot__header">
-            <Text>Twitter authentication was successful.</Text>
-            <Text>Waiting for Twitter to return with additional information.</Text>
-            <LoadingWheel/>
-          </View>
-        </View>;
-    }
+      return <LoadingWheel text={['Twitter authentication was successful.', 'Waiting for Twitter to return with additional information.']}/>;
+     }
 
     console.log("=== Passed initial gate ===");
     console.log("twitter_auth_response:", twitter_auth_response);
@@ -160,7 +154,7 @@ export default class TwitterSignInProcess extends Component {
       //     message_type: "success"
       //   }
       // });
-      return <LoadingWheel />;
+      return <LoadingWheel text={'Waiting for Twitter to return with additional information.'}/>;
     }
 
     if (yes_please_merge_accounts) {
@@ -168,7 +162,7 @@ export default class TwitterSignInProcess extends Component {
       // console.log("this.voterMergeTwoAccountsByTwitterKey -- yes please merge accounts");
       this.voterMergeTwoAccountsByTwitterKey(twitter_secret_key);
       // return <span>this.voterMergeTwoAccountsByTwitterKey({twitter_secret_key})</span>;
-      return <LoadingWheel />;
+      return <LoadingWheel text={'Merging your data from before you signed in'} />;
     }
 
     // This process starts when we return from attempting voterTwitterSignInRetrieve
@@ -182,7 +176,7 @@ export default class TwitterSignInProcess extends Component {
       //     message_type: "warning"
       //   }
       // });
-      return <LoadingWheel />;
+      return <LoadingWheel text={'Twitter authentication not found. Please try again.'} />;
     }
 
     if (twitter_auth_response.existing_twitter_account_found) {
@@ -200,13 +194,13 @@ export default class TwitterSignInProcess extends Component {
         // console.log("TwitterSignInProcess this.voterMergeTwoAccountsByTwitterKey - No data to merge");
         this.voterMergeTwoAccountsByTwitterKey(twitter_secret_key, twitter_auth_response.voter_has_data_to_preserve);
         // return <span>this.voterMergeTwoAccountsByTwitterKey({twitter_secret_key}); - No data to merge</span>;
-        return <LoadingWheel />;
+        return <LoadingWheel text={'Merging your data from before you signed in'}/>;
       }
     } else {
       // console.log("Setting up new Twitter entry - voterTwitterSaveToCurrentAccount");
       this.voterTwitterSaveToCurrentAccount();
       //return <span>Setting up new Twitter entry - voterTwitterSaveToCurrentAccount</span>;
-      return <LoadingWheel />;
+      return <LoadingWheel text={'Saving your data from before you signed in'}/>;
     }
   }
 }

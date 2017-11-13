@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-import { Text, TouchableOpacity, Platform } from 'react-native';
+import { Text, TouchableOpacity, Platform, Image, View } from 'react-native';
 import styles from "../../stylesheets/BaseStyles"
 import {Actions} from "react-native-router-flux";
 import OAuthManager from 'react-native-oauth';
@@ -227,24 +227,33 @@ export default class SocialSignIn extends Component {
 
     let onPressFunction = null;
     let button_text = null;
+    const isTwitter = this.props.authenticator === 'twitter';
+    const icon = isTwitter ? require('../../../img/global/icons/twitterWhiteBird.png') :
+      require('../../../img/global/icons/facebook.png');
     if (this.props.signIn) {
       onPressFunction = this.socialSignInStart.bind(this);
-      if (this.props.authenticator === 'twitter') {
+      if (isTwitter) {
          button_text = this.props.buttonText ? this.props.buttonText : "Twitter Sign In";
       } else {
         button_text = this.props.buttonText ? this.props.buttonText : "Facebook Sign In";
       }
     } else {
       onPressFunction = this.socialSignOut.bind(this);
-      if (this.props.authenticator === 'twitter') {
+      if (isTwitter) {
         button_text = this.props.buttonText ? this.props.buttonText : "Twitter Sign Out";
       } else {
         button_text = this.props.buttonText ? this.props.buttonText : "Facebook Sign Out";
       }
     }
 
-    return <TouchableOpacity style = {styles.button} onPress={onPressFunction}>
-        <Text style = {styles.buttonText}>{ button_text }</Text>
-      </TouchableOpacity>;
+    return <TouchableOpacity style = {isTwitter ? styles.button : styles.facebookButton} onPress={onPressFunction}>
+        <View style={{flex: 1, flexDirection: 'row', justifyContent:'space-between'}}>
+          <Image
+            style={styles.facebookIcon}
+            source={icon}
+          />
+          <Text style = {styles.buttonText}>{ button_text }</Text>
+        </View>
+      </TouchableOpacity>
   }
 }
