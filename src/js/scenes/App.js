@@ -3,6 +3,7 @@ import { Text } from 'react-native';
 import { Router, Scene, Stack } from 'react-native-router-flux';
 
 import Ballot from './Ballot/Ballot';
+import Candidate from './Ballot/Candidate';
 import Location from './Settings/Location';
 import SignIn from './SignIn/SignIn';
 import TwitterSignInProcess from "./SignIn/TwitterSignInProcess";
@@ -45,6 +46,10 @@ const App = () => {
             <Scene key ="location"
                    component={Location}
                    type='replace' />
+            <Scene key="candidate"
+                   component={Candidate}
+                   backTitle="Back"
+                   back />
           </Stack>
           {/* Tab */}
           <Stack key="signin_1"

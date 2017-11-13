@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 //import { Button } from "react-bootstrap";
-import GuideStore from "../../stores/GuideStore";
-import GuideActions from "../../actions/GuideActions";
+import VoterGuideStore from "../../stores/VoterGuideStore";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterStore from "../../stores/VoterStore";
 
 export default class FollowToggle extends Component {
@@ -20,7 +20,7 @@ export default class FollowToggle extends Component {
   }
 
   componentDidMount (){
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this.guideStoreListener = VoterGuideStore.addListener(this._onGuideStoreChange.bind(this));
     this._onGuideStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this._onVoterStoreChange();
@@ -32,7 +32,7 @@ export default class FollowToggle extends Component {
   }
 
   _onGuideStoreChange (){
-    this.setState({ is_following: GuideStore.isFollowing(this.props.we_vote_id)});
+    this.setState({ is_following: VoterGuideStore.isFollowing(this.props.we_vote_id)});
   }
 
   _onVoterStoreChange (){
@@ -52,8 +52,8 @@ export default class FollowToggle extends Component {
     if (is_looking_at_self) { return <div />; }
 
 
-    const followFunc = GuideActions.organizationFollow.bind(this, we_vote_id);
-    const stopFollowingFunc = GuideActions.organizationStopFollowing.bind(this, we_vote_id);
+    const followFunc = VoterGuideActions.organizationFollow.bind(this, we_vote_id);
+    const stopFollowingFunc = VoterGuideActions.organizationStopFollowing.bind(this, we_vote_id);
 
     var stopFollowingInstantly = function () {
       is_following = false;

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { Link } from "react-router-native";
 import { View, Text, Image, StyleSheet } from "react-native";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -26,7 +26,7 @@ export default class MeasureItemReadyToVote extends Component {
   }
 
   componentDidMount () {
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this.guideStoreListener = VoterGuideStore.addListener(this._onGuideStoreChange.bind(this));
     this._onGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
     this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });

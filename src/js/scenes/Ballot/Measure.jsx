@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import GuideList from "../../components/VoterGuide/GuideList";
-import GuideStore from "../../stores/GuideStore";
-import GuideActions from "../../actions/GuideActions";
+import VoterGuideStore from "../../stores/VoterGuideStore";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import MeasureItem from "../../components/Ballot/MeasureItem";
@@ -28,7 +28,7 @@ export default class Measure extends Component {
       // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
       // guides_to_follow_list: GuideStore.toFollowListForBallotItemById(this.props.params.measure_we_vote_id)
-      guides_to_follow_list: GuideStore.toFollowListForBallotItem()
+      guides_to_follow_list: VoterGuideStore.toFollowListForBallotItem()
     };
   }
 
@@ -38,8 +38,8 @@ export default class Measure extends Component {
 
     MeasureActions.retrieve(measure_we_vote_id);
 
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
-    GuideActions.retrieveGuidesToFollowByBallotItem(measure_we_vote_id, "MEASURE");
+    this.guideStoreListener = VoterGuideStore.addListener(this._onGuideStoreChange.bind(this));
+    VoterGuideActions.retrieveGuidesToFollowByBallotItem(measure_we_vote_id, "MEASURE");
 
     // Make sure supportProps exist for this Measure when browser comes straight to measure page
     SupportActions.retrievePositionsCountsForOneBallotItem(measure_we_vote_id);
@@ -53,7 +53,7 @@ export default class Measure extends Component {
 
     MeasureActions.retrieve(nextProps.params.measure_we_vote_id);
 
-    GuideActions.retrieveGuidesToFollowByBallotItem(nextProps.params.measure_we_vote_id, "MEASURE");
+    VoterGuideActions.retrieveGuidesToFollowByBallotItem(nextProps.params.measure_we_vote_id, "MEASURE");
 
     // Display the measure's name in the search box
     // var { measure } = this.state;
@@ -69,7 +69,7 @@ export default class Measure extends Component {
   _onGuideStoreChange (){
     // Eventually we could use this toFollowListForBallotItemById with measure_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-    this.setState({ guides_to_follow_list: GuideStore.toFollowListForBallotItem() });
+    this.setState({ guides_to_follow_list: VoterGuideStore.toFollowListForBallotItem() });
     MeasureActions.retrieve(this.state.measure_we_vote_id);
   }
 

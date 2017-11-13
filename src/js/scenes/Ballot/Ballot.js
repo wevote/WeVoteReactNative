@@ -13,8 +13,8 @@ import HeaderTitle from "../../components/Header/Header"
 import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
 import EditAddress from "../../components/Widgets/EditAddress";
-import GuideActions from "../../actions/GuideActions";
-import GuideStore from "../../stores/GuideStore";
+import VoterGuideActions from "../../actions/VoterGuideActions";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 import LoadingWheel from "../../components/LoadingWheel";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
@@ -119,7 +119,7 @@ export default class Ballot extends Component {
         this.ballotStoreListener = BallotStore.addListener(this._onBallotStoreChange.bind(this));
         // NOTE: voterAllPositionsRetrieve and positionsCountForAllBallotItems are also called in SupportStore when voterAddressRetrieve is received,
         // so we get duplicate calls when you come straight to the Ballot page. There is no easy way around this currently.
-        this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+        this.voterGuideStoreListener = VoterGuideStore.addListener(this._onGuideStoreChange.bind(this));
         // Oct 31, 2017 ... Typo:  BallotStoreChange? So commenting it out.
         //this.supportStoreListener = SupportStore.addListener(this._onBallotStoreChange.bind(this));
         this._onVoterStoreChange(); // We call this to properly set showBallotIntroModal
@@ -171,8 +171,8 @@ export default class Ballot extends Component {
 
   _toggleCandidateModal (candidate_for_modal) {
     if (candidate_for_modal) {
-      GuideActions.retrieveGuidesToFollowByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
-      candidate_for_modal.voter_guides_to_follow_for_latest_ballot_item = GuideStore.getVoterGuidesToFollowForBallotItemId(candidate_for_modal.we_vote_id);
+      VoterGuideActions.retrieveGuidesToFollowByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
+      candidate_for_modal.voter_guides_to_follow_for_latest_ballot_item = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidate_for_modal.we_vote_id);
     }
 
     this.setState({
@@ -195,7 +195,7 @@ export default class Ballot extends Component {
 
   _toggleMeasureModal (measureForModal) {
     if (measureForModal) {
-      GuideActions.retrieveGuidesToFollowByBallotItem(measureForModal.measure_we_vote_id, "MEASURE");
+      VoterGuideActions.retrieveGuidesToFollowByBallotItem(measureForModal.measure_we_vote_id, "MEASURE");
     }
     this.setState({
       measure_for_modal: measureForModal,
@@ -259,14 +259,14 @@ export default class Ballot extends Component {
       this.setState({
         candidate_for_modal: {
           ...this.state.candidate_for_modal,
-          voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem()
+          voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem()
         }
       });
     } else if (this.state.measure_for_modal) {
       this.setState({
         measure_for_modal: {
           ...this.state.measure_for_modal,
-          voter_guides_to_follow_for_latest_ballot_item: GuideStore.getVoterGuidesToFollowForLatestBallotItem()
+          voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem()
         }
       });
     }

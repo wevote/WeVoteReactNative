@@ -3,7 +3,7 @@ import BallotActions from "../actions/BallotActions";
 import CookieStore from "./CookieStore";
 import FluxMapStore from "flux/lib/FluxMapStore";
 import FriendActions from "../actions/FriendActions";
-import GuideActions from "../actions/GuideActions";
+import VoterGuideActions from "../actions/VoterGuideActions";
 import BookmarkActions from "../actions/BookmarkActions";
 import SupportActions from "../actions/SupportActions";
 import VoterActions from "../actions/VoterActions";
@@ -176,12 +176,12 @@ class VoterStore extends FluxMapStore {
         if (action.res.success) {
           if (action.res.kind_of_follow_task === "FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW") {
             // console.log("organizationSuggestionTasks FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
-            GuideActions.retrieveGuidesToFollow(this.election_id());
-            GuideActions.voterGuidesFollowedRetrieve(this.election_id());
+            VoterGuideActions.voterGuidesToFollowRetrieve(this.election_id());
+            VoterGuideActions.voterGuidesFollowedRetrieve(this.election_id());
             SupportActions.positionsCountForAllBallotItems(this.election_id());
           } else if (action.res.kind_of_suggestion_task === "UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW") {
             // console.log("organizationSuggestionTasks UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
-            GuideActions.retrieveGuidesToFollow(this.election_id());
+            VoterGuideActions.voterGuidesToFollowRetrieve(this.election_id());
           }
         }
         return state;

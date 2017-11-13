@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import FollowToggle from "../Widgets/FollowToggle";
-import GuideActions from "../../actions/GuideActions";
+import VoterGuideActions from "../../actions/VoterGuideActions";
 import OrganizationDisplayForList from "./OrganizationDisplayForList";
 //import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
@@ -39,7 +39,7 @@ export default class GuideList extends Component {
   }
 
   handleIgnore (id) {
-    GuideActions.organizationFollowIgnore(id);
+    VoterGuideActions.organizationFollowIgnore(id);
     this.setState({ organizations_to_follow: this.state.organizations_to_follow.filter( (org) => { return org.organization_we_vote_id !== id;})});
   }
 
