@@ -48,5 +48,4 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 .deco/
-components/
 ios/Pods/
