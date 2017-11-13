@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import GuideStore from "../../stores/GuideStore";
+import { Actions } from 'react-native-router-flux';
+import { View, Text, Image, Button, StyleSheet, TouchableOpacity } from "react-native";
+import VoterGuideStore from "../../stores/VoterGuideStore";
+import ImageHandler from "../ImageHandler";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
 import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
@@ -39,13 +41,13 @@ export default class OfficeItemCompressed extends Component {
   }
 
   componentDidMount () {
-    this.guideStoreListener = GuideStore.addListener(this._onGuideStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this._onGuideStoreChange.bind(this));
     this._onGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this._onSupportStoreChange.bind(this));
   }
 
   componentWillUnmount () {
-    this.guideStoreListener.remove();
+    this.voterGuideStoreListener.remove();
     this.supportStoreListener.remove();
   }
 
@@ -125,13 +127,13 @@ export default class OfficeItemCompressed extends Component {
                   </View> :
                   <View>
                     {/* Show possible voter guides to follow */}
-                    { GuideStore.getVoterGuidesToFollowForBallotItemId(one_candidate.we_vote_id) && GuideStore.getVoterGuidesToFollowForBallotItemId(one_candidate.we_vote_id).length !== 0 ?
+                    { VoterGuideStore.getVoterGuidesToFollowForBallotItemId(one_candidate.we_vote_id) && VoterGuideStore.getVoterGuidesToFollowForBallotItemId(one_candidate.we_vote_id).length !== 0 ?
                       <View className="u-cursor--pointer"
                             onPress={ this.props.link_to_ballot_item_page ?
                             ()=>{this.props._toggleCandidateModal(one_candidate);} :
                             null } >
                         {/*<ItemTinyOpinionsToFollow ballotItemWeVoteId={one_candidate.we_vote_id}
-                                                  organizationsToFollow={GuideStore.getVoterGuidesToFollowForBallotItemId(one_candidate.we_vote_id)}
+                                                  organizationsToFollow={VoterGuideStore.getVoterGuidesToFollowForBallotItemId(one_candidate.we_vote_id)}
                                                   maximumOrganizationDisplay={this.state.maximum_organization_display}/>*/}
                       </View> :
                       <View /> }

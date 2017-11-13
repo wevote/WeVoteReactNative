@@ -7,7 +7,7 @@ import FriendsOnlyIndicator from "../../components/Widgets/FriendsOnlyIndicator"
 import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
 import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
 import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
-const moment = require("moment");
+//const moment = require("moment");
 
 export default class PositionItem extends Component {
   static propTypes = {

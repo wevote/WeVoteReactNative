@@ -32,6 +32,11 @@ export function arrayUnique (array) {
   return a;
 }
 
+export function stringContains (needle, string_haystack) {
+  // console.log("stringContains, needle:", needle, ", haystack: ", string_haystack);
+  return string_haystack.indexOf(needle) !== -1;
+}
+
 export function capitalizeString (raw_string) {
   if (raw_string === undefined) {
     return "";

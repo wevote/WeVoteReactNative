@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-import CandidateItem from "../../components/Ballot/CandidateItem";
+import CandidateItem from "./CandidateItem";
 
 export default class CandidateList extends Component {
   static propTypes = {
