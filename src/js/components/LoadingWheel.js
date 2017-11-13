@@ -13,7 +13,6 @@ export default class LoadingWheel extends Component {
   }
 
   render() {
-    const animating = this.state.animating;
     let textLines = null;
     if (!this.props.text ) {
       textLines = ['HEY developer, be sure to add some text to describe the reason for the wheel!', 'soon!'];
@@ -30,7 +29,7 @@ export default class LoadingWheel extends Component {
           { textLines.map( (item) => <Text style={styles.titlePaddedText} key={item} >{item}</Text> ) }
         </View>
         <ActivityIndicator
-              animating = {animating}
+              animating = {this.state.animating}
               color = '#bc2b78'
               size = "large"
               style = {styles.activityIndicator} />
