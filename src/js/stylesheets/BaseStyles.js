@@ -85,6 +85,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 80
   },
+  titlePaddedText: {
+    fontFamily: 'Arial',
+    fontSize: 15,
+    fontWeight: 'bold',
+    paddingBottom: 12
+  },
+
 });
 
 export default styles;

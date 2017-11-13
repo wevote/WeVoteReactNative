@@ -27,10 +27,7 @@ export default class LoadingWheel extends Component {
     return (
       <View style={styles.outerGrayPane} >
         <View style={styles.innerWhitePane} >
-          { textLines.map( (item) =>
-              <Text style={styles.titleText} key={item} >{item}</Text>
-           )
-          }
+          { textLines.map( (item) => <Text style={styles.titlePaddedText} key={item} >{item}</Text> ) }
         </View>
         <ActivityIndicator
               animating = {animating}
