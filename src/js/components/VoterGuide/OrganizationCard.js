@@ -22,7 +22,7 @@ export default class OrganizationCard extends Component {
 
   render () {
     if (!this.props.organization){
-      return <div>{LoadingWheel}</div>;
+      return <LoadingWheel text={'Loading organization information'}/>;
     }
 
     const {organization_twitter_handle, twitter_description, twitter_followers_count,

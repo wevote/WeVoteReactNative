@@ -121,12 +121,8 @@ export default class VoterEmailAddressEntry extends Component {
 
   render () {
       if (!this.state.voter){
-          return LoadingWheel;
+          return <LoadingWheel text={'Loading your information'}/>;
       }
-// LoadingWheel is not working need to check for react-native
-//    if (this.state.loading){
-//      return LoadingWheel;
-//    }
     //console.log("Entering VoterEmailAddressEntry.jsx");
 
     const email_address_status_html = <View>

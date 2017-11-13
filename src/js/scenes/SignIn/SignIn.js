@@ -198,12 +198,14 @@ export default class SignIn extends Component {
     logging.renderLog("SignIn", "scene = " + Actions.currentScene);
 
     if(this.state.waiting_for_voter_device_id  && ! this.state.initialized_voter_device_id) {
-      return <View className="ballot">
-        <View className="ballot__header">
-          <Text>Waiting for device initialization</Text>
-          <LoadingWheel/>
-        </View>
-      </View>;
+      return <LoadingWheel text={'Waiting for device initialization'}/>;
+
+      // return <View className="ballot">
+      //   <View className="ballot__header">
+      //     <Text>Waiting for device initialization</Text>
+      //     <LoadingWheel text={'Waiting for device initialization'}/>
+      //   </View>
+      // </View>;
     }
 
     if (!VoterStore.isVoterFound())  {
@@ -217,7 +219,7 @@ export default class SignIn extends Component {
     simpler way */
 
     if (!this.state.voter){
-      return <LoadingWheel />;
+      return <LoadingWheel text={'Loading your information'}/>;
     }
 
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
@@ -225,7 +227,7 @@ export default class SignIn extends Component {
       console.log("SignIn.jsx facebook_retrieve_attempted");
       // browserHistory.push("/facebook_sign_in");
       // return <Text>SignIn.jsx facebook_retrieve_attempted</Text>;
-      return LoadingWheel;
+      return <LoadingWheel text={'Waiting for your information to arrive'}/>;
     }
 
     let {width} = Dimensions.get('window');
@@ -246,20 +248,8 @@ export default class SignIn extends Component {
     let t = this.state.voter.signed_in_twitter;
     let f = this.state.voter.signed_in_facebook;
 
-    return <View style={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 10 }}>
-        <View style={{
-          flex: 1,
-          flexDirection: 'column',
-          justifyContent: 'center',
-          backgroundColor: 'white',
-          padding: 20 }}>
-
-
+    return <View style={styles.outerGrayPane} >
+        <View style={styles.innerWhitePane} >
           <View>
             {this.state.voter.is_signed_in ?
               <Text>{your_account_explanation}</Text> :

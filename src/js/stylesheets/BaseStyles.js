@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   button: {
     height: 36,
     backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
+    borderColor: 'rgba(0,0,0,0.2)',
     borderWidth: 1,
     borderRadius: 6,
     marginBottom: 10,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   facebookButton: {
     height: 36,
     backgroundColor: '#3b5998',
-    borderColor: '#3b5998',
+    borderColor: 'rgba(0,0,0,0.2)',
     borderWidth: 1,
     borderRadius: 6,
     marginBottom: 10,
@@ -64,6 +64,34 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     justifyContent: 'center'
   },
+  outerGrayPane: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10
+  },
+  innerWhitePane: {
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+      alignSelf: 'stretch',
+      padding: 20
+  },
+  activityIndicator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 80
+  },
+  titlePaddedText: {
+    fontFamily: 'Arial',
+    fontSize: 15,
+    fontWeight: 'bold',
+    paddingBottom: 12
+  },
+
 });
 
 export default styles;

@@ -378,12 +378,7 @@ export default class Ballot extends Component {
       console.log("ballot render retrieving ballot to Loading Wheel ");
       BallotActions.voterBallotListRetrieve();
 
-      return <View className="ballot">
-          <View className="ballot__header">
-            <Text>Loading your ballot. </Text>
-            <LoadingWheel/>
-          </View>
-        </View>;
+      return <LoadingWheel text={'Loading your ballot.'} />;
     }
 
     const missing_address = false;
