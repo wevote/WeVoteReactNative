@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { Router, Scene, Stack } from 'react-native-router-flux';
 
+
 import Ballot from './Ballot/Ballot';
 import Candidate from './Ballot/Candidate';
 import Location from './Settings/Location';
@@ -11,9 +12,12 @@ import SocialSignIn from "./SignIn/SocialSignIn";
 
 const TabIcon = ({ selected, tabBarLabel }) => {
   return (
-    <Text style={{color: selected ? 'white' :'grey'}} size={44}>{tabBarLabel}</Text>
-  );
-};
+    ("1" === "1") ?
+      <Image style={{width: 50, height: 50}} source={{uri: 'https://wevote-images.s3.amazonaws.com/wvravoter1/twitter_profile_image_master-20170804_1_240x240.jpeg'}} />
+    :
+      <Text style={{color: selected ? 'white' :'grey'}} size={44}>{tabBarLabel}</Text>
+  )};
+
 
 /* Some good articles on react-native-router-flux (RNRF) which is based on react-navigation (NOT on react-native-router!)
  https://medium.com/differential/react-native-basics-using-react-native-router-flux-f11e5128aff9
@@ -37,7 +41,7 @@ const App = () => {
           {/* Tab */}
           <Stack key="ballot_1"
                  hideNavBar
-                 tabBarLabel={"Ballot"}
+                 title={"Ballot"}
                  icon={TabIcon} >
             <Scene key="ballot"
                    component={Ballot}
@@ -53,7 +57,7 @@ const App = () => {
           </Stack>
           {/* Tab */}
           <Stack key="signin_1"
-                 tabBarLabel={"Sign In"}
+                 title={"Sign In"}
                  icon={TabIcon}
                  hideNavBar
                  initial >
