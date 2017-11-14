@@ -53,9 +53,7 @@ export default class Welcome extends Component {
 
     return <View style={styles.outerGrayPane} >
         <View style={styles.innerWhitePane} >
-          <View>
             <Text style={styles.titleText} >Hello world!</Text>
-          </View>
         </View>
       </View>;
   } // render
