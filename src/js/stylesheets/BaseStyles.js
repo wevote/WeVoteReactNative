@@ -91,11 +91,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingBottom: 12
   },
-  tabBar: {
-    backgroundColor: '#1c2f4b',
-    paddingTop: 10,
-    paddingBottom: 8
-  }
 });
 
 export default styles;
