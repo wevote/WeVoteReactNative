@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, Image } from 'react-native';
+import { Text, Image, View } from 'react-native';
 import { Router, Scene, Stack } from 'react-native-router-flux';
+import Icon from "react-native-vector-icons/FontAwesome";
 import VoterStore from "../stores/VoterStore";
-import styles from "../stylesheets/BaseStyles"
-
+import tabStyles from "../stylesheets/TabBarStyles"
 
 
 import Ballot from './Ballot/Ballot';
@@ -19,19 +19,22 @@ const tabIcon = ({ selected, tabBarLabel }) => {
     case 'Sign In':
       let voterImage = VoterStore.getVoterPhotoUrlTiny();
       if (voterImage === "") {
-        return <Image style={{width: 20, height: 20}} source={
+        return <Image style={tabStyles.image} source={
           require('../../img/global/icons/avatar-generic.png')}/>;
       } else {
-        return <Image style={{width: 20, height: 20}} source={{uri: voterImage}}/>;
+        return <Image style={tabStyles.image} source={{uri: voterImage}}/>;
       }
 
     case 'Ballot':
-      return <Image style={{width: 20, height: 20}} source={
-        require('../../img/global/icons/ballotIconTemporaryNoGLYPHICONS.png')}/>;
+      return(
+        <View style={tabStyles.ballotButtonContainer} >
+          <Icon name="list-alt" size={22} color="white" width={10} />
+          <Text style={tabStyles.ballotText}>Ballot</Text>
+        </View> );
 
     case 'Welcome':
     default:
-      return <Text style={{width: 40, color: selected ? 'white' : 'grey'}} size={44}>{tabBarLabel}</Text>;
+      return <Text style={tabStyles.textSelected} >{tabBarLabel}</Text>;
   }
 };
 
@@ -56,7 +59,7 @@ const App = () => {
           tabBarPosition="top"
           showIcon={true}
           showLabel={false}
-          tabBarStyle={styles.tabBar}>
+          tabBarStyle={tabStyles.tabBar}>
           {/* WV Tab */}
           <Stack key="we_vote_1"
                  hideNavBar
