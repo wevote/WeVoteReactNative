@@ -5,7 +5,7 @@ import Dispatcher from "../dispatcher/Dispatcher";
 import VoterActions from "../actions/VoterActions";
 import FriendActions from "../actions/FriendActions";
 
-class FacebookStore extends FluxMapStore {
+export default class FacebookStore extends FluxMapStore {
   
   getInitialState (){
     return {
