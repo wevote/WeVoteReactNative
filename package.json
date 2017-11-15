@@ -26,7 +26,7 @@
     "react-native-fbsdklogin": "0.0.8",
     "react-native-fbsdkshare": "0.0.8",
     "react-native-oauth": "git+ssh://git@github.com/SailingSteve/react-native-oauth.git",
-    "react-native-router-flux": "git+ssh://git@github.com/SailingSteve/react-native-router-flux.git",
+    "react-native-router-flux": "^4.0.0-beta.22",
     "react-native-vector-icons": "^4.4.2",
     "react-navigation": "^1.0.0-beta.15",
     "react-player": "^0.18.0",
