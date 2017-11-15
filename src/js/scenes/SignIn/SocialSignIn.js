@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity, Platform, Image, View } from 'react-native';
-import styles from "../../stylesheets/BaseStyles"
+import Icon from "react-native-vector-icons/FontAwesome";
 import {Actions} from "react-native-router-flux";
+import styles from "../../stylesheets/BaseStyles"
 import OAuthManager from 'react-native-oauth';
 import TwitterActions from "../../actions/TwitterActions";
 import FacebookActions from "../../actions/FacebookActions";
@@ -228,8 +229,6 @@ export default class SocialSignIn extends Component {
     let onPressFunction = null;
     let button_text = null;
     const isTwitter = this.props.authenticator === 'twitter';
-    const icon = isTwitter ? require('../../../img/global/icons/twitterWhiteBird.png') :
-      require('../../../img/global/icons/facebook.png');
     if (this.props.signIn) {
       onPressFunction = this.socialSignInStart.bind(this);
       if (isTwitter) {
@@ -248,10 +247,9 @@ export default class SocialSignIn extends Component {
 
     return <TouchableOpacity style = {isTwitter ? styles.button : styles.facebookButton} onPress={onPressFunction}>
         <View style={{flex: 1, flexDirection: 'row', justifyContent:'space-between'}}>
-          <Image
-            style={styles.facebookIcon}
-            source={icon}
-          />
+          <View style={{paddingTop:5}} >
+            <Icon name={isTwitter ? "twitter" : 'facebook'} size={24} color="white" paddingTop={10} />
+          </View>
           <Text style = {styles.buttonText}>{ button_text }</Text>
         </View>
       </TouchableOpacity>

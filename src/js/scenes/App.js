@@ -1,8 +1,8 @@
 import React from 'react';
+
 import { Router, Scene, Stack } from 'react-native-router-flux';
 import tabStyles from "../stylesheets/TabBarStyles"
 import TabIcon from "./TabIcon"
-
 
 import Ballot from './Ballot/Ballot';
 import Candidate from './Ballot/Candidate';
