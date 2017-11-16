@@ -18,7 +18,7 @@ import VoterConstants from "../../constants/VoterConstants";
 import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
-import styles from "../../stylesheets/BaseStyles"
+import styles from "../../stylesheets/components/baseStyles"
 const logging = require("../../utils/logging");
 
 const delay_before_user_name_update_api_call = 1200;
@@ -255,8 +255,8 @@ export default class SignIn extends Component {
     let t = this.state.voter.signed_in_twitter;
     let f = this.state.voter.signed_in_facebook;
 
-    return <View style={styles.outerGrayPane} >
-        <View style={styles.innerWhitePane} >
+    return <View style={styles.outer_gray_pane} >
+        <View style={styles.inner_white_pane} >
           <View>
             {this.state.voter.is_signed_in ?
               <Text>{your_account_explanation}</Text> :

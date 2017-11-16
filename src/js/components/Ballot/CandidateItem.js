@@ -15,6 +15,7 @@ import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
 import {abbreviateNumber} from "../../utils/textFormat";
 import {numberWithCommas} from "../../utils/textFormat";
+import styles from "../../stylesheets/components/baseStyles"
 
 export default class CandidateItem extends Component {
   static propTypes = {
@@ -45,10 +46,19 @@ export default class CandidateItem extends Component {
     };
   }
 
+  static onEnter = () => {
+    logging.rnrfLog("onEnter to CandidateItem: currentScene = " + Actions.currentScene);
+  };
+
+  static onExit = () => {
+    logging.rnrfLog("onExit from CandidateItem: currentScene = " + Actions.currentScene);
+    //Actions.refresh({came_from: 'ballot', forward_to_ballot: false})
+  };
+
   componentWillMount () {
     console.log("============CandidateItem componentWillMount===========", this.props.we_vote_id);
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.onVoterGuideStoreChange();
+    // this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    // this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     let supportProps = SupportStore.get(this.props.we_vote_id);
     if (supportProps !== undefined) {
@@ -57,7 +67,7 @@ export default class CandidateItem extends Component {
   }
 
   componentWillUnmount () {
-    this.voterGuideStoreListener.remove();
+    // this.voterGuideStoreListener.remove();
     this.supportStoreListener.remove();
   }
 
@@ -88,7 +98,6 @@ export default class CandidateItem extends Component {
       contest_office_name,
       // twitter_handle,
     } = this.props;
-    console.log("candidateItem render ============");
 
     const { supportProps, transitioning } = this.state;
 
@@ -117,10 +126,9 @@ export default class CandidateItem extends Component {
       candidate_photo_url_html = <i className="card-main__avatar icon-office-child icon-main icon-icon-person-placeholder-6-1" />;
     }
     let positions_in_your_network = SupportStore.get(we_vote_id) && ( SupportStore.get(we_vote_id).oppose_count || SupportStore.get(we_vote_id).support_count);
-    return <View className="card-main candidate-card">
-      <View className="card-main__media-object">
-        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'flex-start', justifyContent:'space-between'}}>
-          <View className="card-main__media-object-anchor">
+    return <View style={styles.card} className="card-main candidate-card" >
+      <View style={[styles.card_main, styles.media_object]} className="card-main__media-object">
+          <View style={[styles.media_object_anchor]} className="card-main__media-object-anchor">
             {this.props.link_to_ballot_item_page ? null :
               candidate_photo_url_html
             }
@@ -133,47 +141,45 @@ export default class CandidateItem extends Component {
             }
           </View>
 
-          <View className="card-main__media-object-content">
+          <View style={[styles.media_object_content]} className="card-main__media-object-content">
             <View className="card-main__display-name">
               { this.props.link_to_ballot_item_page ?
                 <Text onPress={goToCandidateLink}>{ballot_item_display_name}</Text> :
                 <Text style = {{fontSize: 20, color: '#333', fontWeight: 'bold'}}>{ballot_item_display_name}</Text>
               }
             </View>
-          </View>
-          <BookmarkToggle we_vote_id={we_vote_id} type="CANDIDATE"/>
-        </TouchableOpacity>
-        <View className={this.props.link_to_ballot_item_page ? "u-gray-darker u-cursor--pointer" : "u-gray-darker"}
-              onClick={this.props.link_to_ballot_item_page ? goToCandidateLink : null }>
-          { contest_office_name ?
-            <OfficeNameText political_party={party} contest_office_name={contest_office_name} /> :
-            null
-          }
-        </View>
-        { twitter_description ?
-          <View className={ "u-stack--sm" + (this.props.link_to_ballot_item_page ? " card-main__description-container--truncated" : " card-main__description-container")}>
-            <View>
-              <Text style = {{fontSize: 15}}>{twitter_description}</Text>
+            <BookmarkToggle we_vote_id={we_vote_id} type="CANDIDATE"/>
+            <View className={this.props.link_to_ballot_item_page ? "u-gray-darker u-cursor--pointer" : "u-gray-darker"}
+                  onClick={this.props.link_to_ballot_item_page ? goToCandidateLink : null }>
+              { contest_office_name ?
+                <OfficeNameText political_party={party} contest_office_name={contest_office_name} /> :
+                null
+              }
             </View>
-            { this.props.link_to_ballot_item_page ?
-              <Text onPress={goToCandidateLink} className="card-main__read-more-link">&nbsp;Read more</Text> :
+            { twitter_description ?
+              <View className={ "u-stack--sm" + (this.props.link_to_ballot_item_page ? " card-main__description-container--truncated" : " card-main__description-container")}>
+                <View>
+                  <Text style = {{fontSize: 15}}>{twitter_description}</Text>
+                </View>
+                { this.props.link_to_ballot_item_page ?
+                  <Text onPress={goToCandidateLink} className="card-main__read-more-link">&nbsp;Read more</Text> :
+                  null
+                }
+              </View> :
               null
             }
-          </View> :
-          null
-        }
-        <View className={"card-main__network-positions u-stack--sm" + this.props.link_to_ballot_item_page && " u-cursor--pointer"}
-             onClick={ this.props.link_to_ballot_item_page ? goToCandidateLink : null} >
-          { positions_in_your_network ?
-            <ItemSupportOpposeCounts we_vote_id={we_vote_id}
-                                     supportProps={supportProps}
-                                     transitioning={transitioning}
-                                     type="CANDIDATE"
-                                     positionBarIsClickable /> : null
-          }
+            <View className={"card-main__network-positions u-stack--sm" + this.props.link_to_ballot_item_page && " u-cursor--pointer"}
+                 onClick={ this.props.link_to_ballot_item_page ? goToCandidateLink : null} >
+              { positions_in_your_network ?
+                <ItemSupportOpposeCounts we_vote_id={we_vote_id}
+                                         supportProps={supportProps}
+                                         transitioning={transitioning}
+                                         type="CANDIDATE"
+                                         positionBarIsClickable /> : null
+              }
 
-        </View>
-
+            </View>
+          </View>
       </View>
     </View>;
   }

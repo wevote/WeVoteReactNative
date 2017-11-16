@@ -3,7 +3,6 @@ import { Modal, Text, TouchableOpacity, View, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import {Actions} from "react-native-router-flux";
 import AddressBox from "../../components/AddressBox";
-import styles from "../../stylesheets/BaseStyles"
 
 export default class SelectAddressModal extends Component {
   // This modal will allow users to change their addresses

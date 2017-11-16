@@ -70,18 +70,20 @@ export function $ajax (options) {
     .then((responseJson) => {
       if (responseJson.hasOwnProperty('voter_device_id') && responseJson.voter_device_id.length > 0) {
         // The following console log should be permanent, do not delete it
-        console.log("service Setting new voter_device_id, to '" + responseJson.voter_device_id + "'" );  // Do not delete
+        //console.log("service Setting new voter_device_id, to '" + responseJson.voter_device_id + "'" );  // Do not delete
         CookieStore.setItem('voter_device_id', responseJson.voter_device_id);
       }
 
       logging.httpLog(">>HTTP FETCH $ajax for (" + options.endpoint + ")");
       if (responseJson.hasOwnProperty('voter_device_id')) {
-        logging.httpLog(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id + ' : ' +
-          responseJson.status);
+        // logging.httpLog(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id + ' : ' +
+        //   responseJson.status);
+        console.log(">>HTTP responseJson:", options.endpoint, responseJson);
       } else {
-        logging.httpLog(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.status);
+        //logging.httpLog(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.status);
+        console.log(">>HTTP responseJson:", options.endpoint, responseJson);
       }
-      logging.httpLog(">>HTTP response:", responseJson);
+      //logging.httpLog(">>HTTP response:", responseJson);
 
       const res = responseJson;
       this.dispatch({ type: options.endpoint, res });

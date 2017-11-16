@@ -6,7 +6,7 @@ import { FormInput, FormLabel } from 'react-native-elements'
 import LoadingWheel from "../components/LoadingWheel";
 import VoterActions from "../actions/VoterActions";
 import VoterStore from "../stores/VoterStore";
-import styles from "../stylesheets/BaseStyles";
+import styles from "../stylesheets/components/baseStyles";
 
 export default class AddressBox extends Component {
   static propTypes = {

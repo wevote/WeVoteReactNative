@@ -2,14 +2,21 @@ import {
   StyleSheet,
 } from 'react-native';
 
+// Border Radius
+// * Uses a slightly shifted scale to acknowledge smaller common values
+let radius_none= 0; // for overrides
+let radius_xs = 8;
+let radius_sm = 4;
+let radius_md = 8;
+let radius_rounded = 6;
 
 // https://www.bountysource.com/issues/39479584-fontfamily-in-theme-js-has-no-effect
-// October 2017: There is no out-of-the-box sans-serif in iOS, so used Arial instead.  Works fine on Android.
-const styles = StyleSheet.create({
+// There is no out-of-the-box sans-serif in iOS, so used Arial instead.  Works fine on Android.
+const base_styles = StyleSheet.create({
   baseText: {
     fontFamily: 'Arial',
   },
-  titleText: {
+  title_text: {
     fontFamily: 'Arial',
     fontSize: 15,
     fontWeight: 'bold',
@@ -18,7 +25,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 10
   },
-  buttonText: {
+  button_text: {
     fontSize: 18,
     color: 'white',
     alignSelf: 'center'
@@ -36,7 +43,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 150
   },
-  facebookButton: {
+  facebook_button: {
     height: 36,
     backgroundColor: '#3b5998',
     borderColor: 'rgba(0,0,0,0.2)',
@@ -49,12 +56,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 150
   },
-  facebookIcon: {
+  facebook_icon: {
     width: 24,
     height: 24,
     marginTop: 6, marginRight: 4, marginLeft:4
   },
-  dangerButton: {
+  danger_button: {
     height: 36,
     backgroundColor: 'red',
     borderColor: '#48BBEC',
@@ -64,14 +71,14 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     justifyContent: 'center'
   },
-  outerGrayPane: {
+  outer_gray_pane: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10
   },
-  innerWhitePane: {
+  inner_white_pane: {
       flex: 1,
       flexDirection: 'column',
       justifyContent: 'center',
@@ -79,18 +86,57 @@ const styles = StyleSheet.create({
       alignSelf: 'stretch',
       padding: 20
   },
-  activityIndicator: {
+  activity_indicator: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     height: 80
   },
-  titlePaddedText: {
+  title_padded_text: {
     fontFamily: 'Arial',
     fontSize: 15,
     fontWeight: 'bold',
     paddingBottom: 12
   },
+  card: {
+    padding: 10,
+  },
+  card_main: {
+    padding: 16,
+    display: 'flex',
+    backgroundColor: '#fff',
+    position: 'relative',
+  },
+  media_object: {
+    padding: 10,
+    display: 'flex',
+    alignItems: 'flex-start',
+    position: 'relative',
+    flexDirection: 'row',
+  },
+  media_object_content: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  media_object_anchor: {
+    width: 50,
+    display: 'flex',
+    flexDirection: 'column',
+    marginRight: 10,
+  },
+  display_name: {
+    fontFamily: "Source Sans Pro",
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  avatar_compressed: {
+    maxWidth: 40,
+    borderRadius: radius_xs,
+  },
+
 });
 
-export default styles;
+export default base_styles;

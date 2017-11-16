@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity, Platform, Image, View } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
+import styles from "../../stylesheets/components/baseStyles"
 import {Actions} from "react-native-router-flux";
-import styles from "../../stylesheets/BaseStyles"
 import OAuthManager from 'react-native-oauth';
 import TwitterActions from "../../actions/TwitterActions";
 import FacebookActions from "../../actions/FacebookActions";
@@ -245,12 +245,12 @@ export default class SocialSignIn extends Component {
       }
     }
 
-    return <TouchableOpacity style = {isTwitter ? styles.button : styles.facebookButton} onPress={onPressFunction}>
+    return <TouchableOpacity style = {isTwitter ? styles.button : styles.facebook_button} onPress={onPressFunction}>
         <View style={{flex: 1, flexDirection: 'row', justifyContent:'space-between'}}>
           <View style={{paddingTop:5}} >
             <Icon name={isTwitter ? "twitter" : 'facebook'} size={24} color="white" paddingTop={10} />
           </View>
-          <Text style = {styles.buttonText}>{ button_text }</Text>
+          <Text style = {styles.button_text}>{ button_text }</Text>
         </View>
       </TouchableOpacity>
   }

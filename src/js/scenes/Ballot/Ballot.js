@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import styles from "../../stylesheets/BaseStyles";
+import styles from "../../stylesheets/components/baseStyles";
 import { Actions } from 'react-native-router-flux';
 import HeaderTitle from "../../components/Header/Header"
 import BallotActions from "../../actions/BallotActions";
@@ -244,7 +244,7 @@ export default class Ballot extends Component {
   }
 
   _onBallotStoreChange (){
-    console.log("Ballot.js _onBallotStoreChange");
+    //console.log("Ballot.js _onBallotStoreChange");
     if (this.state.mounted) {
       if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) { // Ballot is found but ballot is empty
         console.log("Ballot.js trying to redirect to ballot/empty");
@@ -354,7 +354,7 @@ export default class Ballot extends Component {
 
     if (this.state.waitingForBallot && Actions.currentScene != 'ballot') {
       console.log("Ballot waitingForBallot is true with the scene not being current, so returning null");
-      return null;
+      return LoadingWheel;
     }
 
     let ballot = this.state.ballot;
@@ -397,11 +397,11 @@ export default class Ballot extends Component {
 
     const emptyBallotButton = this.getFilterType() !== "none" && !missing_address ?
         <TouchableOpacity onPress={browserHistory.push('/ballot')}>
-          <Text style = {styles.buttonText}>View Full Ballot</Text>
+          <Text style = {styles.button_text}>View Full Ballot</Text>
         </TouchableOpacity> : null;
         //<Link to="/settings/location">Enter a Different Address</Link>;
         /*<TouchableOpacity onPress={browserHistory.push('/settings/location')}>
-          <Text style = {styles.buttonText}>Enter a Different Address</Text>
+          <Text style = {styles.button_text}>Enter a Different Address</Text>
         </TouchableOpacity>;*/
 
     const emptyBallot = ballot.length === 0 ?

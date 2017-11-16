@@ -22,6 +22,8 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import SearchAllActions from "../../actions/SearchAllActions";
+import styles from "../../stylesheets/components/baseStyles"
+
 const web_app_config = require("../../config");
 const logging = require("../../utils/logging");
 
@@ -80,11 +82,12 @@ export default class Candidate extends Component {
       candidate_we_vote_id: this.props.candidate_we_vote_id,
       position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.props.candidate_we_vote_id),
       voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
+      waiting_for_candidate: true,
     });
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("Candidate componentWillReceiveProps");
+    console.log("Candidate componentWillReceiveProps");
     // When a new candidate is passed in, update this component to show the new data
     if (nextProps.candidate_we_vote_id !== this.state.candidate_we_vote_id) {
       CandidateActions.candidateRetrieve(nextProps.candidate_we_vote_id);
@@ -104,17 +107,17 @@ export default class Candidate extends Component {
   }
 
   componentWillUnmount () {
-    // console.log("Candidate componentWillUnmount");
+    console.log("Candidate componentWillUnmount");
     this.candidateStoreListener.remove();
     this.voterGuideStoreListener.remove();
   }
 
   onCandidateStoreChange (){
-    // console.log("Candidate onCandidateStoreChange");
+    console.log("Candidate onCandidateStoreChange");
     this.setState({
       candidate: CandidateStore.getCandidate(this.state.candidate_we_vote_id),
       position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.state.candidate_we_vote_id),
-      waiting_for_candidate: true,
+      waiting_for_candidate: false,
     });
   }
 
@@ -122,11 +125,11 @@ export default class Candidate extends Component {
     // console.log("Candidate onVoterGuideStoreChange");
     // When the voter_guides_to_follow_for_latest_ballot_item changes, trigger an update of the candidate so we can get an updated position_list
     // CandidateActions.candidateRetrieve(this.state.candidate_we_vote_id);
-    CandidateActions.positionListForBallotItem(this.state.candidate_we_vote_id);
-    // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
-    SupportActions.retrievePositionsCountsForOneBallotItem(this.state.candidate_we_vote_id);
-    // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
-    //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
+    // CandidateActions.positionListForBallotItem(this.state.candidate_we_vote_id);
+    // // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
+    // SupportActions.retrievePositionsCountsForOneBallotItem(this.state.candidate_we_vote_id);
+    // // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
+    // //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
     this.setState({
       voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
       // voter_guides_to_follow_for_this_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.state.candidate_we_vote_id),
@@ -144,9 +147,9 @@ export default class Candidate extends Component {
       //           <View>{LoadingWheel}</View>
       //           <br />
       //       </View>;
-      return null;
+      return <LoadingWheel text={'Waiting for Candidate Information'}/>
     }
-    console.log("Got candidate ============ candidate", this.state.candidate);
+
     let candidate_name = this.state.candidate.ballot_item_display_name;
     let title_text = candidate_name + " - We Vote";
     let description_text = "Information about " + candidate_name + ", candidate for " + this.state.candidate.contest_office_name;
@@ -154,13 +157,13 @@ export default class Candidate extends Component {
     let candidate_admin_edit_url = web_app_config.WE_VOTE_SERVER_ROOT_URL + "c/" + this.state.candidate.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     return <View>
-      <CandidateItem {...this.state.candidate}
-                     position_list={this.state.position_list_from_advisers_followed_by_voter}
-                     commentButtonHide
-                     contest_office_name={this.state.candidate.contest_office_name}
-                     hideOpinionsToFollow
-                     showLargeImage
-                     showPositionsInYourNetworkBreakdown />
+        <CandidateItem {...this.state.candidate}
+                       position_list={this.state.position_list_from_advisers_followed_by_voter}
+                       commentButtonHide
+                       contest_office_name={this.state.candidate.contest_office_name}
+                       hideOpinionsToFollow
+                       showLargeImage
+                       showPositionsInYourNetworkBreakdown />
     </View>;
   }
 }

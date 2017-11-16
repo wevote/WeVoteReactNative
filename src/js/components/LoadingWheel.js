@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ActivityIndicator, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import styles from "../stylesheets/BaseStyles"
+import styles from "../stylesheets/components/baseStyles"
 
 export default class LoadingWheel extends Component {
 
@@ -24,14 +24,14 @@ export default class LoadingWheel extends Component {
     }
 
     return (
-      <View style={styles.outerGrayPane} >
-        <View style={styles.innerWhitePane} >
-          { textLines.map( (item) => <Text style={styles.titlePaddedText} key={item} >{item}</Text> ) }
+      <View style={styles.outer_gray_pane} >
+        <View style={styles.inner_white_pane} >
+          { textLines.map( (item) => <Text style={styles.title_padded_text} key={item} >{item}</Text> ) }
           <ActivityIndicator
                 animating = {this.state.animating}
                 color = '#bc2b78'
                 size = "large"
-                style = {styles.activityIndicator} />
+                style = {styles.activity_indicator} />
         </View>
       </View>
     );

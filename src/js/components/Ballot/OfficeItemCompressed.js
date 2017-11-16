@@ -11,9 +11,12 @@ import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import BallotSideBarLink from "../Navigation/BallotSideBarLink";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
-import ballotStyles from "../../stylesheets/BallotStyles"
-//import { Link } from "react-router-native";
-//import { Link, browserHistory } from "react-router";
+import LearnMore from "../Widgets/LearnMore";
+import ballot_styles from "../../stylesheets/components/ballotStyles";
+import base_styles from "../../stylesheets/components/baseStyles";
+import layout_styles from "../../stylesheets/utilities/layoutStyles";
+import flex_box_styles from "../../stylesheets/utilities/flexBoxStyles";
+import o_media_object_styles from "../../stylesheets/objects/o_mediaObject";
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 3;
 
@@ -68,90 +71,103 @@ export default class OfficeItemCompressed extends Component {
 
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    var candidate_list_to_display = this.props.candidate_list;
-    var remaining_candidates_to_display_count = 0;
+    let candidate_list_to_display = this.props.candidate_list;
+    let remaining_candidates_to_display_count = 0;
 
     if (!this.state.display_all_candidates_flag && this.props.candidate_list.length > NUMBER_OF_CANDIDATES_TO_DISPLAY) {
       candidate_list_to_display = this.props.candidate_list.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
       remaining_candidates_to_display_count = this.props.candidate_list.length - NUMBER_OF_CANDIDATES_TO_DISPLAY;
     }
 
-    return <View style={ballotStyles.container} className="card-main office-item">
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}} className ="card-main__content">
-        <View style={{alignSelf: 'flex-start'}} className="u-flex u-stack--sm">
-          { this.props.link_to_ballot_item_page ?
-            <View style={{flexDirection: 'row'}}>
-              {/*<Link to={officeLink}>*/}
-                <Text numberOfLines={1} ellipsizeMode='tail' style={ballotStyles.officeTitleText}> {ballot_item_display_name} </Text>
-              {/*</Link>*/}
-            </View> :
-            <Text numberOfLines={1} ellipsizeMode='tail'> {ballot_item_display_name} </Text>
-          }
-        </View>
-        <View style={{alignSelf: 'flex-end'}}>
-          <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE"/>
-        </View>
+    return <View style={base_styles.card_main} className="card-main office-item">
+      <View className ="card-main__content">
+        <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
+        { this.props.link_to_ballot_item_page ?
+          //<Link to={officeLink}>
+          <Text numberOfLines={1} ellipsizeMode='tail' style={[ballot_styles.ballot_name, layout_styles.u_stack__sm]}
+                onPress={() => Actions.office({office_we_vote_id: we_vote_id})}>
+            {ballot_item_display_name}
+          </Text> :
+          <Text numberOfLines={1} ellipsizeMode='tail' style={[ballot_styles.ballot_name, layout_styles.u_stack__sm]}>
+            {ballot_item_display_name}
+          </Text>
+        }
       </View>
+      { candidate_list_to_display.map( (one_candidate) => {
+        let candidate_we_vote_id = one_candidate.we_vote_id;
+        let candidateGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidate_we_vote_id);
 
-      <View  className={this.props.link_to_ballot_item_page ?
-            "u-cursor--pointer" : null } >
-      { this.props.candidate_list.map( (one_candidate) =>
-        <View key={one_candidate.we_vote_id} className="u-stack--md">
-          <View className="u-flex u-items-center u-flex-wrap u-justify-between">
-            {/* *** Candidate name *** */}
-            <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
+        let candidate_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
+        let candidate_text = candidate_party_text + candidate_description_text;
+        let candidateSupportStore = SupportStore.get(candidate_we_vote_id);
+        let is_support = false;
+        let is_oppose = false;
+        let voter_statement_text = false;
+        if (candidateSupportStore !== undefined) {
+          is_support = candidateSupportStore.is_support;
+          is_oppose = candidateSupportStore.is_oppose;
+          voter_statement_text = candidateSupportStore.voter_statement_text;
+        }
+
+        return <View key={candidate_we_vote_id} style={layout_styles.u_stack__md} className="u-stack--md">
+          <View style={[base_styles.media_object, flex_box_styles.u_flex_auto, flex_box_styles.u_min_50, layout_styles.u_push__sm, layout_styles.u_stack__sm]}
+                className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+            {/* Candidate Photo */}
+            <View
+              onPress={this.props.link_to_ballot_item_page ? () => Actions.candidate({candidate_we_vote_id: one_candidate.we_vote_id}) : null}>
               {one_candidate.candidate_photo_url_large ?
-                <Image source={{uri: one_candidate.candidate_photo_url_large}} style={ballotStyles.candidatePhoto} />
-                : null }
-              <Text numberOfLines={1} ellipsizeMode='tail' onPress={() => Actions.candidate({candidate_we_vote_id: one_candidate.we_vote_id})}
-                    style={ballotStyles.titleText} className="card-main__candidate-name u-f4">&nbsp; {one_candidate.ballot_item_display_name} </Text>
-            </TouchableOpacity>
+                <Image source={{uri: one_candidate.candidate_photo_url_large}}
+                       style={[ballot_styles.candidate_photo, ballot_styles.avatar_compressed, o_media_object_styles.o_media_object__anchor, layout_styles.u_self_start, layout_styles.u_push__sm]}/>
+                : null}
+            </View>
+            <View style={[o_media_object_styles.o_media_object__body, flex_box_styles.u_flex, flex_box_styles.u_flex_column,
+              flex_box_styles.u_flex_auto, flex_box_styles.u_justify_between, layout_styles.u_stack__xs]}
+                  className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+              {/* Candidate Name */}
+              <Text numberOfLines={1} ellipsizeMode='tail'
+                    onPress={() => Actions.candidate({candidate_we_vote_id: one_candidate.we_vote_id})}
+                    style={ballot_styles.title_text} className="card-main__candidate-name u-f4">
+                {one_candidate.ballot_item_display_name}
 
-            {/* *** "Positions in your Network" bar OR items you can follow *** */}
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}} className="u-flex u-flex-auto u-justify-end u-items-center u-min-50">
-              <View style={{alignSelf: 'center'}} className="u-flex-none u-justify-end u-inline--sm">
-                {/* Decide whether to show the "Positions in your network" bar or the options of voter guides to follow */}
-                { SupportStore.get(one_candidate.we_vote_id) && ( SupportStore.get(one_candidate.we_vote_id).oppose_count || SupportStore.get(one_candidate.we_vote_id).support_count) ?
-                  <View className="u-cursor--pointer"
-                        onPress={ this.props.link_to_ballot_item_page ?
-                        ()=>{this.props._toggleCandidateModal(one_candidate);} :
-                        null } >
-                    <ItemSupportOpposeCounts we_vote_id={one_candidate.we_vote_id}
-                                             supportProps={SupportStore.get(one_candidate.we_vote_id)}
-                                             type="CANDIDATE"/>
-                  </View> :
-                  <View>
-                    {/* Show possible voter guides to follow */}
-                    { VoterGuideStore.getVoterGuidesToFollowForBallotItemId(one_candidate.we_vote_id) && VoterGuideStore.getVoterGuidesToFollowForBallotItemId(one_candidate.we_vote_id).length !== 0 ?
-                      <View className="u-cursor--pointer"
-                            onPress={ this.props.link_to_ballot_item_page ?
-                            ()=>{this.props._toggleCandidateModal(one_candidate);} :
-                            null } >
-                        {/*<ItemTinyOpinionsToFollow ballotItemWeVoteId={one_candidate.we_vote_id}
-                                                  organizationsToFollow={VoterGuideStore.getVoterGuidesToFollowForBallotItemId(one_candidate.we_vote_id)}
-                                                  maximumOrganizationDisplay={this.state.maximum_organization_display}/>*/}
-                      </View> :
-                      <View /> }
-                  </View>
-                }
+              </Text>
+
+              <View className="card-main__candidate-description">
+                {/*<Text style={ballot_styles.candidate_description}>{candidate_text}</Text>*/}
+                <LearnMore text_to_display={candidate_text}
+                           on_click={this.props.link_to_ballot_item_page ? () => Actions.candidate({candidate_we_vote_id: one_candidate.we_vote_id}) : null}/>
               </View>
+              {/* Opinion Items */}
+              <View style={[flex_box_styles.u_flex, flex_box_styles.u_flex_row, flex_box_styles.u_justify_between, flex_box_styles.u_min_50]}
+                    className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
+                {/* Positions in Your Network */}
+                <View
+                      className={this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null}
+                      onPress={this.props.link_to_ballot_item_page ? () => this.props.toggleCandidateModal(one_candidate) : null}>
+                  <ItemSupportOpposeCounts we_vote_id={candidate_we_vote_id}
+                                           supportProps={candidateSupportStore}
+                                           guideProps={candidateGuidesList}
+                                           type="CANDIDATE"/>
+                </View>
 
-              <Text> &nbsp; &nbsp; </Text>
-              {/* *** Choose Support or Oppose *** */}
-              <View style={{alignSelf: 'flex-end'}} className="u-flex-none u-cursor--pointer">
-                <ItemActionBar ballot_item_we_vote_id={one_candidate.we_vote_id}
-                               supportProps={SupportStore.get(one_candidate.we_vote_id)}
-                               shareButtonHide
-                               commentButtonHide
-                               transitioniing={this.state.transitioning}
-                               type="CANDIDATE" />
+                {/* Possible Voter Guides to Follow (Desktop) */}
+                {candidateGuidesList && candidateGuidesList.length ? null : null}
+
+                {/* Support or Oppose actions for voter */}
+                <View className="u-cursor--pointer">
+                  <ItemActionBar ballot_item_we_vote_id={candidate_we_vote_id}
+                                 supportProps={candidateSupportStore}
+                                 shareButtonHide
+                                 commentButtonHide
+                                 transitioniing={this.state.transitioning}
+                                 ballot_item_display_name={one_candidate.ballot_item_display_name}
+                                 type="CANDIDATE"/>
+                </View>
               </View>
             </View>
           </View>
-        </View>)
-      }
-      </View>
-
+        </View>;
+      })}
       { !this.state.display_all_candidates_flag && remaining_candidates_to_display_count > 0 ?
           <Text numberOfLines={1} ellipsizeMode='tail' onPress={this.toggleDisplayAllCandidates} className="u-items-center">
             Click&nbsp;to&nbsp;show&nbsp;{remaining_candidates_to_display_count}&nbsp;more&nbsp;candidates...</Text>
@@ -163,7 +179,6 @@ export default class OfficeItemCompressed extends Component {
                            displaySubtitles={false}
                            onClick={this.toggleDisplayAllCandidates} /> : null
       }
-
-  </View>;
+    </View>;
   }
 }
