@@ -132,7 +132,7 @@ export default class TwitterSignInProcess extends Component {
 
     let {twitter_auth_response, yes_please_merge_accounts} = this.state;
 
-    // Wait until twitterSignInRetrieve promise is resolved, and twitter_auth_respose is populated
+    // Wait until twitterSignInRetrieve promise is resolved, and twitter_auth_response is populated
     if (this.state.saving ||
       !twitter_auth_response ||
       !twitter_auth_response.twitter_retrieve_attempted ) {

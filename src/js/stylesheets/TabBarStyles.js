@@ -7,8 +7,10 @@ import {
 // October 2017: There is no out-of-the-box sans-serif in iOS, so used Arial instead.  Works fine on Android.
 const styles = StyleSheet.create({
   image: {
-    width: 20,
-    height: 20
+    width: 38,
+    height: 38,
+    borderWidth: 0,
+    borderRadius: 3
   },
   ballotButtonContainer: {
     paddingTop:5,

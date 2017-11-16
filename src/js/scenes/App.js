@@ -1,10 +1,8 @@
 import React from 'react';
-import { Text, Image, View } from 'react-native';
-import { Router, Scene, Stack } from 'react-native-router-flux';
-import Icon from "react-native-vector-icons/FontAwesome";
-import VoterStore from "../stores/VoterStore";
-import tabStyles from "../stylesheets/TabBarStyles"
 
+import { Router, Scene, Stack } from 'react-native-router-flux';
+import tabStyles from "../stylesheets/TabBarStyles"
+import TabIcon from "./TabIcon"
 
 import Ballot from './Ballot/Ballot';
 import Candidate from './Ballot/Candidate';
@@ -13,30 +11,6 @@ import SignIn from './SignIn/SignIn';
 import TwitterSignInProcess from "./SignIn/TwitterSignInProcess";
 import SocialSignIn from "./SignIn/SocialSignIn";
 import Welcome from "./Welcome/Welcome";
-
-const tabIcon = ({ selected, tabBarLabel }) => {
-  switch (tabBarLabel) {
-    case 'Sign In':
-      let voterImage = VoterStore.getVoterPhotoUrlTiny();
-      if (voterImage === "") {
-        return <Image style={tabStyles.image} source={
-          require('../../img/global/icons/avatar-generic.png')}/>;
-      } else {
-        return <Image style={tabStyles.image} source={{uri: voterImage}}/>;
-      }
-
-    case 'Ballot':
-      return(
-        <View style={tabStyles.ballotButtonContainer} >
-          <Icon name="list-alt" size={22} color="white" width={10} />
-          <Text style={tabStyles.ballotText}>Ballot</Text>
-        </View> );
-
-    case 'Welcome':
-    default:
-      return <Text style={tabStyles.textSelected} >{tabBarLabel}</Text>;
-  }
-};
 
 
 /* Some good articles on react-native-router-flux (RNRF) which is based on react-navigation (NOT on react-native-router!)
@@ -64,7 +38,8 @@ const App = () => {
           <Stack key="we_vote_1"
                  hideNavBar
                  tabBarLabel={"WV"}
-                 icon={tabIcon} >
+                 icon={TabIcon}
+          >
             <Scene key="welcome"
                    component={Welcome}
                    type='replace'
@@ -74,7 +49,8 @@ const App = () => {
           <Stack key="ballot_1"
                  hideNavBar
                  tabBarLabel={"Ballot"}
-                  icon={tabIcon} >
+                 icon={TabIcon}
+          >
             <Scene key="ballot"
                    component={Ballot}
                    type='replace'
@@ -90,9 +66,10 @@ const App = () => {
           {/* Sign In Tab */}
           <Stack key="signin_1"
                  tabBarLabel={"Sign In"}
-                 icon={tabIcon}
                  hideNavBar
-                 initial >
+                 initial
+                 icon={TabIcon}
+          >
             <Scene key="signIn"
                    component={SignIn}
                    type='replace'

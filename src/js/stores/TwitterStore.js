@@ -5,7 +5,7 @@ import OrganizationActions from "../actions/OrganizationActions";
 import TwitterActions from "../actions/TwitterActions";
 import VoterActions from "../actions/VoterActions";
 
-class TwitterStore extends FluxMapStore {
+export default class TwitterStore extends FluxMapStore {
 
   getInitialState () {
     return {

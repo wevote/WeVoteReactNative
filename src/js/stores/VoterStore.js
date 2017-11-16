@@ -8,7 +8,7 @@ import BookmarkActions from "../actions/BookmarkActions";
 import SupportActions from "../actions/SupportActions";
 import VoterActions from "../actions/VoterActions";
 
-class VoterStore extends FluxMapStore {
+export default class VoterStore extends FluxMapStore {
 
   getInitialState () {
     return {
