@@ -4,7 +4,7 @@ import {
   View,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import styles from "../../stylesheets/BaseStyles"
+import styles from "../../stylesheets/components/baseStyles"
 const logging = require("../../utils/logging");
 
 /*
@@ -51,9 +51,9 @@ export default class Welcome extends Component {
 
     logging.renderLog("Welcome", "scene = " + Actions.currentScene);
 
-    return <View style={styles.outerGrayPane} >
-        <View style={styles.innerWhitePane} >
-            <Text style={styles.titleText} >Hello world!</Text>
+    return <View style={styles.outer_gray_pane} >
+        <View style={styles.inner_white_pane} >
+            <Text style={styles.title_text} >Hello world!</Text>
         </View>
       </View>;
   } // render

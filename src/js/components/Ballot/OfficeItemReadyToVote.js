@@ -5,7 +5,7 @@ import { View, Text, Image } from "react-native";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
-import ballotStyles from "../../stylesheets/BallotStyles"
+import ballotStyles from "../../stylesheets/components/ballotStyles"
 
 //import { Link, browserHistory } from "react-router";
 
@@ -104,8 +104,8 @@ export default class OfficeItemReadyToVote extends Component {
     return <View style={ballotStyles.container} className="card-main office-item">
       <View className="card-main__content">
         { this.props.link_to_ballot_item_page ?
-          <Link to={officeLink}><Text style={ballotStyles.titleText}>{ballot_item_display_name}</Text></Link> :
-            <Text style={ballotStyles.titleText}>{ballot_item_display_name}</Text>
+          <Link to={officeLink}><Text style={ballotStyles.title_text}>{ballot_item_display_name}</Text></Link> :
+            <Text style={ballotStyles.title_text}>{ballot_item_display_name}</Text>
         }
 
         <View style={{flexDirection: 'row', justifyContent:'space-between'}} className={ this.props.link_to_ballot_item_page ?

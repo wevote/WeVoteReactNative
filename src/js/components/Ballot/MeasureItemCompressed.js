@@ -8,7 +8,7 @@ import ItemTinyOpinionsToFollow from "../VoterGuide/ItemTinyOpinionsToFollow";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
-import ballotStyles from "../../stylesheets/BallotStyles"
+import ballotStyles from "../../stylesheets/components/ballotStyles"
 //import { Link, browserHistory } from "react-router";
 // import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 // import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
@@ -96,13 +96,13 @@ export default class MeasureItemCompressed extends Component {
           { this.props.link_to_ballot_item_page ?
             <View style={{flexDirection: 'row'}}>
               <Link to={measureLink}>
-                <Text style={ballotStyles.titleText}> {ballot_item_display_name} </Text>
+                <Text style={ballotStyles.title_text}> {ballot_item_display_name} </Text>
               </Link>
               <Link to={measureLink}>
-                <Text style={ballotStyles.measureReadMoreLink}> learn more </Text>
+                <Text style={ballotStyles.measure_read_more_link}> learn more </Text>
               </Link>
             </View> :
-            <Text style={ballotStyles.titleText}>{ballot_item_display_name}</Text>
+            <Text style={ballotStyles.title_text}>{ballot_item_display_name}</Text>
           }
         </View>
         <View style={{alignSelf: 'flex-end'}}>

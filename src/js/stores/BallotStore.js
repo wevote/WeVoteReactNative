@@ -177,7 +177,7 @@ class BallotStore extends FluxMapStore {
         google_civic_election_id = parseInt(google_civic_election_id, 10);
         if (google_civic_election_id !== 0) {
           newBallot[google_civic_election_id] = action.res;
-          console.log("BallotStore, newBallot[google_civic_election_id]:", newBallot[google_civic_election_id])
+          // console.log("BallotStore, newBallot[google_civic_election_id]:", newBallot[google_civic_election_id])
 
           VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);
           VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);

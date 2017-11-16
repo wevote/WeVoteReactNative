@@ -60,8 +60,8 @@ export default class MeasureItemReadyToVote extends Component {
       <View style = {{flexDirection: 'row', justifyContent:'space-between'}}>
         <View className="u-flex-auto u-cursor--pointer">
           { this.props.link_to_ballot_item_page ?
-            <Link to={measureLink}><Text style={styles.titleText}>{ballot_item_display_name}</Text></Link> :
-              <Text style={styles.titleText}>{ballot_item_display_name}</Text>
+            <Link to={measureLink}><Text style={styles.title_text}>{ballot_item_display_name}</Text></Link> :
+              <Text style={styles.title_text}>{ballot_item_display_name}</Text>
           }
         </View>
 

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { View, Text } from "react-native";
-import { styles } from "../../stylesheets/BaseStyles"
 //import EditAddressPopover from "./EditAddressPopover";
 
 export default class EditAddress extends Component {

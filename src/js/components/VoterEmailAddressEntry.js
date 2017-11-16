@@ -169,7 +169,7 @@ export default class VoterEmailAddressEntry extends Component {
           value={this.state.voter_email_address}
           placeholder="Email Address"/>
         <TouchableOpacity style = {styles.button} onPress={this.voterEmailAddressSave.bind(this)}>
-           <Text style = {styles.buttonText}>Send Verification Link</Text>
+           <Text style = {styles.button_text}>Send Verification Link</Text>
         </TouchableOpacity>
       </View>;
 
@@ -215,7 +215,7 @@ export default class VoterEmailAddressEntry extends Component {
           verified_email_exists_that_is_not_primary = true;
         }
         return <View key={voter_email_address_from_list.email_we_vote_id} style={styles.container}>
-          <Text style={styles.titleText}>{voter_email_address_from_list.normalized_email_address }
+          <Text style={styles.title_text}>{voter_email_address_from_list.normalized_email_address }
               {is_primary_email_address ?
                 <Text>&nbsp;&nbsp;&nbsp;Primary email</Text>
                 : null }

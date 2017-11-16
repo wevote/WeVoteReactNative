@@ -16,16 +16,16 @@ export default class BallotFilter extends Component {
 
     return <View className="btn-group" style={{padding: 10, flexDirection: 'row'}}>
       <Link to="/ballot" style={styles.button} className={ ballot_type === "ALL_BALLOT_ITEMS" ? "active btn btn-default" : "btn btn-default"}>
-        <Text style={styles.buttonText}> All Items </Text>
+        <Text style={styles.button_text}> All Items </Text>
 
       </Link>
       <Text> &nbsp;</Text>
       <Link to={{ pathname: "/ballot", query: { type: "filterRemaining" } }} style={styles.button} className={"hidden-xs " + (ballot_type === "CHOICES_REMAINING" ? "active btn btn-default" : "btn btn-default")}>
-        <Text style={styles.buttonText}> Remaining Decisions </Text>
+        <Text style={styles.button_text}> Remaining Decisions </Text>
       </Link>
       <Text> &nbsp;</Text>
       <Link to={{ pathname: "/ballot", query: { type: "filterReadyToVote" } }} style={styles.button} className={ ballot_type === "READY_TO_VOTE" ? "active btn btn-default" : "btn btn-default"}>
-        <Text style={styles.buttonText}> Vote! </Text>
+        <Text style={styles.button_text}> Vote! </Text>
       </Link>
       <Text> &nbsp; (
         <Text style = {{color: '#48BBEC'}} onPress={this.props._toggleBallotIntroModal}>show intro</Text>)

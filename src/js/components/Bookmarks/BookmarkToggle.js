@@ -8,6 +8,8 @@ import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 import Icon from "react-native-vector-icons/FontAwesome";
+import bookmark_action_styles from "../../stylesheets/components/bookmarkAction"
+
 //var Icon = require("react-svg-icons");
 
 export default class BookmarkToggle extends Component {
@@ -99,7 +101,7 @@ export default class BookmarkToggle extends Component {
     </Modal>;*/
 
     return <View tabIndex="0"
-                 className="bookmark-action"
+                 style={bookmark_action_styles.bookmark_action}
                  onPress={this.BookmarkClick.bind(this)}
                  onKeyDown={this.BookmarkKeyDown.bind(this)}
                  title="Bookmark for later">
