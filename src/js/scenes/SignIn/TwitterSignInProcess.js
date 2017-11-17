@@ -5,6 +5,8 @@ import {
   View
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+
+import RouteConst from "../routeConst"
 import TwitterActions from "../../actions/TwitterActions";
 import TwitterStore from "../../stores/TwitterStore";
 import VoterStore from "../../stores/VoterStore";
@@ -152,7 +154,7 @@ export default class TwitterSignInProcess extends Component {
       //     message_type: "success"
       //   }
       // });
-      return <LoadingWheel text={'Waiting for Twitter to return with additional information.'}/>;
+      return <LoadingWheel text={'Waiting for the WeVote cloud to return with additional information.'}/>;
     }
 
     if (yes_please_merge_accounts) {

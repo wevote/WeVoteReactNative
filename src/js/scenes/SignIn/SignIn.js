@@ -8,24 +8,28 @@ import {
   Dimensions,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+
+import AccountMenu from "./AccountMenu";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import CookieStore from "../../stores/CookieStore";
-import HeaderTitle from "../../components/Header/Header"
 import LoadingWheel from "../../components/LoadingWheel";
+import RouteConst from "../routeConst"
 import SocialSignIn from "./SocialSignIn";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
-import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
-import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
+import TwitterStore from "../../stores/TwitterStore";
+import FacebookStore from "../../stores/FacebookStore";
 import styles from "../../stylesheets/components/baseStyles"
 const logging = require("../../utils/logging");
+// import HeaderTitle from "../../components/Header/Header"
+// import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
+// import VoterSessionActions from "../../actions/VoterSessionActions";
 
 const delay_before_user_name_update_api_call = 1200;
 
 
 export default class SignIn extends Component {
-
   constructor (props) {
     super(props);
     this.state = {
@@ -50,8 +54,20 @@ export default class SignIn extends Component {
 
   static onEnter = () => {
     logging.rnrfLog("onEnter to SignIn: currentScene = " + Actions.currentScene);
-    Actions.refresh({dummy: 'hello'});  // this action triggers componentWillReceiveProps
-    // Actions.refs.signIn.forceUpdate();
+    // this 'Actions.refresh' triggers componentWillReceiveProps
+    if (Actions.hasOwnProperty("firstTimeToSignInTab")) {
+      Actions.refresh({
+        dummy: 'hello',
+        firstTimeToSignInTab: true
+      });
+    } else {
+      Actions.refresh({
+        dummy: 'hello',
+        firstTimeToSignInTab: false
+      });
+
+    }
+    Actions.refs.signIn.forceUpdate();
   };
 
   static onExit = () => {
@@ -72,18 +88,19 @@ export default class SignIn extends Component {
     //this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
+
     const forward = this.props.forward_to_ballot || false;
     if( forward === true ) {
       logging.rnrfLog("SignIn received this.props.forward_to_ballot = " + this.props.forward_to_ballot);
       logging.rnrfLog("SignIn  Actions.ballot(}");
-      Actions.ballot({came_from: 'signIn'});
+      Actions.ballot({came_from: RouteConst.KEY_SIGNIN});
     }
   }
 
   componentWillReceiveProps(nextProps) {
     console.log("SignIn componentWillReceiveProps");
     // October 9, 2017: This is hacky, we need a refresh when we come back from the ballot tab, not sure why.
-    if( nextProps.came_from === "ballot") {
+    if( nextProps.came_from === RouteConst.KEY_BALLOT) {
       logging.rnrfLog("componentWillReceiveProps, forcing update : currentScene = " + Actions.currentScene);
       // Nov 2, 2017, removed, this.forceUpdate();
     }
@@ -203,6 +220,17 @@ export default class SignIn extends Component {
     }
 
     logging.renderLog("SignIn", "scene = " + Actions.currentScene);
+
+    let signedInTwitter = TwitterStore.get().twitter_sign_in_found;
+    let signedInFacebook = FacebookStore.getFacebookAuthResponse().facebook_sign_in_verified;
+
+
+    if (this.props.came_from !== RouteConst.KEY_ACCOUNT_MENU && ( signedInTwitter || signedInFacebook) ) {
+      logging.rnrfLog("Tabbed to SignIn, signedInTwitter: " + signedInTwitter +
+        ", signedInFacebook: " + signedInFacebook + ",  current = " + Actions.currentScene);
+
+      return <AccountMenu />;
+    }
 
     if(this.state.waiting_for_voter_device_id  && ! this.state.initialized_voter_device_id) {
       return <LoadingWheel text={'Waiting for device initialization'}/>;
