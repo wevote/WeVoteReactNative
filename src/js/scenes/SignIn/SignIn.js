@@ -13,7 +13,7 @@ import AccountMenu from "./AccountMenu";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import CookieStore from "../../stores/CookieStore";
 import LoadingWheel from "../../components/LoadingWheel";
-import RouteConst from "../RouteConst"
+import RouteConst from "../routeConst"
 import SocialSignIn from "./SocialSignIn";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";

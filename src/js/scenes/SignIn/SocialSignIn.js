@@ -7,7 +7,7 @@ import OAuthManager from 'react-native-oauth';
 import {AccessToken} from "react-native-fbsdk";
 
 import FacebookActions from "../../actions/FacebookActions";
-import RouteConst from "../RouteConst"
+import RouteConst from "../routeConst"
 import styles from "../../stylesheets/components/baseStyles"
 import TwitterActions from "../../actions/TwitterActions";
 import VoterActions from "../../actions/VoterActions";

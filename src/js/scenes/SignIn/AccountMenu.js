@@ -10,7 +10,7 @@ import Modal from 'react-native-modal'
 import { Actions } from 'react-native-router-flux';
 
 
-import RouteConst from "../RouteConst";
+import RouteConst from "../routeConst";
 import styles from "../../stylesheets/components/baseStyles";
 
 import TwitterStore from "../../stores/TwitterStore";

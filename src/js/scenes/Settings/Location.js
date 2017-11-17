@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Actions } from 'react-native-router-flux';
 
 import AddressBox from "../../components/AddressBox";
-import RouteConst from "../RouteConst"
+import RouteConst from "../routeConst"
 const logging = require("../../utils/logging");
 //import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 //import Helmet from "react-helmet";
