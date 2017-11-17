@@ -2,16 +2,19 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity, Platform, Image, View } from 'react-native';
 import Icon from "react-native-vector-icons/FontAwesome";
-import styles from "../../stylesheets/components/baseStyles"
 import {Actions} from "react-native-router-flux";
 import OAuthManager from 'react-native-oauth';
-import TwitterActions from "../../actions/TwitterActions";
+import {AccessToken} from "react-native-fbsdk";
+
 import FacebookActions from "../../actions/FacebookActions";
+import RouteConst from "../RouteConst"
+import styles from "../../stylesheets/components/baseStyles"
+import TwitterActions from "../../actions/TwitterActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 
 import FacebookStore from "../../stores/FacebookStore";
-import {AccessToken} from "react-native-fbsdk";
+
 
 const webAppConfig = require("../../config");
 const lodash_get = require('lodash.get');
@@ -145,8 +148,8 @@ export default class SocialSignIn extends Component {
             let consumer = lodash_get(resp, "response.credentials.consumerKey");
 
             TwitterActions.twitterNativeSignInSave(token, secret);  // Save to postgres
-            logging.rnrfLog("SocialSignIn  Actions.twitterSignInProcess({navigated_away: false})");
-            Actions.twitterSignInProcess({came_from: 'socialSignIn'});
+            logging.rnrfLog("SocialSignIn  Actions.twitterSignInProcess({came_from: RouteConst.KEY_SOCIAL_SIGNIN})");
+            Actions.twitterSignInProcess({came_from: RouteConst.KEY_SOCIAL_SIGNIN});
           } else {
             let accessToken = lodash_get(resp, "response.credentials.accessToken") || false;
             let clientID = lodash_get(resp, "response.credentials.clientID") || false;
@@ -178,9 +181,9 @@ export default class SocialSignIn extends Component {
             if (!VoterStore.isVoterFound ())  {
               VoterActions.voterRetrieve();  // Load the voter, so they will be available on the Ballot tab, New October 26, 2017
             }
-            logging.rnrfLog("SocialSignIn  Actions.signIn({came_from: 'socialSignIn'})");
+            logging.rnrfLog("SocialSignIn  Actions.signIn({came_from: RouteConst.KEY_SOCIAL_SIGNIN})");
             Actions.signIn({
-              came_from: 'socialSignIn',
+              came_from: RouteConst.KEY_SOCIAL_SIGNIN,
               forward_to_ballot: true
             });
           }
@@ -219,7 +222,7 @@ export default class SocialSignIn extends Component {
   }
 
   render () {
-    if ( ( Actions.currentScene !== "socialSignIn") && ( Actions.currentScene !== "signIn") ) {
+    if ( ( Actions.currentScene !== RouteConst.KEY_SOCIAL_SIGNIN) && ( Actions.currentScene !== RouteConst.KEY_SIGNIN) ) {
       logging.renderLog("SocialSignIn", "when NOT CURRENT, scene  = " + Actions.currentScene);
       return null;
     }

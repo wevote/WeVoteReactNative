@@ -1,8 +1,10 @@
 import React from 'react';
 
 import { Router, Scene, Stack } from 'react-native-router-flux';
-import tabStyles from "../stylesheets/TabBarStyles"
+import tabStyles from "../stylesheets/tabBarStyles"
+
 import TabIcon from "./TabIcon"
+import RouteConst from "./RouteConst"
 
 import Ballot from './Ballot/Ballot';
 import Candidate from './Ballot/Candidate';
@@ -33,29 +35,29 @@ const App = () => {
           tabBarPosition="top"
           showIcon={true}
           showLabel={false}
-          tabBarStyle={tabStyles.tabBar}>
+          tabBarStyle={tabStyles.tab_bar}>
           {/* WV Tab */}
-          <Stack key="we_vote_1"
+          <Stack key={RouteConst.KEY_WE_VOTE_1}
                  hideNavBar
-                 tabBarLabel={"WV"}
+                 tabBarLabel={RouteConst.TAB_LABEL_WV}
                  icon={TabIcon}
           >
-            <Scene key="welcome"
+            <Scene key={RouteConst.KEY_WELCOME}
                    component={Welcome}
                    type='replace'
                    initial />
           </Stack>
           {/* Ballot Tab */}
-          <Stack key="ballot_1"
+          <Stack key={RouteConst.KEY_BALLOT_1}
                  hideNavBar
-                 tabBarLabel={"Ballot"}
+                 tabBarLabel={RouteConst.TAB_LABEL_BALLOT}
                  icon={TabIcon}
           >
             <Scene key="ballot"
                    component={Ballot}
                    type='replace'
                    initial />
-            <Scene key ="location"
+            <Scene key={RouteConst.KEY_LOCATION}
                    component={Location}
                    type='replace' />
             <Scene key="candidate"
@@ -64,20 +66,20 @@ const App = () => {
                    back />
           </Stack>
           {/* Sign In Tab */}
-          <Stack key="signin_1"
-                 tabBarLabel={"Sign In"}
+          <Stack key={RouteConst.KEY_SIGNIN_1}
+                 tabBarLabel={RouteConst.TAB_LABEL_SIGN_IN}
                  hideNavBar
                  initial
                  icon={TabIcon}
           >
-            <Scene key="signIn"
+            <Scene key={RouteConst.KEY_SIGNIN}
                    component={SignIn}
                    type='replace'
                    initial />
-            <Scene key="socialSignIn"
+            <Scene key={RouteConst.KEY_SOCIAL_SIGNIN}
                    component={SocialSignIn}
                    type='replace' />
-            <Scene key="twitterSignInProcess"
+            <Scene key={RouteConst.KEY_TWITTER_SIGN_IN_PROCESS}
                    component={TwitterSignInProcess}
                    type='replace' />
           </Stack>

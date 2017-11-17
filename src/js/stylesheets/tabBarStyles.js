@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderRadius: 3
   },
-  ballotButtonContainer: {
+  ballot_button_container: {
     paddingTop:5,
     width:40,
     flex: 1,
@@ -20,24 +20,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  ballotText: {
+  ballot_text: {
     color:"white",
     fontSize: 12
   },
-  tabBar: {
+  tab_bar: {
     backgroundColor: '#1c2f4b',
     paddingTop: 12,
     paddingBottom: 8
   },
-  textSelected: {
+  text_selected: {
     width: 40,
     fontSize: 22,
     color: 'white'
-  },
-  textNotSelected: {
-    width: 40,
-    fontSize: 22,
-    color: 'grey'
   },
 });
 

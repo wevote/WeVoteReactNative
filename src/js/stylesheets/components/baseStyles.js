@@ -136,6 +136,34 @@ const base_styles = StyleSheet.create({
     maxWidth: 40,
     borderRadius: radius_xs,
   },
+  leftIndent: {
+    paddingLeft: 25,
+  },
+  topRoomForPhoneMenu: {
+    paddingTop: 50
+  },
+  grayPromise: {
+    fontFamily: 'Arial',
+    fontSize: 15,
+    fontWeight: 'bold',
+    paddingBottom: 20,
+    color: 'darkgray',
+  },
+  modalChoices: {
+    paddingLeft: 25,
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontFamily: 'Arial',
+    fontSize: 20,
+    color: '#00749e'
+  },
+  modalChoiceDummy: {   // Nov 2017, this is temporary for mockups
+    paddingLeft: 25,
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontFamily: 'Arial',
+    fontSize: 20,
+  }
 
 });
 

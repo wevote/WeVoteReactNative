@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { Actions } from 'react-native-router-flux';
+
 import AddressBox from "../../components/AddressBox";
-import { Text, View } from 'react-native';
+import RouteConst from "../RouteConst"
 const logging = require("../../utils/logging");
 //import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 //import Helmet from "react-helmet";
@@ -24,7 +26,7 @@ export default class Location extends Component {
 
   static onExit = () => {
     logging.rnrfLog("onExit from location: currentScene = " + Actions.currentScene);
-    Actions.refresh({came_from: 'location', forward_to_ballot: false})
+    Actions.refresh({came_from: RouteConst.KEY_LOCATION, forward_to_ballot: false})
   };
 
 

@@ -40,7 +40,7 @@ export default class TwitterStore extends FluxMapStore {
       we_vote_hosted_profile_image_url_medium: this.getState().we_vote_hosted_profile_image_url_medium || "",
       we_vote_hosted_profile_image_url_tiny: this.getState().we_vote_hosted_profile_image_url_tiny || "",
     };
-    console.log("twitter_store_data: ", twitter_store_data);
+    // console.log("twitter_store_data: ", twitter_store_data);
 
     return twitter_store_data;
   }
