@@ -176,11 +176,11 @@ let accountMenuOpen = true;
         animationOut='fadeOut'
         isVisible={this.state.isModalVisible}
         onRequestClose={() => {alert("Modal has been closed.")}}
+        backdropOpacity={1}
         style={{
           left: 20,
           top: 20,
           backgroundColor: 'white',
-          backdropOpacity: 1,
          }}
       >
         <View style={{flex: 1, flexDirection: 'column', padding: 5}}>

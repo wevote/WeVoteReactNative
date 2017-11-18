@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { Link } from "react-router-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CopyLinkModal from "../../components/Widgets/CopyLinkModal";
+import flex_box_styles from "../../stylesheets/utilities/flexBoxStyles";
+import item_action_bar_styles from "../../stylesheets/components/itemActionBar";
 
 export default class ShareButtonDropdown extends Component {
   static propTypes = {
@@ -73,43 +75,24 @@ export default class ShareButtonDropdown extends Component {
     const onCopyLinkClick = this.state.showCopyLinkModal ? this.closeCopyLinkModal.bind(this) : this.openCopyLinkModal.bind(this);
     // const onButtonBlur = ;
     const dropdownClass = this.state.open ? " open" : "";
+    var icon_color = "#999";
 
     return <View className="item-actionbar__btn-set">
       <View className={"btn-group" + dropdownClass}>
-        <TouchableOpacity onBlur={this.onButtonBlur.bind(this)} onPress={onClick} className="dropdown-toggle item-actionbar__btn btn btn-default">
-          {shareIcon} {shareText} <span className="caret" />
-        </TouchableOpacity>
+        <View>
+          <TouchableOpacity style={[item_action_bar_styles.share_button, flex_box_styles.u_flex_row, flex_box_styles.u_justify_between]} onPress={onClick}>
+            <Icon name="share" size={18} color={icon_color}/>
+            <Text>{shareText}</Text>
+          </TouchableOpacity>
+        </View>
         {this.state.open ?
-            <ListView
-                style={styles.container}
-                dataSource={this.state.dataSource}
-                renderRow={(data) => <View><Text>{data}</Text></View>}
-              />
-
-          /*<ul className="dropdown-menu">
-            <li>
-              <Text onPress={onCopyLinkClick}>
-                  Copy link
-              </Text
-            </li>
-            <li>
-              <Text onPress={this.shareFacebookComment.bind(this)}>
-                  Share on Facebook
-              </Text>
-            </li>
-          </ul>*/ :
-          null
+          <ListView
+            // style={item_action_bar_styles.list_view}
+            dataSource={this.state.dataSource}
+            renderRow={(data) => <Text style={{color: '#000'}}> {data} </Text>}/>
+          : null
         }
         </View>
-      /*<CopyLinkModal show={this.state.showCopyLinkModal}
-                     onHide={this.closeCopyLinkModal.bind(this)}
-                     urlBeingShared={urlBeingShared} />*/
     </View>;
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 20,
-  },
-});
