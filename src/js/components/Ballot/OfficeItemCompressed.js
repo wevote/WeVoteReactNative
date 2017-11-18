@@ -61,6 +61,13 @@ export default class OfficeItemCompressed extends Component {
     this.setState({ transitioning: false });
   }
 
+  openCandidateModal (candidate) {
+    // console.log("this.state.candidate: ", this.state.candidate);
+    if (candidate && candidate.we_vote_id) {
+      this.props._toggleCandidateModal(candidate);
+    }
+  }
+
   toggleDisplayAllCandidates () {
     this.setState({ display_all_candidates_flag: !this.state.display_all_candidates_flag });
   }
@@ -125,17 +132,23 @@ export default class OfficeItemCompressed extends Component {
               flex_box_styles.u_flex_auto, flex_box_styles.u_justify_between, layout_styles.u_stack__xs]}
                   className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
               {/* Candidate Name */}
+              {/*<Text numberOfLines={1} ellipsizeMode='tail'*/}
+                    {/*onPress={() => Actions.candidate({candidate_we_vote_id: one_candidate.we_vote_id})}*/}
+                    {/*style={ballot_styles.title_text} className="card-main__candidate-name u-f4">*/}
+                {/*{one_candidate.ballot_item_display_name}*/}
               <Text numberOfLines={1} ellipsizeMode='tail'
-                    onPress={() => Actions.candidate({candidate_we_vote_id: one_candidate.we_vote_id})}
+                    onPress={() => this.openCandidateModal(one_candidate)}
                     style={ballot_styles.title_text} className="card-main__candidate-name u-f4">
                 {one_candidate.ballot_item_display_name}
-
               </Text>
 
               <View className="card-main__candidate-description">
                 {/*<Text style={ballot_styles.candidate_description}>{candidate_text}</Text>*/}
+                {/*<LearnMore text_to_display={candidate_text}*/}
+                           {/*on_click={this.props.link_to_ballot_item_page ? () => Actions.candidate({candidate_we_vote_id: one_candidate.we_vote_id}) : null}/>*/}
                 <LearnMore text_to_display={candidate_text}
-                           on_click={this.props.link_to_ballot_item_page ? () => Actions.candidate({candidate_we_vote_id: one_candidate.we_vote_id}) : null}/>
+                           on_click={() => Actions.candidate({candidate_we_vote_id: one_candidate.we_vote_id})}/>
+
               </View>
               {/* Opinion Items */}
               <View style={[flex_box_styles.u_flex, flex_box_styles.u_flex_row, flex_box_styles.u_justify_between, flex_box_styles.u_min_50]}

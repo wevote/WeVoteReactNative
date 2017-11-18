@@ -12,6 +12,9 @@ import { Actions } from 'react-native-router-flux';
 import HeaderTitle from "../../components/Header/Header"
 import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
+import CandidateStore from "../../stores/CandidateStore";
+import CandidateActions from "../../actions/CandidateActions";
+import CandidateModal from "../../components/Ballot/CandidateModal";
 import EditAddress from "../../components/Widgets/EditAddress";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
@@ -51,10 +54,7 @@ export default class Ballot extends Component {
   constructor (props){
     super(props);
     this.state = {
-      candidate_for_modal: {
-        voter_guides_to_follow_for_latest_ballot_item: [],
-        position_list: []
-      },
+      candidate_for_modal: null,
       measure_for_modal: {
         voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: []
@@ -176,13 +176,19 @@ export default class Ballot extends Component {
   _toggleCandidateModal (candidate_for_modal) {
     if (candidate_for_modal) {
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidate_for_modal.we_vote_id, "CANDIDATE");
+      CandidateActions.positionListForBallotItem(candidate_for_modal.we_vote_id);
       candidate_for_modal.voter_guides_to_follow_for_latest_ballot_item = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidate_for_modal.we_vote_id);
+      candidate_for_modal.position_list = CandidateStore.getPositionList(candidate_for_modal.we_vote_id);
+      this.setState({
+        candidate_for_modal: candidate_for_modal,
+        showCandidateModal: !this.state.showCandidateModal
+      });
+    } else {
+      this.setState({
+        candidate_for_modal: this.state.candidate_for_modal,
+        showCandidateModal: !this.state.showCandidateModal
+      });
     }
-
-    this.setState({
-      candidate_for_modal: candidate_for_modal,
-      showCandidateModal: !this.state.showCandidateModal
-    });
   }
 
   // October 2017, BallotIntroModal is lower priority
@@ -264,10 +270,7 @@ export default class Ballot extends Component {
     // Update the data for the modal to include the position of the organization related to this ballot item
     if (this.state.candidate_for_modal) {
       this.setState({
-        candidate_for_modal: {
-          ...this.state.candidate_for_modal,
-          voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem()
-        }
+        candidate_for_modal: this.state.candidate_for_modal,
       });
     } else if (this.state.measure_for_modal) {
       this.setState({
@@ -459,9 +462,9 @@ export default class Ballot extends Component {
           </View>) :
           ballot.map( (item) => <View key={item.we_vote_id}>
             <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
-                                                      _toggleMeasureModal={this._toggleMeasureModal}
-                                                      key={item.we_vote_id}
-                                                      {...item} />
+                                  _toggleMeasureModal={this._toggleMeasureModal}
+                                  key={item.we_vote_id}
+                                  {...item} />
           </View>)
         }
         {/* in_ready_to_vote_mode ?

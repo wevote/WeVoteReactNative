@@ -10,6 +10,9 @@ import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
+import item_action_bar_styles from "../../stylesheets/components/itemActionBar";
+import flex_box_styles from "../../stylesheets/utilities/flexBoxStyles";
+import layout_styles from "../../stylesheets/utilities/layoutStyles";
 
 //var Icon = require("react-svg-icons");
 
@@ -94,11 +97,17 @@ export default class ItemActionBar extends Component {
       // console.log("ItemActionBar, support_count: ", support_count, ", oppose_count: ", oppose_count, ", is_support: ", is_support, ", or is_oppose: ", is_oppose, "");
       return null;
     }
+
+    let is_public_position = false;
+    if (this.props.supportProps !== undefined && this.props.supportProps.is_public_position !== undefined) {
+      is_public_position = this.props.supportProps.is_public_position;
+    }
+
     const icon_size = 18;
     var icon_color = "#999";
     // TODO Refactor the way we color the icons
-    var support_icon_color = is_support ? "green" : "#999";
-    var oppose_icon_color = is_oppose ? "green" : "#999";
+    var support_icon_color = is_support ? "white" : "#999";
+    var oppose_icon_color = is_oppose ? "white" : "#999";
     var url_being_shared;
     if (this.props.type === "CANDIDATE") {
       url_being_shared = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/candidate/" + this.props.ballot_item_we_vote_id;
@@ -131,40 +140,80 @@ export default class ItemActionBar extends Component {
         </section>
       </Modal.Body>
     </Modal>;*/
+    const ballot_item_display_name = this.props.ballot_item_display_name || "";
+    let supportButtonSelectedPopOverText = "Click to support";
+    if (ballot_item_display_name.length > 0) {
+      supportButtonSelectedPopOverText += " " + ballot_item_display_name + ".";
+    } else {
+      supportButtonSelectedPopOverText += ".";
+    }
 
-    return <View className={ this.props.shareButtonHide ? "item-actionbar--inline" : "item-actionbar" }>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}} className={"btn-group" + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
-              {/* Start of Support Button */}
-              <TouchableOpacity style={{alignSelf: 'flex-end'}} className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (is_support ? " support-at-state" : "")} onPress={this.supportItem.bind(this, is_support)}>
-                <Icon name="thumbs-up" size={icon_size} color={support_icon_color} />
-                { is_support ?
-                  <Text
-                    className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label__position-at-state" }>Support &nbsp;</Text> :
-                  <Text
-                    className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Support &nbsp;</Text>
-                }
-              </TouchableOpacity>
-              {/* Start of Oppose Button */}
-              <TouchableOpacity style={{alignSelf: 'flex-end'}} className={"item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (is_oppose ? " oppose-at-state" : "")} onPress={this.opposeItem.bind(this, is_oppose)}>
-                <Icon name="thumbs-down" size={icon_size} color={oppose_icon_color} />
-                { is_oppose ?
-                  <Text
-                    className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label__position-at-state" }>Oppose</Text> :
-                  <Text
-                    className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" : "item-actionbar__position-btn-label" }>Oppose</Text>
-                }
-              </TouchableOpacity>
+    if (is_public_position) {
+      supportButtonSelectedPopOverText += " Your support will be visible to the public.";
+    } else {
+      supportButtonSelectedPopOverText += " Only your We Vote friends will see your support.";
+    }
+    let supportButtonUnselectedPopOverText = "Click to remove your support";
+    if (ballot_item_display_name.length > 0) {
+      supportButtonUnselectedPopOverText += " for " + ballot_item_display_name + ".";
+    } else {
+      supportButtonUnselectedPopOverText += ".";
+    }
+
+    let opposeButtonSelectedPopOverText = "Click to oppose";
+    if (ballot_item_display_name.length > 0) {
+      opposeButtonSelectedPopOverText += " " + ballot_item_display_name + ".";
+    } else {
+      opposeButtonSelectedPopOverText += ".";
+    }
+
+    if (is_public_position) {
+      opposeButtonSelectedPopOverText += " Your opposition will be visible to the public.";
+    } else {
+      opposeButtonSelectedPopOverText += " Only your We Vote friends will see your opposition.";
+    }
+    let opposeButtonUnselectedPopOverText = "Click to remove your opposition";
+    if (ballot_item_display_name.length > 0) {
+      opposeButtonUnselectedPopOverText += " for " + ballot_item_display_name + ".";
+    } else {
+      opposeButtonUnselectedPopOverText += ".";
+    }
+
+    // const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{is_support ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
+    // const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{is_oppose ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
+
+    return <View style={this.props.shareButtonHide ? [item_action_bar_styles.item_actionbar__inline, flex_box_styles.u_flex_row, layout_styles.u_stack__sm] : [item_action_bar_styles.item_actionbar, flex_box_styles.u_flex_row, layout_styles.u_stack__sm]}
+      className={ this.props.shareButtonHide ? "item-actionbar--inline  hidden-print" : "item-actionbar  hidden-print" }>
+      <View style={[this.props.shareButtonHide ? "" : layout_styles.u_push__md, item_action_bar_styles.btn_group, flex_box_styles.u_flex_row]}
+            className={"btn-group" + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
+        {/* Start of Support Button */}
+        <TouchableOpacity style={[item_action_bar_styles.button, is_support ? item_action_bar_styles.support_at_state : null]} onPress={this.supportItem.bind(this, is_support)}>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={{paddingTop: 5}}>
+              <Icon name="thumbs-up" size={icon_size} color={support_icon_color} />
             </View>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity style={[item_action_bar_styles.button, is_oppose ? item_action_bar_styles.oppose_at_state: null]  } onPress={this.opposeItem.bind(this, is_oppose)}>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={{paddingTop: 5}}>
+              <Icon name="thumbs-down" size={icon_size} color={oppose_icon_color} />
+            </View>
+          </View>
+        </TouchableOpacity>
+
+      </View>
       { this.props.commentButtonHide ?
         null :
-         <TouchableOpacity className="item-actionbar__btn item-actionbar__btn--comment btn btn-default u-push--sm" onPress={this.props.toggleFunction}>
+         <TouchableOpacity style={[item_action_bar_styles.button, layout_styles.u_push__md]} onPress={this.props.toggleFunction}>
             <Icon name="comment" size={icon_size} color={icon_color} />
-            <Text className="item-actionbar__position-btn-label">Comment</Text>
-          </TouchableOpacity> }
+         </TouchableOpacity>
+      }
 
       { this.props.shareButtonHide ?
-        null :
-        <ShareButtonDropdown urlBeingShared={url_being_shared} shareIcon={share_icon} shareText={"Share"} /> }
+        <View/>:
+        <ShareButtonDropdown urlBeingShared={url_being_shared} shareIcon={share_icon} shareText={"Share"} />
+      }
       { this.state.showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null}
     </View>;
   }

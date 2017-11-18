@@ -99,13 +99,25 @@ const base_styles = StyleSheet.create({
     paddingBottom: 12
   },
   card: {
-    padding: 10,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: radius_xs,
+    elevation: 1,
+    shadowColor: 'rgba(0,0,0,.2)',
+    shadowOffset: { width: 0, height: 1},
+    shadowOpacity: 0.8,
+    shadowRadius: 1,
   },
   card_main: {
     padding: 16,
     display: 'flex',
     backgroundColor: '#fff',
     position: 'relative',
+  },
+  card__no_additional: {
+    margin: 8,
+    color: '#000',
   },
   media_object: {
     padding: 10,
@@ -135,6 +147,27 @@ const base_styles = StyleSheet.create({
   avatar_compressed: {
     maxWidth: 40,
     borderRadius: radius_xs,
+  },
+  modal_header: {
+    paddingLeft: 15,
+    paddingTop: 15,
+    paddingBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  candidate_modal: {
+    backgroundColor: 'white',
+    margin: 20,
+  },
+  modal_title: {
+    fontFamily: 'Arial',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#000'
+  },
+  modal_body: {
+    position: 'relative',
+    padding: 15,
   },
   leftIndent: {
     paddingLeft: 25,
