@@ -14,10 +14,10 @@ export default class TwitterStore extends FluxMapStore {
   }
 
   get () {
-    let twitter_store_data = {
-      kind_of_owner: this.getState().kindOfOwner || "",
-      owner_we_vote_id: this.getState().ownerWeVoteId || "",
-      twitter_handle: this.getState().twitterHandle || "",
+    return {
+      kind_of_owner: this.getState().kind_of_owner || "",
+      owner_we_vote_id: this.getState().owner_we_vote_id || "",
+      twitter_handle: this.getState().twitter_handle || "",
       twitter_description: this.getState().twitter_description || "",
       twitter_followers_count: this.getState().twitter_followers_count || "",
       twitter_name: this.getState().twitter_name || "",
@@ -40,9 +40,6 @@ export default class TwitterStore extends FluxMapStore {
       we_vote_hosted_profile_image_url_medium: this.getState().we_vote_hosted_profile_image_url_medium || "",
       we_vote_hosted_profile_image_url_tiny: this.getState().we_vote_hosted_profile_image_url_tiny || "",
     };
-    // console.log("twitter_store_data: ", twitter_store_data);
-
-    return twitter_store_data;
   }
 
   get kindOfOwner (){
