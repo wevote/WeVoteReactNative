@@ -60,6 +60,8 @@ the PyCharm IDE. How you do this depends on the development environment you use.
 
 ---
 
-Next: [Debugging Tools and Tips iOS](DEBUGGING_TOOLS_IOS.md)
+Next: [Working with react-native-router-flux](docs/working/WORKING_WITH_REACT_NATIVE_ROUTER_FLUX.md)
+
+
 
 [Go back to Readme Home](../../README.md)

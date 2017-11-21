@@ -7,13 +7,12 @@ import OAuthManager from 'react-native-oauth';
 import {AccessToken} from "react-native-fbsdk";
 
 import FacebookActions from "../../actions/FacebookActions";
+import FacebookStore from "../../stores/FacebookStore";
 import RouteConst from "../routeConst"
 import styles from "../../stylesheets/components/baseStyles"
 import TwitterActions from "../../actions/TwitterActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
-
-import FacebookStore from "../../stores/FacebookStore";
 
 
 const webAppConfig = require("../../config");
@@ -215,7 +214,7 @@ export default class SocialSignIn extends Component {
        })
       .catch(err => {
         // If not authorized, throws {status: "error", msg: "No account found for twitter"}
-        console.log('manager.authorize threw an error: ...' );
+        console.log('manager.authorize threw an error: ...');
         console.log(err);
       });
     console.log('after oauthManager.deauthorize social: ' + this.props.authenticator);
@@ -223,10 +222,10 @@ export default class SocialSignIn extends Component {
 
   render () {
     if ( ( Actions.currentScene !== RouteConst.KEY_SOCIAL_SIGNIN) && ( Actions.currentScene !== RouteConst.KEY_SIGNIN) ) {
-      logging.renderLog("SocialSignIn", "when NOT CURRENT, scene  = " + Actions.currentScene);
+      logging.renderLog("SocialSignIn when NOT CURRENT, scene  = " + Actions.currentScene);
       return null;
     }
-    logging.renderLog("SocialSignIn", "scene = " + Actions.currentScene + "  hasMounted = " + this.state.hasMounted);
+    logging.renderLog("SocialSignIn scene = " + Actions.currentScene + "  hasMounted = " + this.state.hasMounted);
 
 
     let onPressFunction = null;

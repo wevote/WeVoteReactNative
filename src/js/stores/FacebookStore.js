@@ -224,6 +224,14 @@ export default class FacebookStore extends FluxMapStore {
           emailData: {}
         };
 
+      case "facebookSignInForget":
+        // console.log("FacebookStore::facebookSignInForget");
+        return {
+          authData: {},
+          pictureData: {},
+          emailData: {}
+        };
+
       /* Sept 6, 2017, has been replaced by facebook Game API friends list */
       case "facebookFriendsAction":
         state.facebook_friends_using_we_vote_list = action.res.facebook_friends_using_we_vote_list;

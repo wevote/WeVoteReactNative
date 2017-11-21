@@ -6,9 +6,6 @@ import { Actions } from 'react-native-router-flux';
 import AddressBox from "../../components/AddressBox";
 import RouteConst from "../routeConst"
 const logging = require("../../utils/logging");
-//import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
-//import Helmet from "react-helmet";
-
 
 export default class Location extends Component {
   static propTypes = {
@@ -31,8 +28,7 @@ export default class Location extends Component {
 
 
   render () {
-    // console.log("Settings/Location");
-    logging.renderLog("Location.js", "scene = " + Actions.currentScene);
+    logging.renderLog("Location", "scene = " + Actions.currentScene);
 
     return <View>
         <AddressBox {...this.props} saveUrl="/ballot" />

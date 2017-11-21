@@ -138,7 +138,7 @@ export default class TwitterSignInProcess extends Component {
     if (this.state.saving ||
       !twitter_auth_response ||
       !twitter_auth_response.twitter_retrieve_attempted ) {
-      return <LoadingWheel text={['Twitter authentication was successful.', 'Waiting for Twitter to return with additional information.']}/>;
+      return <LoadingWheel text={['Twitter authentication was successful.', 'Retrieving more data...']}/>;
      }
 
     console.log("=== Passed initial gate ===");
@@ -154,7 +154,8 @@ export default class TwitterSignInProcess extends Component {
       //     message_type: "success"
       //   }
       // });
-      return <LoadingWheel text={'Waiting for the WeVote cloud to return with additional information.'}/>;
+      // TODO: Replace this with a pop-up explanation
+      return <LoadingWheel text={['NOT FOR GENERAL RELEASE', 'Twitter sign in failed, for now press Command+R.']}/>;
     }
 
     if (yes_please_merge_accounts) {

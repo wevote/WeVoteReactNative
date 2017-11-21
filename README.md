@@ -89,11 +89,13 @@ These are some videos which'll give you a brief overview of React Native.
 ## Working with WeVoteReactNative
 1. [Working with WeVoteReactNative Day-to-Day](docs/working/README_WORKING_WITH_REACT_NATIVE.md)
 
-2a. [Debugging Tools and Tips iOS](docs/working/DEBUGGING_TOOLS_IOS.md)
+2. [Working with react-native-router-flux](docs/working/WORKING_WITH_REACT_NATIVE_ROUTER_FLUX.md)
 
-2b. [Debugging Tools and Tips Android](docs/working/DEBUGGING_TOOLS_ANDROID.md)
+3a. [Debugging Tools and Tips iOS](docs/working/DEBUGGING_TOOLS_IOS.md)
 
-3. [Issues and Reporting Bugs](docs/working/ISSUES.md)
+3b. [Debugging Tools and Tips Android](docs/working/DEBUGGING_TOOLS_ANDROID.md)
+
+4. [Issues and Reporting Bugs](docs/working/ISSUES.md)
 
 ## Contributing to the Project
 Please read the following before you start contributing to the project. Thank you!
