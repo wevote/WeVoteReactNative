@@ -2,41 +2,37 @@ import Dispatcher from "../dispatcher/Dispatcher";
 import VoterActions from "../actions/VoterActions";
 import VoterSessionActions from "../actions/VoterSessionActions";
 
-module.exports = {
-  // TODO Convert this to sign out of just Twitter
-  appLogout: function (){
+export default class TwitterActions {
+
+  static twitterSignInForget () {
+    Dispatcher.dispatch({
+      type: "twitterSignInForget",
+      data: true
+    });
+  }
+
+  static appLogout (){
     VoterSessionActions.voterSignOut();
     VoterActions.voterRetrieve();
-  },
+  }
 
-  twitterIdentityRetrieve: function (new_twitter_handle) {
+  static twitterIdentityRetrieve (new_twitter_handle) {
     Dispatcher.loadEndpoint("twitterIdentityRetrieve",
       {
         twitter_handle: new_twitter_handle
       });
-  },
+  }
 
-  twitterNativeSignInSave: function (twitter_access_token, twitter_access_token_secret) {
+  static twitterNativeSignInSave (twitter_access_token, twitter_access_token_secret) {
     Dispatcher.loadEndpoint("twitterNativeSignInSave",
       {
         twitter_access_token: twitter_access_token,
         twitter_access_token_secret: twitter_access_token_secret
       });
-  },
+  }
 
-  twitterSignInRetrieve: function () {
+  static twitterSignInRetrieve () {
     Dispatcher.loadEndpoint("twitterSignInRetrieve", {
     });
-  },
-
-  //
-  // twitterSignInStart: function (return_url) {
-  //   Dispatcher.loadEndpoint("twitterSignInStart",
-  //     {
-  //       return_url: return_url
-  //     });
-  // },
-
-};
-
-export default [];
+  }
+}

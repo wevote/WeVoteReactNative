@@ -9,16 +9,12 @@ import PropTypes from 'prop-types';
 import Modal from 'react-native-modal'
 import { Actions } from 'react-native-router-flux';
 
-
-import RouteConst from "../routeConst";
-import styles from "../../stylesheets/components/baseStyles";
-
-import TwitterStore from "../../stores/TwitterStore";
-import FacebookStore from "../../stores/FacebookStore";
 import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
 import FriendStore from "../../stores/FriendStore";
 import OrganizationActions from "../../actions/OrganizationActions";
+import RouteConst from "../routeConst";
+import styles from "../../stylesheets/components/baseStyles";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 const logging = require("../../utils/logging");
@@ -103,8 +99,9 @@ export default class AccountMenu extends Component {
   }
 
   signOutAndHideAccountMenu () {
+    console.log("AccountMenu signOutAndHideAccountMenu() removing twitter and facebook authentication data");
     VoterSessionActions.voterSignOut();
-    this.setState({accountMenuOpen: false});
+    this._showModal();
   }
 
   transitionToYourVoterGuide () {
@@ -179,7 +176,7 @@ let accountMenuOpen = true;
         backdropOpacity={1}
         style={{
           left: 20,
-          top: 20,
+          top: 35,
           backgroundColor: 'white',
          }}
       >
@@ -194,7 +191,7 @@ let accountMenuOpen = true;
             <TouchableOpacity onPress={this._showModal}>
               <Text style={styles.modalChoices}>Sign In</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this._showModal}>
+            <TouchableOpacity onPress={this.signOutAndHideAccountMenu.bind(this)}>
               <Text style={styles.modalChoices}>Sign Out</Text>
             </TouchableOpacity>
             <Text style={styles.modalChoiceDummy}>Your Bookmarked Items</Text>

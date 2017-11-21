@@ -13,32 +13,39 @@ const web_app_config = require("../config");
 // Including FacebookStore causes problems in the WebApp, and again in the Native App
 
 
-module.exports = {
+export default class FacebookActions {
   // TODO Convert this to sign out of just Facebook
-  appLogout: function (){
+  static appLogout (){
     VoterSessionActions.voterSignOut();  // This deletes the device_id cookie
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
-  },
+  }
 
-  disconnectFromFacebook: function () {
-      // Removing connection between We Vote and Facebook
-      Dispatcher.dispatch({
-          type: FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT,
-          data: true
-      });
-  },
+  static disconnectFromFacebook () {
+    // Removing connection between We Vote and Facebook
+    Dispatcher.dispatch({
+      type: FacebookConstants.FACEBOOK_SIGN_IN_DISCONNECT,
+      data: true
+    });
+  }
 
-  facebookDisconnect: function (){
+  static facebookSignInForget () {
+    Dispatcher.dispatch({
+      type: "facebookSignInForget",
+      data: true
+    });
+  }
+
+  static facebookDisconnect (){
     Dispatcher.loadEndpoint("facebookDisconnect");
-  },
+  }
 
-  facebookFriendsAction: function () {
+  static facebookFriendsAction () {
     Dispatcher.loadEndpoint("facebookFriendsAction", {});
     FriendActions.suggestedFriendList();
-  },
+  }
 
-  getFacebookData: function (accessToken) {
+  static getFacebookData (accessToken) {
     Dispatcher.dispatch({
       type: FacebookConstants.FACEBOOK_ACCESS_TOKEN,
       data: accessToken
@@ -57,9 +64,9 @@ module.exports = {
       this.facebookApiCallbackData
     );
     new GraphRequestManager().addRequest(infoRequest).start();
-  },
+  }
 
-  facebookApiCallbackData (error: ?Object, response: ?Object) {
+  static facebookApiCallbackData (error: ?Object, response: ?Object) {
     if (error) {
       console.log('facebookApiCallbackData returned an error: ' + error.message);
     } else {
@@ -68,11 +75,11 @@ module.exports = {
         data: response
       });
     }
-  },
+  }
 
   // Save incoming data from Facebook
   // For offsets, see https://developers.facebook.com/docs/graph-api/reference/cover-photo/
-  voterFacebookSignInData: function (data) {
+  static voterFacebookSignInData (data) {
     console.log("FacebookActions voterFacebookSignInData, data:", data);
     let background = false;
     let offset_x = false;
@@ -100,10 +107,10 @@ module.exports = {
       save_auth_data: false,
       save_profile_data: true,
     });
-  },
+  }
 
   // October 2017, not yet ported to native way of doing it.  See getFacebookData
-  getFacebookInvitableFriendsList: function (picture_width, picture_height) {
+  static getFacebookInvitableFriendsList (picture_width, picture_height) {
     let fb_api_for_invitable_friends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${picture_width}).height(${picture_height})}`;
     window.FB.api(fb_api_for_invitable_friends, (response) => {
       console.log("getFacebookInvitableFriendsList", response);
@@ -112,10 +119,10 @@ module.exports = {
           data: response
       });
     });
-  },
+  }
 
   // October 2017, not yet ported to native way of doing it.  See getFacebookData
-  readFacebookAppRequests: function () {
+  static readFacebookAppRequests () {
     let fb_api_for_reading_app_requests = "me?fields=apprequests.limit(10){from,to,created_time,id}";
     window.FB.api(fb_api_for_reading_app_requests, (response) => {
       console.log("readFacebookAppRequests", response);
@@ -124,10 +131,10 @@ module.exports = {
           data: response
       });
     });
-  },
+  }
 
   // October 2017, not yet ported to native way of doing it.  See getFacebookData
-  deleteFacebookAppRequest: function (requestId) {
+  static deleteFacebookAppRequest (requestId) {
     console.log("deleteFacebookAppRequest requestId: ", requestId);
     window.FB.api(requestId, "delete", (response) => {
       console.log("deleteFacebookAppRequest response", response);
@@ -136,10 +143,10 @@ module.exports = {
           data: response
        });
     });
-  },
+  }
 
   // Save incoming auth data from Facebook
-  voterFacebookSignInAuth: function (data) {
+  static voterFacebookSignInAuth (data) {
     console.log("FacebookActions voterFacebookSignInAuth");
     Dispatcher.loadEndpoint("voterFacebookSignInSave", {
       facebook_access_token: data.facebook_access_token || false,
@@ -149,17 +156,15 @@ module.exports = {
       save_auth_data: true,
       save_profile_data: false
     });
-  },
+  }
 
-  voterFacebookSignInRetrieve: function (){
+  static voterFacebookSignInRetrieve (){
     Dispatcher.loadEndpoint("voterFacebookSignInRetrieve", {
     });
-  },
+  }
 
-  voterFacebookSignInConfirm: function (){
+  static voterFacebookSignInConfirm (){
     Dispatcher.loadEndpoint("voterFacebookSignInRetrieve", {
     });
-  },
-};
-
-export default [];
+  }
+}

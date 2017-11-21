@@ -1,11 +1,3 @@
-/**
- * The idea of this APIS.js (WeVote service.js) file is to abstract away the details
- * of many repetitive service calls that we will be using.
- * @author Nick Fiorini <nf071590@gmail.com>
- */
-"use strict";
-
-import * as request from "superagent";
 import CookieStore from '../stores/CookieStore';
 
 const url = require("url");
@@ -76,20 +68,17 @@ export function $ajax (options) {
 
       logging.httpLog(">>HTTP FETCH $ajax for (" + options.endpoint + ")");
       if (responseJson.hasOwnProperty('voter_device_id')) {
-        // logging.httpLog(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id + ' : ' +
-        //   responseJson.status);
-        console.log(">>HTTP responseJson:", options.endpoint, responseJson);
+        logging.httpLog(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.voter_device_id + ' : ' +
+          responseJson.status);
       } else {
-        //logging.httpLog(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.status);
-        console.log(">>HTTP responseJson:", options.endpoint, responseJson);
+        logging.httpLog(">>HTTP responseJson:" + options.endpoint + ' : ' + responseJson.status);
       }
-      //logging.httpLog(">>HTTP response:", responseJson);
+      logging.httpLog(">>HTTP response:", responseJson);
 
       const res = responseJson;
       this.dispatch({ type: options.endpoint, res });
     })
     .catch((error) => {
-      // Steve 11/11/17 only for iphonedevcamp console.error(">>HTTP FETCH $ajax error", error, options.endpoint);
       console.log(">>HTTP FETCH $ajax error", error, options.endpoint);
       this.dispatch({type: "error-" + options.endpoint, error});
     });

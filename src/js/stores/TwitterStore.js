@@ -149,6 +149,27 @@ export default class TwitterStore extends FluxMapStore {
           ...state
         };
 
+      case "twitterSignInForget":
+        // console.log("TwitterStore::twitterSignInForget");
+        state.existing_twitter_account_found = false;
+        state.twitter_profile_image_url_https = '';
+        state.twitter_retrieve_attempted = false;
+        state.twitter_secret_key = '';
+        state.twitter_sign_in_failed = false;
+        state.twitter_sign_in_found = false;
+        state.twitter_sign_in_verified = false;
+        state.voter_device_id = '';
+        state.voter_has_data_to_preserve = false;
+        state.voter_we_vote_id = '';
+        state.voter_we_vote_id_attached_to_twitter = false;
+        state.we_vote_hosted_profile_image_url_large = '';
+        state.we_vote_hosted_profile_image_url_medium = '';
+        state.we_vote_hosted_profile_image_url_tiny = '';
+        return {
+          ...state
+        };
+
+
       default:
         return {
           ...state

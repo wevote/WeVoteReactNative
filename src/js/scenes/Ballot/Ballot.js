@@ -19,6 +19,8 @@ import EditAddress from "../../components/Widgets/EditAddress";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import LoadingWheel from "../../components/LoadingWheel";
+import RouteConst from "../routeConst";
+
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
@@ -91,18 +93,18 @@ export default class Ballot extends Component {
 
   static onExit = () => {
     logging.rnrfLog("onExit from Ballot: currentScene = " + Actions.currentScene);
-    Actions.refresh({came_from: 'ballot', forward_to_ballot: false})
+    Actions.refresh({came_from: RouteConst.KEY_BALLOT, forward_to_ballot: false})
   };
 
   // componentDidMount ()  Doesn't work in react-native?
   componentWillMount () {
     console.log("Ballot ++++ MOUNT, currentScene = " + Actions.currentScene);
     this.setState({mounted: true});
-    if (Actions.currentScene === 'ballot') {
+    if (Actions.currentScene === RouteConst.KEY_BALLOT) {
       if (typeof BallotStore.ballot_properties === "undefined" || BallotStore.ballot_properties.ballot_found === false) { // No ballot found
         logging.rnrfLog("Ballot had no voter so called  AddressSelectModal");
         this.setState({showBallotSummaryModal: true});
-        //Actions.location({came_from: 'ballot'});
+        //Actions.location({came_from: RouteConst.KEY_BALLOT});
         //browserHistory.push("settings/location");
       } else {
         let ballot_type = this.props.type ? this.props.type : "all";
@@ -355,7 +357,7 @@ export default class Ballot extends Component {
   render () {
     logging.renderLog("Ballot.js", "scene = " + Actions.currentScene);
 
-    if (this.state.waitingForBallot && Actions.currentScene != 'ballot') {
+    if (this.state.waitingForBallot && Actions.currentScene != RouteConst.KEY_BALLOT) {
       console.log("Ballot waitingForBallot is true with the scene not being current, so returning null");
       return LoadingWheel;
     }
@@ -375,7 +377,7 @@ export default class Ballot extends Component {
             {sign_in_message}
           </Text>
 
-          {(Actions.currentScene === 'ballot') ?
+          {(Actions.currentScene === RouteConst.KEY_BALLOT) ?
             <SelectAddressModal show={this.state.showSelectAddressModal}
                                 toggleFunction={this._toggleSelectAddressModal} /> : null }
 

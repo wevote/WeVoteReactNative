@@ -215,11 +215,11 @@ export default class SignIn extends Component {
 
   render () {
     if (Actions.currentScene !== "signIn") {
-      logging.renderLog("SignIn", "when NOT CURRENT, scene  = " + Actions.currentScene);
+      logging.renderLog("SignIn when NOT CURRENT, scene  = " + Actions.currentScene);
       return null;
     }
 
-    logging.renderLog("SignIn", "scene = " + Actions.currentScene);
+    logging.renderLog("SignIn  scene = " + Actions.currentScene);
 
     let signedInTwitter = TwitterStore.get().twitter_sign_in_found;
     let signedInFacebook = FacebookStore.getFacebookAuthResponse().facebook_sign_in_verified;
@@ -280,9 +280,6 @@ export default class SignIn extends Component {
       }
     }
 
-    let t = this.state.voter.signed_in_twitter;
-    let f = this.state.voter.signed_in_facebook;
-
     return <View style={styles.outer_gray_pane} >
         <View style={styles.inner_white_pane} >
           <View>
@@ -297,11 +294,22 @@ export default class SignIn extends Component {
           this.state.voter.signed_in_twitter || !this.state.voter.signed_in_facebook */}
           <View style={{flex: 1, flexDirection: 'column', paddingTop: 15}}>
             <View>
-              <SocialSignIn signIn authenticator={'twitter'} buttonText={"Sign In"} />
-              <SocialSignIn signIn authenticator={'facebook'} buttonText={"Sign In"} />
-              {/* the two signOuts, may just be temporary for testing -- Oct 2017 */}
-              <SocialSignIn signOut authenticator={'twitter'} buttonText={"Sign Out"} />
-              <SocialSignIn signOut authenticator={'facebook'} buttonText={"Sign Out"} />
+              {!signedInTwitter ?
+                <SocialSignIn signIn isButton authenticator={'twitter'} buttonText={"Sign In"} />
+              : null
+              }
+              {!signedInFacebook ?
+                <SocialSignIn signIn isButton authenticator={'facebook'} buttonText={"Sign In"} />
+              : null
+              }
+              {signedInTwitter || signedInFacebook ?
+                <SocialSignIn signOut isButton authenticator={'both'} buttonText={"Sign Out"}/>
+                : null
+              }
+              {/* Please save these for testing
+              <SocialSignIn signOut isButton authenticator={'twitter'} buttonText={"Sign Out"} />
+              <SocialSignIn signOut isButton authenticator={'facebook'} buttonText={"Sign Out"} />
+              */}
             </View>
           </View>
         </View>
