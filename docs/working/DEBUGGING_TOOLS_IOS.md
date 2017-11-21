@@ -1,5 +1,5 @@
 # Debugging Tools and Tips
-[Go back to Debugging Tools and Tips iOS](DEBUGGING_TOOLS_IOS.md)
+[Go back to Working with react-native-router-flux](WORKING_WITH_REACT_NATIVE_ROUTER_FLUX.md)
 
 In the iOS simulator press Command+D to get the simulator debugger window (Command+M for Android)
 
