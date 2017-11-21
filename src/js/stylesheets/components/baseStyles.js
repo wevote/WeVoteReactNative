@@ -9,6 +9,9 @@ let radius_xs = 8;
 let radius_sm = 4;
 let radius_md = 8;
 let radius_rounded = 6;
+let twitter_blue = '#48BBEC';
+let facebook_blue = '#3b5998';
+let signout_blue = '#0000ff';
 
 // https://www.bountysource.com/issues/39479584-fontfamily-in-theme-js-has-no-effect
 // There is no out-of-the-box sans-serif in iOS, so used Arial instead.  Works fine on Android.
@@ -32,7 +35,7 @@ const base_styles = StyleSheet.create({
   },
   button: {
     height: 36,
-    backgroundColor: '#48BBEC',
+    backgroundColor: twitter_blue,
     borderColor: 'rgba(0,0,0,0.2)',
     borderWidth: 1,
     borderRadius: 6,
@@ -45,7 +48,7 @@ const base_styles = StyleSheet.create({
   },
   facebook_button: {
     height: 36,
-    backgroundColor: '#3b5998',
+    backgroundColor: facebook_blue,
     borderColor: 'rgba(0,0,0,0.2)',
     borderWidth: 1,
     borderRadius: 6,
@@ -56,15 +59,14 @@ const base_styles = StyleSheet.create({
     justifyContent: 'center',
     width: 150
   },
-  facebook_icon: {
-    width: 24,
-    height: 24,
-    marginTop: 6, marginRight: 4, marginLeft:4
+  warning_button: {
+    alignItems: 'flex-end',
+    color: 'white'
   },
   danger_button: {
     height: 36,
     backgroundColor: 'red',
-    borderColor: '#48BBEC',
+    borderColor: twitter_blue,
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 10,

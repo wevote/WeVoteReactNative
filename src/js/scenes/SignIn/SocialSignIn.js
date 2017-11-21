@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import {Actions} from "react-native-router-flux";
 import OAuthManager from 'react-native-oauth';
 import {AccessToken} from "react-native-fbsdk";
+const lodash_get = require('lodash.get');
 
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
@@ -13,10 +14,7 @@ import styles from "../../stylesheets/components/baseStyles"
 import TwitterActions from "../../actions/TwitterActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
-
-
 const webAppConfig = require("../../config");
-const lodash_get = require('lodash.get');
 const logging = require("../../utils/logging");
 
 let oauthManager = null;
@@ -43,7 +41,6 @@ export default class SocialSignIn extends Component {
   static onExit = () => {
     logging.rnrfLog("onExit from SocialSignIn: currentScene = " + Actions.currentScene);
   };
-
 
   componentWillMount () {
     console.log("Social Sign In ++++ MOUNT, hasMounted = " + this.state.hasMounted);
@@ -229,30 +226,31 @@ export default class SocialSignIn extends Component {
 
 
     let onPressFunction = null;
-    let button_text = null;
+    let buttonText = null;
     const isTwitter = this.props.authenticator === 'twitter';
     if (this.props.signIn) {
       onPressFunction = this.socialSignInStart.bind(this);
       if (isTwitter) {
-         button_text = this.props.buttonText ? this.props.buttonText : "Twitter Sign In";
+         buttonText = this.props.buttonText ? this.props.buttonText : "Twitter Sign In";
       } else {
-        button_text = this.props.buttonText ? this.props.buttonText : "Facebook Sign In";
+        buttonText = this.props.buttonText ? this.props.buttonText : "Facebook Sign In";
       }
     } else {
       onPressFunction = this.socialSignOut.bind(this);
       if (isTwitter) {
-        button_text = this.props.buttonText ? this.props.buttonText : "Twitter Sign Out";
+        buttonText = this.props.buttonText ? this.props.buttonText : "Twitter Sign Out";
       } else {
-        button_text = this.props.buttonText ? this.props.buttonText : "Facebook Sign Out";
+        buttonText = this.props.buttonText ? this.props.buttonText : "Facebook Sign Out";
       }
     }
 
-    return <TouchableOpacity style = {isTwitter ? styles.button : styles.facebook_button} onPress={onPressFunction}>
+    return <TouchableOpacity style = {isTwitter ? styles.button : styles.facebook_button}
+                             onPress={onPressFunction}>
         <View style={{flex: 1, flexDirection: 'row', justifyContent:'space-between'}}>
           <View style={{paddingTop:5}} >
             <Icon name={isTwitter ? "twitter" : 'facebook'} size={24} color="white" paddingTop={10} />
           </View>
-          <Text style = {styles.button_text}>{ button_text }</Text>
+          <Text style = {styles.button_text}>{ buttonText }</Text>
         </View>
       </TouchableOpacity>
   }

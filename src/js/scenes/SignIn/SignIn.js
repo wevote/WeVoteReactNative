@@ -17,6 +17,7 @@ import RouteConst from "../routeConst"
 import SocialSignIn from "./SocialSignIn";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
+import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
 import TwitterStore from "../../stores/TwitterStore";
 import FacebookStore from "../../stores/FacebookStore";
@@ -44,6 +45,7 @@ export default class SignIn extends Component {
       notifications_saved_status: "",
       waiting_for_voter_device_id: true,
       initialized_voter_device_id: false,  // As of November 2017, This SignIn mounts multiple times
+      dummy: false,
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -67,7 +69,7 @@ export default class SignIn extends Component {
       });
 
     }
-    Actions.refs.signIn.forceUpdate();
+    Actions.refs.signIn.forceUpdate();  // Steve, this is not good, but don't have a reliable alternative at this time
   };
 
   static onExit = () => {
@@ -101,7 +103,7 @@ export default class SignIn extends Component {
     console.log("SignIn componentWillReceiveProps");
     // October 9, 2017: This is hacky, we need a refresh when we come back from the ballot tab, not sure why.
     if( nextProps.came_from === RouteConst.KEY_BALLOT) {
-      logging.rnrfLog("componentWillReceiveProps, forcing update : currentScene = " + Actions.currentScene);
+      logging.rnrfLog("SignIn componentWillReceiveProps, forcing update : currentScene = " + Actions.currentScene);
       // Nov 2, 2017, removed, this.forceUpdate();
     }
   }
@@ -212,6 +214,11 @@ export default class SignIn extends Component {
     this.setState({ notifications_saved_status: "Saved" });
   }
 
+  signedOut () {
+    console.log("signedOut --------------------");
+    VoterSessionActions.voterSignOut();
+    this.setState({dummy: !this.state.dummy});
+  }
 
   render () {
     if (Actions.currentScene !== "signIn") {
@@ -221,8 +228,8 @@ export default class SignIn extends Component {
 
     logging.renderLog("SignIn  scene = " + Actions.currentScene);
 
-    let signedInTwitter = TwitterStore.get().twitter_sign_in_found;
-    let signedInFacebook = FacebookStore.getFacebookAuthResponse().facebook_sign_in_verified;
+    let signedInTwitter = TwitterStore.get().twitter_sign_in_found === true;
+    let signedInFacebook = FacebookStore.getFacebookAuthResponse().facebook_sign_in_verified === true;
 
 
     if (this.props.came_from !== RouteConst.KEY_ACCOUNT_MENU && ( signedInTwitter || signedInFacebook) ) {
@@ -233,7 +240,7 @@ export default class SignIn extends Component {
     }
 
     if(this.state.waiting_for_voter_device_id  && ! this.state.initialized_voter_device_id) {
-      return <LoadingWheel text={'Waiting for device initialization'}/>;
+      return <LoadingWheel text={'Device is initializing'}/>;
 
       // return <View className="ballot">
       //   <View className="ballot__header">
@@ -303,7 +310,11 @@ export default class SignIn extends Component {
               : null
               }
               {signedInTwitter || signedInFacebook ?
-                <SocialSignIn signOut isButton authenticator={'both'} buttonText={"Sign Out"}/>
+                <TouchableOpacity style = {[styles.button, styles.signout_button]} onPress={this.signedOut.bind(this)}>
+                  <View style={{flex: 1, flexDirection: 'row', justifyContent:'space-between'}}>
+                    <Text style = {styles.button_text}>{"Sign Out"}</Text>
+                  </View>
+                </TouchableOpacity>
                 : null
               }
               {/* Please save these for testing

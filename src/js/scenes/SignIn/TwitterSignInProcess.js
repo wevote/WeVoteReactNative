@@ -12,6 +12,7 @@ import TwitterStore from "../../stores/TwitterStore";
 import VoterStore from "../../stores/VoterStore";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterActions from "../../actions/VoterActions";
+import WarningModal from "../../components/Widgets/WarningModal"
 const logging = require("../../utils/logging");
 //import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
@@ -29,6 +30,18 @@ export default class TwitterSignInProcess extends Component {
       yes_please_merge_accounts: false
     };
   }
+
+  static onEnter = () => {
+    logging.rnrfLog("onEnter to TwitterSignInProcess: currentScene = " + Actions.currentScene);
+    Actions.refresh({
+      dummy: 'helloFromTwitterSignInProcess',
+    });
+
+  };
+
+  static onExit = () => {
+    logging.rnrfLog("onExit from TwitterSignInProcess: currentScene = " + Actions.currentScene);
+  };
 
   // componentDidMount ()  Doesn't work in react-native?
   componentWillMount () {
@@ -58,11 +71,12 @@ export default class TwitterSignInProcess extends Component {
         came_from: 'TwitterSignInProcess render',
         forward_to_ballot: true
       });
-    }
-    this.setState({
+    } else {
+      this.setState({
         twitter_auth_response: twitter_auth_response,
         saving: false
-    });
+      });
+    }
   }
 
   _onVoterStoreChange () {
@@ -124,12 +138,18 @@ export default class TwitterSignInProcess extends Component {
     this.setState({yes_please_merge_accounts: true});
   }
 
+  toggleWarningModal () {
+     this.setState({
+      showWarningModal: !this.state.showWarningModal
+    });
+  }
+
   render () {
     if ( Actions.currentScene !== "twitterSignInProcess") {
-      logging.renderLog("TwitterSignInProcess", "when NOT CURRENT, scene  = " + Actions.currentScene);
+      logging.renderLog("TwitterSignInProcess, when NOT CURRENT, scene  = " + Actions.currentScene);
       return null;
     }
-    logging.renderLog("TwitterSignInProcess render", "scene = " + Actions.currentScene);
+    logging.renderLog("TwitterSignInProcess render, scene = " + Actions.currentScene);
     console.log("TwitterSignInProcess render");
 
     let {twitter_auth_response, yes_please_merge_accounts} = this.state;
@@ -138,7 +158,7 @@ export default class TwitterSignInProcess extends Component {
     if (this.state.saving ||
       !twitter_auth_response ||
       !twitter_auth_response.twitter_retrieve_attempted ) {
-      return <LoadingWheel text={['Twitter authentication was successful.', 'Retrieving more data from the WeVote Cloud.']}/>;
+      return <LoadingWheel text={['Twitter authentication was successful.', 'Retrieving data from the WeVote cloud.']}/>;
      }
 
     console.log("=== Passed initial gate ===");
@@ -147,15 +167,9 @@ export default class TwitterSignInProcess extends Component {
 
     if (twitter_auth_response.twitter_sign_in_failed) {
       console.log("Twitter sign in failed - in future, push to /more/sign_in");
-      // browserHistory.push({
-      //   pathname: "/more/sign_in",
-      //   state: {
-      //     message: "Twitter sign in failed. Please try again.",
-      //     message_type: "success"
-      //   }
-      // });
-      // TODO: Replace this with a pop-up explanation
-      return <LoadingWheel text={['NOT FOR GENERAL RELEASE', 'Twitter sign in failed, for now press Command+R.']}/>;
+      return <WarningModal text={['Twitter sign in failed', 'Please try again later']}
+                           toggleFunction={this.toggleWarningModal.bind(this)}
+                           show={this.state.showWarningModal}/>;
     }
 
     if (yes_please_merge_accounts) {

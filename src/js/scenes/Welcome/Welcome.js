@@ -45,11 +45,11 @@ export default class Welcome extends Component {
 
   render () {
     if (Actions.currentScene !== "welcome") {
-      logging.renderLog("Welcome", "when NOT CURRENT, scene  = " + Actions.currentScene);
+      logging.renderLog("Welcome, when NOT CURRENT, scene  = " + Actions.currentScene);
       return null;
     }
 
-    logging.renderLog("Welcome", "scene = " + Actions.currentScene);
+    logging.renderLog("Welcome, scene = " + Actions.currentScene);
 
     return <View style={styles.outer_gray_pane} >
         <View style={styles.inner_white_pane} >

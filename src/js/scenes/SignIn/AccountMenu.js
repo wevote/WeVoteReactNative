@@ -19,7 +19,6 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 const logging = require("../../utils/logging");
 
-
 export default class AccountMenu extends Component {
   static propTypes = {
     location: PropTypes.object,
@@ -145,7 +144,7 @@ export default class AccountMenu extends Component {
 
 
   render () {
-    logging.renderLog("AccountMenu.js", "scene = " + Actions.currentScene);
+    logging.renderLog("AccountMenu.js scene = " + Actions.currentScene);
 
     let { pathname } = this.props;
     // let { voter_photo_url_medium } = this.props.voter;
