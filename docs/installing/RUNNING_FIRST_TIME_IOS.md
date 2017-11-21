@@ -1,5 +1,6 @@
 # Running WeVoteReactNative on iOS for the First Time
-[Go back to Installation for iOS Development](ENVIRONMENT_IOS.md)]
+[Go back to Installation for iOS Development](ENVIRONMENT_IOS.md)
+
 [Go back to Readme Home](../../README.md)
 
 Please make sure you have read:
