@@ -60,7 +60,7 @@ the PyCharm IDE. How you do this depends on the development environment you use.
 
 ---
 
-Next: [Working with react-native-router-flux](docs/working/WORKING_WITH_REACT_NATIVE_ROUTER_FLUX.md)
+Next: [Working with react-native-router-flux](./WORKING_WITH_REACT_NATIVE_ROUTER_FLUX.md)
 
 
 
