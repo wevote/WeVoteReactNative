@@ -63,7 +63,7 @@ export default class Location extends Component {
 
 
   render () {
-    logging.renderLog("Location", "scene = " + Actions.currentScene);                 // Note 7
+    logging.renderLog("Location, scene = " + Actions.currentScene);                 // Note 7
 
     return <View>
         <AddressBox {...this.props} saveUrl="/ballot" />
