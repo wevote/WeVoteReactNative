@@ -355,7 +355,7 @@ export default class Ballot extends Component {
 
   // ------------------------------------------------------------------------------------------------------------------
   render () {
-    logging.renderLog("Ballot.js", "scene = " + Actions.currentScene);
+    logging.renderLog("Ballot.js, scene = " + Actions.currentScene);
 
     if (this.state.waitingForBallot && Actions.currentScene != RouteConst.KEY_BALLOT) {
       console.log("Ballot waitingForBallot is true with the scene not being current, so returning null");
