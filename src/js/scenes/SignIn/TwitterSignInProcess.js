@@ -158,7 +158,7 @@ export default class TwitterSignInProcess extends Component {
     if (this.state.saving ||
       !twitter_auth_response ||
       !twitter_auth_response.twitter_retrieve_attempted ) {
-      return <LoadingWheel text={['Twitter authentication was successful.', 'Retrieving data from the WeVote cloud.']}/>;
+      return <LoadingWheel text={['Twitter authentication was successful.', 'Retrieving data from the We Vote cloud.']}/>;
      }
 
     console.log("=== Passed initial gate ===");
