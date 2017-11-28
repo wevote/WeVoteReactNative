@@ -81,12 +81,12 @@ const base_styles = StyleSheet.create({
     padding: 10
   },
   inner_white_pane: {
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'center',
-      backgroundColor: 'white',
-      alignSelf: 'stretch',
-      padding: 20
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    alignSelf: 'stretch',
+    padding: 20
   },
   activity_indicator: {
     flex: 1,

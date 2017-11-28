@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
-import AccountMenu from "./AccountMenu";
+import AccountMenu from "./AccountMenuModal";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import CookieStore from "../../stores/CookieStore";
 import LoadingWheel from "../../components/LoadingWheel";
-import RouteConst from "../routeConst"
+import RouteConst from "../RouteConst"
 import SocialSignIn from "./SocialSignIn";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
@@ -41,11 +41,14 @@ export default class SignIn extends Component {
       initial_name_loaded: false,
       name_saved_status: "",
       show_twitter_disconnect: false,
+      showAccountMenuModal: false,
       newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
       notifications_saved_status: "",
       waiting_for_voter_device_id: true,
       initialized_voter_device_id: false,  // As of November 2017, This SignIn mounts multiple times
       dummy: false,
+      signedInTwitter: null,
+      signedInFacebook: null,
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -59,17 +62,15 @@ export default class SignIn extends Component {
     // this 'Actions.refresh' triggers componentWillReceiveProps
     if (Actions.hasOwnProperty("firstTimeToSignInTab")) {
       Actions.refresh({
-        dummy: 'hello',
+        dummy:  new Date(),
         firstTimeToSignInTab: true
       });
     } else {
       Actions.refresh({
-        dummy: 'hello',
+        dummy:  new Date(),
         firstTimeToSignInTab: false
       });
-
     }
-    Actions.refs.signIn.forceUpdate();  // Steve, this is not good, but don't have a reliable alternative at this time
   };
 
   static onExit = () => {
@@ -101,7 +102,20 @@ export default class SignIn extends Component {
 
   componentWillReceiveProps(nextProps) {
     console.log("SignIn componentWillReceiveProps");
-    // October 9, 2017: This is hacky, we need a refresh when we come back from the ballot tab, not sure why.
+    let signedInTwitter = TwitterStore.get().twitter_sign_in_found === true;
+    let signedInFacebook = FacebookStore.getFacebookAuthResponse().facebook_sign_in_verified === true;
+
+    // TODO: RouteConst.KEY_ACCOUNT_MENU will never be true   11/28/17
+    if (this.props.came_from !== RouteConst.KEY_ACCOUNT_MENU && ( signedInTwitter || signedInFacebook) ) {
+      this.setState({
+        showAccountMenuModal: true,
+        signedInTwitter: signedInTwitter,
+        signedInFacebook: signedInFacebook
+    });
+    }
+
+
+      // October 9, 2017: This is hacky, we need a refresh when we come back from the ballot tab, not sure why.
     if( nextProps.came_from === RouteConst.KEY_BALLOT) {
       logging.rnrfLog("SignIn componentWillReceiveProps, forcing update : currentScene = " + Actions.currentScene);
       // Nov 2, 2017, removed, this.forceUpdate();
@@ -220,6 +234,16 @@ export default class SignIn extends Component {
     this.setState({dummy: !this.state.dummy});
   }
 
+  toggleAccountMenuModal () {
+    let show = this.state.showAccountMenuModal;
+    console.log("ballot toggleAccountMenuModal called with show = " + show + "  and mounted = " + this.state.mounted);
+
+    this.setState({
+      showAccountMenuModal: !this.state.showAccountMenuModal
+    });
+  }
+
+
   render () {
     if (Actions.currentScene !== "signIn") {
       logging.renderLog("SignIn when NOT CURRENT, scene  = " + Actions.currentScene);
@@ -228,27 +252,18 @@ export default class SignIn extends Component {
 
     logging.renderLog("SignIn  scene = " + Actions.currentScene);
 
-    let signedInTwitter = TwitterStore.get().twitter_sign_in_found === true;
-    let signedInFacebook = FacebookStore.getFacebookAuthResponse().facebook_sign_in_verified === true;
-
-
-    if (this.props.came_from !== RouteConst.KEY_ACCOUNT_MENU && ( signedInTwitter || signedInFacebook) ) {
-      logging.rnrfLog("Tabbed to SignIn, signedInTwitter: " + signedInTwitter +
-        ", signedInFacebook: " + signedInFacebook + ",  current = " + Actions.currentScene);
-
-      return <AccountMenu />;
-    }
-
     if(this.state.waiting_for_voter_device_id  && ! this.state.initialized_voter_device_id) {
       return <LoadingWheel text={'Device is initializing'}/>;
-
-      // return <View className="ballot">
-      //   <View className="ballot__header">
-      //     <Text>Waiting for device initialization</Text>
-      //     <LoadingWheel text={'Waiting for device initialization'}/>
-      //   </View>
-      // </View>;
     }
+
+    if ( this.state.showAccountMenuModal ) {
+      logging.rnrfLog("Tabbed to SignIn, signedInTwitter: " + this.state.signedInTwitter +
+        ", signedInFacebook: " + this.state.signedInFacebook +
+        ", current = " + Actions.currentScene);
+
+      return <AccountMenu toggleFunction={this.toggleAccountMenuModal.bind(this)} />;
+    }
+
 
     if (!VoterStore.isVoterFound())  {
       console.log("SignIn.js, voterRetrieve in render()");
@@ -296,32 +311,27 @@ export default class SignIn extends Component {
                 anything automatically.</Text>
             }
           </View>
-          {/* November 13, 2017
-          We want to be able to respond to voter object indications of sign in here, but the data is not showing up in
-          this.state.voter.signed_in_twitter || !this.state.voter.signed_in_facebook */}
           <View style={{flex: 1, flexDirection: 'column', paddingTop: 15}}>
-            <View>
-              {!signedInTwitter ?
-                <SocialSignIn signIn isButton authenticator={'twitter'} buttonText={"Sign In"} />
+            {!this.state.signedInTwitter ?
+              <SocialSignIn signIn isButton authenticator={'twitter'} buttonText={"Sign In"} />
+            : null
+            }
+            {!this.state.signedInFacebook ?
+              <SocialSignIn signIn isButton authenticator={'facebook'} buttonText={"Sign In"} />
+            : null
+            }
+            {this.state.signedInTwitter || this.state.signedInFacebook ?
+              <TouchableOpacity style = {[styles.button, styles.signout_button]} onPress={this.signedOut.bind(this)}>
+                <View style={{flex: 1, flexDirection: 'row', justifyContent:'space-between'}}>
+                  <Text style = {styles.button_text}>{"Sign Out"}</Text>
+                </View>
+              </TouchableOpacity>
               : null
-              }
-              {!signedInFacebook ?
-                <SocialSignIn signIn isButton authenticator={'facebook'} buttonText={"Sign In"} />
-              : null
-              }
-              {signedInTwitter || signedInFacebook ?
-                <TouchableOpacity style = {[styles.button, styles.signout_button]} onPress={this.signedOut.bind(this)}>
-                  <View style={{flex: 1, flexDirection: 'row', justifyContent:'space-between'}}>
-                    <Text style = {styles.button_text}>{"Sign Out"}</Text>
-                  </View>
-                </TouchableOpacity>
-                : null
-              }
-              {/* Please save these for testing
-              <SocialSignIn signOut isButton authenticator={'twitter'} buttonText={"Sign Out"} />
-              <SocialSignIn signOut isButton authenticator={'facebook'} buttonText={"Sign Out"} />
-              */}
-            </View>
+            }
+            {/* Please save these for testing, sends a hard de-authenticate to the auth provider
+            <SocialSignIn signOut isButton authenticator={'twitter'} buttonText={"Sign Out"} />
+            <SocialSignIn signOut isButton authenticator={'facebook'} buttonText={"Sign Out"} />
+            */}
           </View>
         </View>
     </View>;

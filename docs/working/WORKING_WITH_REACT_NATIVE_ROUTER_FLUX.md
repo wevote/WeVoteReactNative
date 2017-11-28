@@ -108,7 +108,7 @@ logging.rnrfLog("onExit from location: currentScene = " + Actions.currentScene);
 **Note 6:**
 
 Every RNRF scene has a key like `'ballot'` for routing to `src/js/scenes/Ballot/Ballot.js`,
-but don't use that string in the code, setup a constant in `src/js/scenes/routeConst.js`
+but don't use that string in the code, setup a constant in `src/js/scenes/RouteConst.js`
 and use it in `src/js/scenes/App.js` and everywhere else in the app where you navigate to 
 the scene defined by that key.
 

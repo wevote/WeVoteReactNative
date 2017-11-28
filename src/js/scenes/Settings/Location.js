@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Actions } from 'react-native-router-flux';
 
 import AddressBox from "../../components/AddressBox";
-import RouteConst from "../routeConst"
+import RouteConst from "../RouteConst"
 const logging = require("../../utils/logging");
 
 export default class Location extends Component {

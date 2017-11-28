@@ -9,7 +9,7 @@ const lodash_get = require('lodash.get');
 
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
-import RouteConst from "../routeConst"
+import RouteConst from "../RouteConst"
 import styles from "../../stylesheets/components/baseStyles"
 import TwitterActions from "../../actions/TwitterActions";
 import VoterActions from "../../actions/VoterActions";

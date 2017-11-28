@@ -4,12 +4,13 @@ import { Router, Scene, Stack } from 'react-native-router-flux';
 import tabStyles from "../stylesheets/tabBarStyles"
 
 import TabIcon from "./TabIcon"
-import RouteConst from "./routeConst"
+import RouteConst from "./RouteConst"
 
 import Ballot from './Ballot/Ballot';
 import Candidate from './Ballot/Candidate';
 import Location from './Settings/Location';
 import SignIn from './SignIn/SignIn';
+import TermsOfService from "./SignIn/TermsOfService";
 import TwitterSignInProcess from "./SignIn/TwitterSignInProcess";
 import SocialSignIn from "./SignIn/SocialSignIn";
 import Welcome from "./Welcome/Welcome";
@@ -81,6 +82,9 @@ const App = () => {
                    type='replace' />
             <Scene key={RouteConst.KEY_TWITTER_SIGN_IN_PROCESS}
                    component={TwitterSignInProcess}
+                   type='replace' />
+            <Scene key={RouteConst.KEY_TERMS_OF_SERVICE}
+                   component={TermsOfService}
                    type='replace' />
           </Stack>
         </Scene>
