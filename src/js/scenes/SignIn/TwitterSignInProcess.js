@@ -66,11 +66,9 @@ export default class TwitterSignInProcess extends Component {
     }
     const twitter_auth_response = TwitterStore.getTwitterAuthResponse();
     if( twitter_auth_response && twitter_auth_response.twitter_sign_in_verified ) {
-      logging.rnrfLog("twitterSignInProcess, twitter_auth_response && twitter_auth_response.twitter_sign_in_verified so Actions.ballot(with param) then LoadingWheel");
-      Actions.signIn({
-        came_from: 'TwitterSignInProcess render',
-        forward_to_ballot: true
-      });
+      logging.rnrfLog("twitterSignInProcess, twitter_auth_response && twitter_auth_response.twitter_sign_in_verified so navigating to SignIn then immediately to Ballot");
+      Actions.signIn({came_from: 'TwitterSignInProcess'});
+      Actions.ballot({came_from: TwitterSignInProcess});
     } else {
       this.setState({
         twitter_auth_response: twitter_auth_response,

@@ -91,13 +91,6 @@ export default class SignIn extends Component {
     //this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
-
-    const forward = this.props.forward_to_ballot || false;
-    if( forward === true ) {
-      logging.rnrfLog("SignIn received this.props.forward_to_ballot = " + this.props.forward_to_ballot);
-      logging.rnrfLog("SignIn  Actions.ballot(}");
-      Actions.ballot({came_from: RouteConst.KEY_SIGNIN});
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -269,11 +262,6 @@ export default class SignIn extends Component {
       console.log("SignIn.js, voterRetrieve in render()");
       VoterActions.voterRetrieve();
     }
-
-    /*10/9/17 Steve, My theory on this react-native-router-flux (RNRF) work around:
-    You can navigate around in the  Stack Container while doing the sign-in Actions, but to go to the other tab (ballot)
-    you need to be in the signIn tab component.  If someone finds a simpler way to do this, please change over to your
-    simpler way */
 
     if (!this.state.voter){
       return <LoadingWheel text={'Loading your information'}/>;

@@ -185,9 +185,11 @@ export default class AccountMenu extends Component {
             <Text style={styles.modalChoices}> </Text>
             <View style={{flex: 1, flexDirection: 'row'}}>
               <TouchableOpacity onPress={this.routeToTermsOfService.bind(this)}>
-                <Text style={styles.modalChoices}>Terms of Service</Text>
+                <Text style={styles.modalChoicesSmall}>Terms of Service</Text>
               </TouchableOpacity>
-              <Text style={styles.grayPromise}>Privacy Policy</Text>
+              <TouchableOpacity onPress={() => {() => console.log("PRIVACY POLICY PRESSED")}} >
+                <Text style={styles.modalChoicesSmall}>Privacy Policy</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

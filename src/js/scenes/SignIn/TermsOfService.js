@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-import { Text, ScrollView, View } from "react-native";
-import { Actions } from 'react-native-router-flux';
+import { Linking, Text, TouchableOpacity, ScrollView, View } from "react-native";
+import { Actions, ActionConst } from 'react-native-router-flux';
 
+import RouteConst  from "../RouteConst";
 import styles from "../../stylesheets/components/baseStyles"
 const logging = require("../../utils/logging");
 
@@ -22,7 +23,13 @@ export default class TermsOfService extends Component {
 
   static onExit = () => {
     logging.rnrfLog("onExit from TermsOfService: currentScene = " + Actions.currentScene);
-    Actions.pop();
+    // For an explanation see "0mkara commented on Jun 10" at https://github.com/aksonov/react-native-router-flux/issues/1801
+    // First saveoff the destination scene (which is actually the tab that was just clicked)
+    let destinationScene = Actions.currentScene;
+    // Second navigate to the bottom of this rnrf stack
+    Actions.signIn();
+    // Then navigate to the destinationScene, on another tab
+    Actions.push(destinationScene);
   };
 
 
@@ -101,14 +108,17 @@ export default class TermsOfService extends Component {
 
 
           <Text style={styles.title}>How to contact us</Text>
-          <Text>{/*<span>*/}If you have any questions about the Terms of Service, you may contact us by sending an e-mail to {/*<a href="mailto:info@WeVote.US" target="_blank"> */}info@WeVote.US{/*</a> </span><br />*/}{'\n'}</Text>
-            <Text>{/*<span>*/}You can also write to us at the following address:{/*</span>*/}{'\n'}</Text>
+          <Text>If you have any questions about the Terms of Service, you may contact us by sending an e-mail to </Text>
+          <TouchableOpacity onPress = {() => Linking.openURL('mailto:info@WeVote.US&subject=Terms%20of%20Service&body=')}>
+            <Text style={styles.hyperLink}>info@WeVote.US</Text>
+          </TouchableOpacity>
+          <Text>{'\n'}You can also write to us at the following address:{'\n'}</Text>
 
           <View style={styles.leftIndent} >
-            <Text>We Vote USA</Text>
+            <Text style={styles.bold}>We Vote USA</Text>
+            <Text>Attn: Terms of Service</Text>
             <Text>1717 Clemens Rd</Text>
             <Text>Oakland, CA 94602</Text>
-            <Text>Attn: Terms of Service</Text>
           </View>
         </View>
       </View>
