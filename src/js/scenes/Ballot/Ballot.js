@@ -19,7 +19,7 @@ import EditAddress from "../../components/Widgets/EditAddress";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import LoadingWheel from "../../components/LoadingWheel";
-import RouteConst from "../routeConst";
+import RouteConst from "../RouteConst";
 
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";

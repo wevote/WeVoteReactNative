@@ -6,6 +6,7 @@ const RouteConst = {
   KEY_SIGNIN: "signIn",
   KEY_SIGNIN_1: "signin_1",
   KEY_SOCIAL_SIGNIN: "socialSignIn",
+  KEY_TERMS_OF_SERVICE: "termsOfService",
   KEY_TWITTER_SIGN_IN_PROCESS: "twitterSignInProcess",
   KEY_WELCOME: "welcome",
   KEY_WE_VOTE_1: 'we_vote_1',

@@ -4,7 +4,9 @@ import {
   View,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+
 import styles from "../../stylesheets/components/baseStyles"
+import RouteConst from "../RouteConst";
 const logging = require("../../utils/logging");
 
 /*
@@ -27,10 +29,12 @@ export default class Welcome extends Component {
   };
 
   static onExit = () => {
+    Actions.refresh({came_from: RouteConst.KEY_WELCOME, forward_to_ballot: false})
     logging.rnrfLog("onExit from Welcome: currentScene = " + Actions.currentScene);
   };
 
   componentWillReceiveProps(nextProps) {
+    logging.rnrfLog("Welcome: componentWillReceiveProps ");
   }
 
   // Doesn't work in react-native? // componentDidMount () {

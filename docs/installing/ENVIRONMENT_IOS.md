@@ -35,10 +35,7 @@ Be sure to NOT open ~~`/Users/<YOUR NAME HERE>/MyProjects/WeVoteReactNative/ios/
 and don't pick one out of the history in the Welcome to Xcode dialog.  The history unfortunately only contains contains 
 references to .xcodeproj files.
 
-
-
-![](../images/Welcome To Xcode.png)
-
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/Welcome%20To%20Xcode.png" alt="alt text" width="600" >
 
 And in the "Welcome to Xcode" dialog, don't pick anything from the history list (those are all xcodeproj files), you have to
 click "Open another project..." and navigate to the 'WeVoteReactNative.xcworkspace' item (which is actually a directory).
