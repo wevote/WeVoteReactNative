@@ -46,7 +46,7 @@ export default class AccountMenu extends Component {
     console.log("AccountMenu componentWillReceiveProps setting isModalVisible to true");
     this.setState({
       isModalVisible: true
-     });
+    });
   }
 
   componentDidMount () {
@@ -151,48 +151,58 @@ export default class AccountMenu extends Component {
     // let accountMenuOpen = this.state.accountMenuOpen ? "account-menu--open" : "";
 
     return (
-      <Modal
-        animationIn='fadeInDown'
-        animationOut='fadeOut'
-        hideOnBackdropPress
-        visible={this.state.isModalVisible}
-        onRequestClose={() => {() => this.props.toggleFunction}}
-        backdropOpacity={1}
-        style={{
-          left: 20,
-          top: 35,
-          backgroundColor: 'white',
-         }}
+      <View style={{flex: 0}}
+      //       onLayout={(event) => {
+      //         var {x, y, width, height} = event.nativeEvent.layout;
+      //         console.log("Outermost View = " + Math.floor(x) + ", y = " + Math.floor(y) + ", width = " + Math.floor(width) + ", height = " + Math.floor(height));
+      // }}
       >
-        <View style={{flex: 1, flexDirection: 'column', padding: 5}}>
+        <Modal
+          animationIn='fadeInDown'
+          animationOut='fadeOut'
+          hideOnBackdropPress
+          visible={this.state.isModalVisible}
+          onRequestClose={() => {() => this.props.toggleFunction}}
+          backdropOpacity={1}
+          style={{
+            flex: 0,
+            left: 18,
+            top: 36,
+            borderColor: 'rgba(0,0,0,0.2)', borderWidth: 2,
+            backgroundColor: 'white',
+          }}
+        >
           <View style={{padding: 10}}>
-            <Text style={styles.grayPromise}>Our Promise: We'll never sell your email.</Text>
-            <Text style={styles.modalChoiceDummy}>Your Voter Guide (Twitter)</Text>
-            <Text style={styles.modalChoiceDummy}>Your Voter Guide (Facebook)</Text>
-            <TouchableOpacity onPress={this.hideModal.bind(this)}>
-              <Text style={styles.modalChoices}>Your Account</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.hideModal.bind(this)}>
-              <Text style={styles.modalChoices}>Sign In</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.signOutAndHideAccountMenu.bind(this)}>
-              <Text style={styles.modalChoices}>Sign Out</Text>
-            </TouchableOpacity>
-            <Text style={styles.modalChoiceDummy}>Your Bookmarked Items</Text>
-            <Text style={styles.modalChoiceDummy}>Getting Started</Text>
-            <Text style={styles.modalChoiceDummy}>About We Vote</Text>
-            <Text style={styles.modalChoiceDummy}>Donate</Text>
-            <Text style={styles.modalChoices}> </Text>
-            <View style={{flex: 1, flexDirection: 'row'}}>
-              <TouchableOpacity onPress={this.routeToTermsOfService.bind(this)}>
-                <Text style={styles.modalChoices}>Terms of Service</Text>
+            <View>
+              <Text style={styles.grayPromise}>Our Promise: We'll never sell your email.</Text>
+              <Text style={styles.modalChoiceDummy}>Your Voter Guide (Twitter)</Text>
+              <Text style={styles.modalChoiceDummy}>Your Voter Guide (Facebook)</Text>
+              <TouchableOpacity onPress={this.hideModal.bind(this)}>
+                <Text style={styles.modalChoices}>Your Account</Text>
               </TouchableOpacity>
-              <Text style={styles.grayPromise}>Privacy Policy</Text>
+              <TouchableOpacity onPress={this.hideModal.bind(this)}>
+                <Text style={styles.modalChoices}>Sign In</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.signOutAndHideAccountMenu.bind(this)}>
+                <Text style={styles.modalChoices}>Sign Out</Text>
+              </TouchableOpacity>
+              <Text style={styles.modalChoiceDummy}>Your Bookmarked Items</Text>
+              <Text style={styles.modalChoiceDummy}>Getting Started</Text>
+              <Text style={styles.modalChoiceDummy}>About We Vote</Text>
+              <Text style={styles.modalChoiceDummy}>Donate</Text>
+            </View>
+            <View style={{flex: 0, flexDirection: 'row', paddingTop: 10}} >
+              <TouchableOpacity onPress={this.routeToTermsOfService.bind(this)}>
+                <Text style={styles.modalChoicesSmall}>Terms of Service</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {() => console.log("PRIVACY POLICY PRESSED")}} >
+                <Text style={styles.modalChoicesSmall}>Privacy Policy</Text>
+              </TouchableOpacity>
             </View>
           </View>
-        </View>
-      </Modal>
-  );
+        </Modal>
+      </View>
+    );
   }
 }
 

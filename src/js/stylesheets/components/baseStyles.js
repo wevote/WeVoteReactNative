@@ -12,12 +12,19 @@ let radius_rounded = 6;
 let twitter_blue = '#48BBEC';
 let facebook_blue = '#3b5998';
 let signout_blue = '#0000ff';
+let hyperlink_blue = '#1a0aab';
 
 // https://www.bountysource.com/issues/39479584-fontfamily-in-theme-js-has-no-effect
 // There is no out-of-the-box sans-serif in iOS, so used Arial instead.  Works fine on Android.
 const base_styles = StyleSheet.create({
   baseText: {
     fontFamily: 'Arial',
+  },
+  bold: {
+    fontWeight: 'bold',
+  },
+  hyperLink: {
+    color: hyperlink_blue,
   },
   title_text: {
     fontFamily: 'Arial',
@@ -190,6 +197,14 @@ const base_styles = StyleSheet.create({
     paddingBottom: 10,
     fontFamily: 'Arial',
     fontSize: 20,
+    color: '#00749e'
+  },
+  modalChoicesSmall: {
+    paddingLeft: 25,
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontFamily: 'Arial',
+    fontSize: 15,
     color: '#00749e'
   },
   modalChoiceDummy: {   // Nov 2017, this is temporary for mockups

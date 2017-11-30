@@ -30,6 +30,123 @@ it is kind of irrelvant if that variable is ever used, since its only purpsose m
 ```
 If you don't mutate state in `onEnter()` the object goes directly to the `render()`
 
+## Navigating
+
+An early version of this app had a structure like this:
+
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/WeVote_Scenes.png" alt="alt text" width="600" >
+
+A root scene with no visible component
+
+A tabbar scene to hold the 3 tabs
+
+3 tabs (we_vote_1, ballot_1, and sign_in_1), these tab objects are containers with labels or icons, and
+a child component that is displayed in the rest of the screen beneath the tabbar when
+the tab is selected.
+
+Then 3 stacks of React components, with SignIn as intial.  Since SignIn is the inital component in the stack on the initial tab, 
+SignIn came up first when the app started.  From an early version of App.js:
+
+```
+  return (
+    <Router>
+      <Scene key={RouteConst.KEY_ROOT}>
+        {/* Tab Container */}
+        <Scene
+          key={RouteConst.KEY_TABBAR}
+          tabs={true}
+          tabBarPosition="top"
+          showIcon={true}
+          showLabel={false}
+          tabBarStyle={tabStyles.tab_bar}>
+          {/* WV Tab */}
+          <Stack key={RouteConst.KEY_WE_VOTE_1}
+                 hideNavBar
+                 tabBarLabel={RouteConst.TAB_LABEL_WV}
+                 icon={TabIcon}
+          >
+            <Scene key={RouteConst.KEY_WELCOME}
+                   component={Welcome}
+                   type="replace"
+                   initial />
+          </Stack>
+          {/* Ballot Tab */}
+          <Stack key={RouteConst.KEY_BALLOT_1}
+                 hideNavBar
+                 tabBarLabel={RouteConst.TAB_LABEL_BALLOT}
+                 icon={TabIcon}
+          >
+            <Scene key={RouteConst.KEY_BALLOT}
+                   component={Ballot}
+                   type="replace"
+                   initial />
+            <Scene key={RouteConst.KEY_LOCATION}
+                   component={Location}
+                   type="replace" />
+            <Scene key="candidate"
+                   component={Candidate}
+                   backTitle="Back"
+                   back />
+          </Stack>
+          {/* Sign In Tab */}
+          <Stack key={RouteConst.KEY_SIGNIN_1}
+                 tabBarLabel={RouteConst.TAB_LABEL_SIGN_IN}
+                 hideNavBar
+                 initial
+                 icon={TabIcon}
+          >
+            <Scene key={RouteConst.KEY_SIGNIN}
+                   component={SignIn}
+                   type="replace"
+                   initial />
+            <Scene key={RouteConst.KEY_SOCIAL_SIGNIN}
+                   component={SocialSignIn}
+                   type="replace" />
+            <Scene key={RouteConst.KEY_TWITTER_SIGN_IN_PROCESS}
+                   component={TwitterSignInProcess}
+                   type="replace" />
+            <Scene key={RouteConst.KEY_TERMS_OF_SERVICE}
+                   component={TermsOfService}
+                   type="replace" />
+          </Stack>
+        </Scene>
+      </Scene>
+    </Router>
+  );
+
+```
+
+
+Clicking on the tabs brings up the initial scene (WeVote React component) as you would expect.
+
+Navigating between the scenes within a tab is as simple as (from SignIn.js) calling `Actions.socialSignIn()` at which point 
+SocialSignIn.js becomes displayed.  
+
+`type="replace"` causes the component to unmount and get garbage collected once you navigate away, otherwise
+the component stays active, which can be very confusing.
+
+The early version of TermsOfService.js was just a static page of contract terms with no controls to
+navigate you away, so the only way to navigate was to select another tab, but for some reason RNRF can't directly navigate 
+to scenes between tabs.  See [From Nested Scene To Other Nested Scene Navigate #1801](https://github.com/aksonov/react-native-router-flux/issues/1801)
+
+The solution to this challenge is (from TermsOfService.js):
+
+```
+  static onExit = () => {
+    logging.rnrfLog("onExit from TermsOfService: currentScene = " + Actions.currentScene);
+    let destinationScene = Actions.currentScene;
+    Actions.signIn();
+    Actions.push(destinationScene);
+  };
+
+```
+
+`onExit()` is called when the scene is about to stop being displayed.  In this case we save the `Actions.currentScene` which
+at this point in the RNRF navigation lifecycle is actually the destination scene (let's say "Ballot"), so we store the 
+current scene (string) `'ballot'` in destinationScene, navigate to the initial scene in the stack, then navigate to `ballot` by 
+pushing it on the stack.  (If we knew in advance that we always wanted to go to ballot, in this situation, we could just call 
+`Actions.ballot()` which would do the same thing.)  This allows you to navigate between stacks.
+
 ## Example code
 
 ```

@@ -25,13 +25,20 @@ import Welcome from "./Welcome/Welcome";
 */
 
 const App = () => {
+  // As of Nov 28, 2017 none of these warnings apply to our code, they apply to library code.  Suppress the yellow boxes in the simulator.
+  console.ignoredYellowBox = [
+    'Warning: PropTypes has been moved to a separate package. Accessing React.PropTypes is no longer supported and will be removed completely in React 16. Use the prop-types package on npm instead.',
+    'Warning: checkPropTypes has been moved to a separate package. Accessing React.checkPropTypes is no longer supported and will be removed completely in React 16. Use the prop-types package on npm instead.',
+    'Warning: React.createClass is no longer supported. Use a plain JavaScript class instead. If you\'re not yet ready to migrate, create-react-class is available on npm as a drop-in replacement.'
+  ];
+
 
   return (
     <Router>
-      <Scene key="root">
+      <Scene key={RouteConst.KEY_ROOT}>
         {/* Tab Container */}
         <Scene
-          key="tabbar"
+          key={RouteConst.KEY_TABBAR}
           tabs={true}
           tabBarPosition="top"
           showIcon={true}
@@ -45,7 +52,7 @@ const App = () => {
           >
             <Scene key={RouteConst.KEY_WELCOME}
                    component={Welcome}
-                   type='replace'
+                   type="replace"
                    initial />
           </Stack>
           {/* Ballot Tab */}
@@ -54,13 +61,13 @@ const App = () => {
                  tabBarLabel={RouteConst.TAB_LABEL_BALLOT}
                  icon={TabIcon}
           >
-            <Scene key="ballot"
+            <Scene key={RouteConst.KEY_BALLOT}
                    component={Ballot}
-                   type='replace'
+                   type="replace"
                    initial />
             <Scene key={RouteConst.KEY_LOCATION}
                    component={Location}
-                   type='replace' />
+                   type="replace" />
             <Scene key="candidate"
                    component={Candidate}
                    backTitle="Back"
@@ -75,17 +82,17 @@ const App = () => {
           >
             <Scene key={RouteConst.KEY_SIGNIN}
                    component={SignIn}
-                   type='replace'
+                   type="replace"
                    initial />
             <Scene key={RouteConst.KEY_SOCIAL_SIGNIN}
                    component={SocialSignIn}
-                   type='replace' />
+                   type="replace" />
             <Scene key={RouteConst.KEY_TWITTER_SIGN_IN_PROCESS}
                    component={TwitterSignInProcess}
-                   type='replace' />
+                   type="replace" />
             <Scene key={RouteConst.KEY_TERMS_OF_SERVICE}
                    component={TermsOfService}
-                   type='replace' />
+                   type="replace" />
           </Stack>
         </Scene>
       </Scene>
