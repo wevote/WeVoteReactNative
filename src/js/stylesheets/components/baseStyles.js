@@ -114,7 +114,7 @@ const base_styles = StyleSheet.create({
     borderRadius: radius_xs,
     elevation: 1,
     shadowColor: 'rgba(0,0,0,.2)',
-    shadowOffset: { width: 0, height: 1},
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.8,
     shadowRadius: 1,
   },
@@ -213,8 +213,13 @@ const base_styles = StyleSheet.create({
     paddingBottom: 10,
     fontFamily: 'Arial',
     fontSize: 20,
+  },
+  termsCenteredTitle: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
-
 });
 
 export default base_styles;

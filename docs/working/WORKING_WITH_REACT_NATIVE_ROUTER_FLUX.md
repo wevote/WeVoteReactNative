@@ -32,7 +32,7 @@ If you don't mutate state in `onEnter()` the object goes directly to the `render
 
 ## Navigating
 
-An early version of this app had a structure like this:
+An early version of this app had a structure like this (extracted from App.js):
 
 <img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/WeVote%20Scenes.png" alt="alt text" width="600" >
 
@@ -44,8 +44,9 @@ A tabbar scene to hold the 3 tabs
 a child component that is displayed in the rest of the screen beneath the tabbar when
 the tab is selected.
 
-Then 3 stacks of React components, with SignIn as intial.  Since SignIn is the inital component in the stack on the initial tab, 
-SignIn came up first when the app started.  From an early version of App.js:
+Then 3 stacks of React components, with "signin_1" as the intial tab (RouteConst.KEY_SIGNIN_1 = "signin_1").  Since SignIn 
+is the inital component in the stack on the initial tab, the SignIn.js component came up first when the app 
+started.  From an early version of App.js:
 
 ```
   return (

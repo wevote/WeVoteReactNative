@@ -129,10 +129,6 @@ export default class AccountMenu extends Component {
     this.hideModal();
   }
 
-  routeToTermsOfService () {
-    Actions.termsOfService({came_from: RouteConst.KEY_SIGNIN});
-  }
-
   render () {
     logging.renderLog("AccountMenu scene = " + Actions.currentScene + ",  this.state.isModalVisible: " + this.state.isModalVisible);
 
@@ -192,10 +188,10 @@ export default class AccountMenu extends Component {
               <Text style={styles.modalChoiceDummy}>Donate</Text>
             </View>
             <View style={{flex: 0, flexDirection: 'row', paddingTop: 10}} >
-              <TouchableOpacity onPress={this.routeToTermsOfService.bind(this)}>
+              <TouchableOpacity onPress={() => {Actions.termsOfService({came_from: 'AccountMenuModal'})}}>
                 <Text style={styles.modalChoicesSmall}>Terms of Service</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {() => console.log("PRIVACY POLICY PRESSED")}} >
+              <TouchableOpacity onPress={() => {Actions.privacy({came_from: 'AccountMenuModal'})}} >
                 <Text style={styles.modalChoicesSmall}>Privacy Policy</Text>
               </TouchableOpacity>
             </View>
