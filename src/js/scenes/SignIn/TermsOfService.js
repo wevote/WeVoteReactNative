@@ -39,12 +39,10 @@ export default class TermsOfService extends Component {
     return  <ScrollView>
       <View style={styles.outer_gray_pane} >
         <View style={styles.inner_white_pane} >
-
-          <Text style={styles.title}>WeVote.US Terms of Service</Text>
-          <View >
-            {/*<h1 className="text-center"></h1>*/}
-            <Text style={styles.title}>Last updated: December 26, 2016</Text>
+          <View style={styles.termsCenteredTitle}>
+            <Text style={[styles.title, {marginBottom: 10}]}>WeVote.US Terms of Service</Text>
           </View>
+          <Text style={[styles.title_text, {marginBottom: 10}]}>Last updated: December 26, 2016</Text>
 
           <Text style={styles.title}>Overview</Text>
           <Text>This website is operated by We Vote USA. Throughout the site, the terms “We Vote”, “we”, “us” and “our” refer to We Vote USA. We Vote USA offers this website, including all information, tools and services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.{'\n'}</Text>

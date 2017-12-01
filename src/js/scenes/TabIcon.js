@@ -16,6 +16,22 @@ export default class TabIcon extends React.Component {
     tabBarLabel: PropTypes.string,
   };
 
+  componentWillMount () {
+    //console.log("TabIcon ++++ MOUNT");
+
+    // VoterSessionActions.voterSignOut() removes both Facebook and Twitter auth data, so only one listener is needed
+    this.twitterStoreListener = TwitterStore.addListener(this.onSocialAuthStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    //console.log("TabIcon ---- UN mount ");
+    this.twitterStoreListener.remove();
+  }
+
+  onSocialAuthStoreChange () {
+    console.log("TabIcon onSocialAuthStoreChange()");
+    this.forceUpdate();
+  }
 
   getVoterImage() {
     let voterImage = VoterStore.getVoterPhotoUrlTiny();

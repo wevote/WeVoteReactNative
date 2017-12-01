@@ -3,6 +3,7 @@ const RouteConst = {
   KEY_BALLOT_1: "ballot_1",
   KEY_BALLOT: "ballot",
   KEY_LOCATION: "location",
+  KEY_PRIVACY: "privacy",
   KEY_ROOT: "root",
   KEY_SIGNIN: "signIn",
   KEY_SIGNIN_1: "signin_1",
