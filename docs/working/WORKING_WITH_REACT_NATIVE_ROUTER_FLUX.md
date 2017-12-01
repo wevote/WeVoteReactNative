@@ -34,7 +34,7 @@ If you don't mutate state in `onEnter()` the object goes directly to the `render
 
 An early version of this app had a structure like this:
 
-<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/WeVote_Scenes.png" alt="alt text" width="600" >
+<img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/WeVote%20Scenes.png" alt="alt text" width="600" >
 
 A root scene with no visible component
 
