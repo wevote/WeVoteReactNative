@@ -1,7 +1,9 @@
 const RouteConst = {
+  KEY_ABOUT: 'about',
   KEY_ACCOUNT_MENU: 'account_menu',
   KEY_BALLOT_1: "ballot_1",
   KEY_BALLOT: "ballot",
+  KEY_CREDITS: "credits",
   KEY_LOCATION: "location",
   KEY_PRIVACY: "privacy",
   KEY_ROOT: "root",

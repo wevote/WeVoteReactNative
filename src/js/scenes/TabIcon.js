@@ -46,8 +46,12 @@ export default class TabIcon extends React.Component {
   }
 
   render() {
+    // logging.renderLog("TabIcon");
+
     let voterImage = this.getVoterImage();
-    return <View>
+    return <View onPress={() => {
+      console.log("You tapped the ICON ICON ICON!");
+    }}>
       {(this.props.tabBarLabel === 'WV' ) ?
         <Text style={tabStyles.text_selected}>{this.props.tabBarLabel}</Text>
         : null}

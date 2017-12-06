@@ -1,13 +1,16 @@
 import React, {Component} from 'react';
 
-import { Router, Scene, Stack } from 'react-native-router-flux';
+import { Actions, Router, Scene, Stack } from 'react-native-router-flux';
 import tabStyles from "../stylesheets/tabBarStyles"
 
+import TabActions from "../actions/TabActions"
 import TabIcon from "./TabIcon"
 import RouteConst from "./RouteConst"
 
+import About from "./SignIn/About";
 import Ballot from './Ballot/Ballot';
 import Candidate from './Ballot/Candidate';
+import Credits from "./SignIn/Credits";
 import Location from './Settings/Location';
 import Privacy from "./SignIn/Privacy";
 import SignIn from './SignIn/SignIn';
@@ -36,6 +39,15 @@ export default class App extends Component {
   componentWillReceiveProps(nextProps) {
   }
 
+  onTabPress(scene) {
+    TabActions.tabStateChanged();
+    console.log('@@@@@@@@@@@@@@ onTabPress,  scene = ', scene);
+
+    if (scene.key === RouteConst.KEY_SIGNIN_1)
+      TabActions.tabStateChanged();
+
+    return Actions[scene.scene.route.key].call();
+  }
 
   render() {
     // As of Nov 28, 2017 none of these warnings apply to our code, they apply to library code.  Suppress the yellow boxes in the simulator.
@@ -51,11 +63,13 @@ export default class App extends Component {
           {/* Tab Container */}
           <Scene
             key={RouteConst.KEY_TABBAR}
-            tabs={true}
+            tabs
             tabBarPosition="top"
             showIcon={true}
             showLabel={false}
-            tabBarStyle={tabStyles.tab_bar}>
+            tabBarStyle={tabStyles.tab_bar}
+            tabBarOnPress={this.onTabPress}
+          >
             {/* WV Tab */}
             <Stack key={RouteConst.KEY_WE_VOTE_1}
                    hideNavBar
@@ -107,6 +121,12 @@ export default class App extends Component {
                      type="replace"/>
               <Scene key={RouteConst.KEY_PRIVACY}
                      component={Privacy}
+                     type="replace"/>
+              <Scene key={RouteConst.KEY_ABOUT}
+                     component={About}
+                     type="replace"/>
+              <Scene key={RouteConst.KEY_CREDITS}
+                     component={Credits}
                      type="replace"/>
             </Stack>
           </Scene>
