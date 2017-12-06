@@ -9,20 +9,21 @@ import {
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
-import AccountMenu from "./AccountMenuModal";
+import AccountMenuModal from "./AccountMenuModal";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import CookieStore from "../../stores/CookieStore";
+import FacebookStore from "../../stores/FacebookStore";
 import LoadingWheel from "../../components/LoadingWheel";
+const logging = require("../../utils/logging");
 import RouteConst from "../RouteConst"
 import SocialSignIn from "./SocialSignIn";
+import styles from "../../stylesheets/components/baseStyles"
+import TabStore from "../../stores/TabStore";
+import TwitterStore from "../../stores/TwitterStore";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
-import TwitterStore from "../../stores/TwitterStore";
-import FacebookStore from "../../stores/FacebookStore";
-import styles from "../../stylesheets/components/baseStyles"
-const logging = require("../../utils/logging");
 // import HeaderTitle from "../../components/Header/Header"
 // import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
 // import VoterSessionActions from "../../actions/VoterSessionActions";
@@ -88,7 +89,7 @@ export default class SignIn extends Component {
     this.getInitialDeviceId();
 
     this._onVoterStoreChange();
-    //this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
+    this.tabStoreListener = TabStore.addListener(this.onTabStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
   }
@@ -117,7 +118,7 @@ export default class SignIn extends Component {
 
   componentWillUnmount () {
     console.log("SignIn ---- UN mount");
-    //this.facebookListener.remove();
+    this.tabStoreListener.remove();
     this.voterStoreListener.remove();
     this.timer = null;
   }
@@ -134,6 +135,13 @@ export default class SignIn extends Component {
       });
     } else {
       this.setState({voter: VoterStore.getVoter()});
+    }
+  }
+
+  onTabStoreChange () {
+    console.log("SignIn, toggle AccountMenuModal due to TabStoreChange, ie we clicked the sign_in_1 tab");
+    if (Actions.currentScene == RouteConst.KEY_SIGNIN) {
+      this.toggleAccountMenuModal();
     }
   }
 
@@ -238,7 +246,7 @@ export default class SignIn extends Component {
 
 
   render () {
-    if (Actions.currentScene !== "signIn") {
+    if (Actions.currentScene !== RouteConst.KEY_SIGNIN) {
       logging.renderLog("SignIn when NOT CURRENT, scene  = " + Actions.currentScene);
       return null;
     }
@@ -254,7 +262,7 @@ export default class SignIn extends Component {
         ", signedInFacebook: " + this.state.signedInFacebook +
         ", current = " + Actions.currentScene);
 
-      return <AccountMenu toggleFunction={this.toggleAccountMenuModal.bind(this)} />;
+      return <AccountMenuModal toggleFunction={this.toggleAccountMenuModal.bind(this)} showModal={this.state.showAccountMenuModal} />;
     }
 
 

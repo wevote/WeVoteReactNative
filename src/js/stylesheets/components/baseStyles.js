@@ -13,6 +13,9 @@ let twitter_blue = '#48BBEC';
 let facebook_blue = '#3b5998';
 let signout_blue = '#0000ff';
 let hyperlink_blue = '#1a0aab';
+let mailChimpOrange = 'rgb(240, 173, 78)';
+let darkButtonBorder = 'rgba(0,0,0,0.2)';
+let darkModalText = '#00749e';
 
 // https://www.bountysource.com/issues/39479584-fontfamily-in-theme-js-has-no-effect
 // There is no out-of-the-box sans-serif in iOS, so used Arial instead.  Works fine on Android.
@@ -22,6 +25,9 @@ const base_styles = StyleSheet.create({
   },
   bold: {
     fontWeight: 'bold',
+  },
+  indent: {
+    marginRight: 5,
   },
   hyperLink: {
     color: hyperlink_blue,
@@ -35,6 +41,11 @@ const base_styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 10
   },
+  titleSpaceAbove: {
+    fontSize: 20,
+    marginBottom: 10,
+    paddingTop: 10
+  },
   button_text: {
     fontSize: 18,
     color: 'white',
@@ -42,29 +53,67 @@ const base_styles = StyleSheet.create({
   },
   button: {
     height: 36,
+    width: 150,
     backgroundColor: twitter_blue,
-    borderColor: 'rgba(0,0,0,0.2)',
+    borderColor: darkButtonBorder,
     borderWidth: 1,
-    borderRadius: 6,
+    borderRadius: radius_rounded,
     marginBottom: 10,
     paddingRight: 16,
     paddingLeft: 5,
     alignSelf: 'flex-start',
     justifyContent: 'center',
-    width: 150
   },
-  facebook_button: {
+  small_button: {
     height: 36,
-    backgroundColor: facebook_blue,
-    borderColor: 'rgba(0,0,0,0.2)',
+    width: 36,
+    borderColor: darkButtonBorder,
     borderWidth: 1,
-    borderRadius: 6,
+    borderRadius: radius_rounded,
+    marginBottom: 10,
+    marginRight: 6,
+    alignSelf: 'flex-start',
+    justifyContent: 'center',
+  },
+  twitter_color: {
+    backgroundColor: twitter_blue,
+  },
+  facebook_color: {
+    backgroundColor: facebook_blue,
+  },
+  medium_color: {
+    backgroundColor: 'white',
+  },
+  mail_chimp: {
+    backgroundColor: mailChimpOrange,
+    width: 165,
+    marginRight: 6,
+  },
+  twitter_button: {
+    height: 36,
+    width: 150,
+    backgroundColor: twitter_blue,
+    borderColor: darkButtonBorder,
+    borderWidth: 1,
+    borderRadius: radius_rounded,
     marginBottom: 10,
     paddingRight: 16,
     paddingLeft: 5,
     alignSelf: 'flex-start',
     justifyContent: 'center',
-    width: 150
+  },
+ facebook_button: {
+    height: 36,
+    width: 150,
+    backgroundColor: facebook_blue,
+    borderColor: darkButtonBorder,
+    borderWidth: 1,
+    borderRadius: radius_rounded,
+    marginBottom: 10,
+    paddingRight: 16,
+    paddingLeft: 5,
+    alignSelf: 'flex-start',
+    justifyContent: 'center',
   },
   warning_button: {
     alignItems: 'flex-end',
@@ -113,7 +162,7 @@ const base_styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: radius_xs,
     elevation: 1,
-    shadowColor: 'rgba(0,0,0,.2)',
+    shadowColor: darkButtonBorder,
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.8,
     shadowRadius: 1,
@@ -126,7 +175,7 @@ const base_styles = StyleSheet.create({
   },
   card__no_additional: {
     margin: 8,
-    color: '#000',
+    color: 'black',
   },
   media_object: {
     padding: 10,
@@ -197,7 +246,7 @@ const base_styles = StyleSheet.create({
     paddingBottom: 10,
     fontFamily: 'Arial',
     fontSize: 20,
-    color: '#00749e'
+    color: darkModalText
   },
   modalChoicesSmall: {
     paddingLeft: 25,
@@ -205,7 +254,7 @@ const base_styles = StyleSheet.create({
     paddingBottom: 10,
     fontFamily: 'Arial',
     fontSize: 15,
-    color: '#00749e'
+    color: darkModalText
   },
   modalChoiceDummy: {   // Nov 2017, this is temporary for mockups
     paddingLeft: 25,
@@ -219,6 +268,25 @@ const base_styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  aboutImage: {
+    width: 85,
+    height: 85,
+    borderRadius: radius_md,
+    marginBottom: 8,
+  },
+  aboutPersonContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingLeft: 15,
+    paddingRight: 15
+  },
+  aboutPersonName: {
+    width: 85, fontWeight: '700', fontSize: 16,
+  },
+  aboutPersonTitle: {
+    width: 85, marginBottom: 8, fontStyle: 'italic', fontSize: 14,
   }
 });
 

@@ -2,16 +2,14 @@ import React, { Component } from "react";
 import {
   Text,
   View,
-  Image,
   TouchableOpacity,
-  ScrollView
+  TouchableWithoutFeedback,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal'
 import { Actions } from 'react-native-router-flux';
 
 const logging = require("../../utils/logging");
-import RouteConst  from "../RouteConst";
 import styles from "../../stylesheets/components/baseStyles";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 
@@ -23,10 +21,8 @@ import VoterSessionActions from "../../actions/VoterSessionActions";
 
 export default class AccountMenu extends Component {
   static propTypes = {
-    // location: PropTypes.object,
-    // voter: PropTypes.object,
-    // pathname: PropTypes.string
-    toggleFunction:  PropTypes.func.isRequired,
+    showModal:  PropTypes.bool.isRequired,
+    toggleFunction:  PropTypes.func.isRequired
   };
 
   constructor (props) {
@@ -36,21 +32,17 @@ export default class AccountMenu extends Component {
     this.state = {
       about_menu_open: false,
       accountMenuOpen: false,
-      isModalVisible:  true,
       bookmarks: [],
       // friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe()
     };
   }
 
   componentWillReceiveProps () {
-    console.log("AccountMenu componentWillReceiveProps setting isModalVisible to true");
-    this.setState({
-      isModalVisible: true
-    });
+    console.log("AccountMenuModal componentWillReceiveProps showModal = " + this.props.showModal);
   }
 
   componentDidMount () {
-    console.log("AccountMenu ++++ MOUNT ");
+    console.log("AccountMenuModal ++++ MOUNT ");
 
     // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     // this.bookmarkStoreListener = BookmarkStore.addListener(this.onBallotStoreChange.bind(this));
@@ -66,7 +58,7 @@ export default class AccountMenu extends Component {
   }
 
   componentWillUnmount (){
-    console.log("AccountMenu ---- UNMOUNT ");
+    console.log("AccountMenuModal ---- UNMOUNT ");
 
     // this.ballotStoreListener.remove();
     // this.bookmarkStoreListener.remove();
@@ -117,20 +109,20 @@ export default class AccountMenu extends Component {
   //   browserHistory.push(getStartedNow);
   // }
 
-  hideModal = () => {
-    console.log("AccountMenu on entry to hideModal this.state.isModalVisible: " + this.state.isModalVisible );
-    this.setState({ isModalVisible: false });
+  hideModal () {
+    console.log("AccountMenuModal on entry to hideModal this.state.isModalVisible: " + this.state.isModalVisible );
+    // this.setState({ isModalVisible: false });
     this.props.toggleFunction();
   }
 
   signOutAndHideAccountMenu () {
-    console.log("AccountMenu signOutAndHideAccountMenu() removing twitter and facebook authentication data");
+    console.log("AccountMenuModal signOutAndHideAccountMenu() removing twitter and facebook authentication data");
     VoterSessionActions.voterSignOut();
     this.hideModal();
   }
 
   render () {
-    logging.renderLog("AccountMenu scene = " + Actions.currentScene + ",  this.state.isModalVisible: " + this.state.isModalVisible);
+    logging.renderLog("AccountMenuModal scene = " + Actions.currentScene + ",  this.state.isModalVisible: " + this.state.isModalVisible);
 
     // let { pathname } = this.props;
     // let { voter_photo_url_medium } = this.props.voter;
@@ -146,59 +138,60 @@ export default class AccountMenu extends Component {
     // let show_your_page_from_facebook = signed_in_facebook && linked_organization_we_vote_id && !show_your_page_from_twitter;
     // let accountMenuOpen = this.state.accountMenuOpen ? "account-menu--open" : "";
 
+
     return (
-      <View style={{flex: 0}}
-      //       onLayout={(event) => {
-      //         var {x, y, width, height} = event.nativeEvent.layout;
-      //         console.log("Outermost View = " + Math.floor(x) + ", y = " + Math.floor(y) + ", width = " + Math.floor(width) + ", height = " + Math.floor(height));
-      // }}
-      >
-        <Modal
-          animationIn='fadeInDown'
-          animationOut='fadeOut'
-          hideOnBackdropPress
-          visible={this.state.isModalVisible}
-          onRequestClose={() => {() => this.props.toggleFunction}}
-          backdropOpacity={1}
-          style={{
-            flex: 0,
-            left: 18,
-            top: 36,
-            borderColor: 'rgba(0,0,0,0.2)', borderWidth: 2,
-            backgroundColor: 'white',
-          }}
-        >
-          <View style={{padding: 10}}>
-            <View>
-              <Text style={styles.grayPromise}>Our Promise: We'll never sell your email.</Text>
-              <Text style={styles.modalChoiceDummy}>Your Voter Guide (Twitter)</Text>
-              <Text style={styles.modalChoiceDummy}>Your Voter Guide (Facebook)</Text>
-              <TouchableOpacity onPress={this.hideModal.bind(this)}>
-                <Text style={styles.modalChoices}>Your Account</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={this.hideModal.bind(this)}>
-                <Text style={styles.modalChoices}>Sign In</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={this.signOutAndHideAccountMenu.bind(this)}>
-                <Text style={styles.modalChoices}>Sign Out</Text>
-              </TouchableOpacity>
-              <Text style={styles.modalChoiceDummy}>Your Bookmarked Items</Text>
-              <Text style={styles.modalChoiceDummy}>Getting Started</Text>
-              <Text style={styles.modalChoiceDummy}>About We Vote</Text>
-              <Text style={styles.modalChoiceDummy}>Donate</Text>
-            </View>
-            <View style={{flex: 0, flexDirection: 'row', paddingTop: 10}} >
-              <TouchableOpacity onPress={() => {Actions.termsOfService({came_from: 'AccountMenuModal'})}}>
-                <Text style={styles.modalChoicesSmall}>Terms of Service</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => {Actions.privacy({came_from: 'AccountMenuModal'})}} >
-                <Text style={styles.modalChoicesSmall}>Privacy Policy</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-      </View>
-    );
+
+      <View style={{flex: 0}}>
+          <Modal
+            animationIn='fadeInDown'
+            animationOut='fadeOut'
+            onBackdropPress={() => this.props.toggleFunction}
+            visible={this.props.showModal}
+            onRequestClose={() => this.props.toggleFunction}
+            backdropOpacity={1}
+            style={{
+              flex: 0,
+              left: 18,
+              top: 36,
+              borderColor: 'rgba(0,0,0,0.2)', borderWidth: 2,
+              backgroundColor: 'white',
+            }}
+          >
+            <TouchableWithoutFeedback onPress={this.hideModal.bind(this)}>
+              <View style={{padding: 10}}>
+                <View>
+                  <Text style={styles.grayPromise}>Our Promise: We'll never sell your email.</Text>
+                  <Text style={styles.modalChoiceDummy}>Your Voter Guide (Twitter)</Text>
+                  <Text style={styles.modalChoiceDummy}>Your Voter Guide (Facebook)</Text>
+                  <TouchableOpacity onPress={this.hideModal.bind(this)}>
+                    <Text style={styles.modalChoices}>Your Account</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={this.hideModal.bind(this)}>
+                    <Text style={styles.modalChoices}>Sign In</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={this.signOutAndHideAccountMenu.bind(this)}>
+                    <Text style={styles.modalChoices}>Sign Out</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.modalChoiceDummy}>Your Bookmarked Items</Text>
+                  <Text style={styles.modalChoiceDummy}>Getting Started</Text>
+                  <TouchableOpacity onPress={() => {Actions.about({came_from: 'AccountMenuModal'})}} >
+                    <Text style={styles.modalChoices}>About We Vote</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.modalChoiceDummy}>Donate</Text>
+                </View>
+                <View style={{flex: 0, flexDirection: 'row', paddingTop: 10}} >
+                  <TouchableOpacity onPress={() => {Actions.termsOfService({came_from: 'AccountMenuModal'})}}>
+                    <Text style={styles.modalChoicesSmall}>Terms of Service</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => {Actions.privacy({came_from: 'AccountMenuModal'})}} >
+                    <Text style={styles.modalChoicesSmall}>Privacy Policy</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </Modal>
+        </View>
+      );
   }
 }
 
