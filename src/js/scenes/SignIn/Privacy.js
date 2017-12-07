@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
 import { Linking, Text, TouchableOpacity, ScrollView, View } from "react-native";
-import { Actions, ActionConst } from 'react-native-router-flux';
+import { Actions} from 'react-native-router-flux';
 
-import RouteConst  from "../RouteConst";
 import styles from "../../stylesheets/components/baseStyles"
+import TabStore from "../../stores/TabStore";
 const logging = require("../../utils/logging");
 
 
@@ -32,6 +31,20 @@ export default class Privacy extends React.Component {
     Actions.push(destinationScene);
   };
 
+  componentWillMount () {
+    console.log("Privacy ++++ MOUNT currentScene = " + Actions.currentScene);
+    this.tabStoreListener = TabStore.addListener(this.onTabStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    console.log("Privacy ---- UN mount");
+    this.tabStoreListener.remove();
+  }
+
+  // Scenes on the SignIn stack, respond to clicking the SignIn tab icon, by toggling the AccountMenuModal
+  onTabStoreChange () {
+    Actions.signIn();  //Move to the top of the stack
+  }
 
   render () {
     logging.renderLog("Privacy  scene = " + Actions.currentScene);

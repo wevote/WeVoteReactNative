@@ -9,9 +9,9 @@ import PropTypes from 'prop-types';
 import Modal from 'react-native-modal'
 import { Actions } from 'react-native-router-flux';
 
-const logging = require("../../utils/logging");
 import styles from "../../stylesheets/components/baseStyles";
 import VoterSessionActions from "../../actions/VoterSessionActions";
+const logging = require("../../utils/logging");
 
 // import BallotStore from "../../stores/BallotStore";
 // import BookmarkStore from "../../stores/BookmarkStore";
@@ -111,7 +111,7 @@ export default class AccountMenu extends Component {
 
   hideModal () {
     console.log("AccountMenuModal on entry to hideModal this.state.isModalVisible: " + this.state.isModalVisible );
-    // this.setState({ isModalVisible: false });
+    this.props.showModal = false;
     this.props.toggleFunction();
   }
 
@@ -138,6 +138,7 @@ export default class AccountMenu extends Component {
     // let show_your_page_from_facebook = signed_in_facebook && linked_organization_we_vote_id && !show_your_page_from_twitter;
     // let accountMenuOpen = this.state.accountMenuOpen ? "account-menu--open" : "";
 
+    const hide = () => this.hideModal.bind(this);
 
     return (
 
@@ -157,16 +158,16 @@ export default class AccountMenu extends Component {
               backgroundColor: 'white',
             }}
           >
-            <TouchableWithoutFeedback onPress={this.hideModal.bind(this)}>
+            <TouchableWithoutFeedback onPress={hide()}>
               <View style={{padding: 10}}>
                 <View>
                   <Text style={styles.grayPromise}>Our Promise: We'll never sell your email.</Text>
                   <Text style={styles.modalChoiceDummy}>Your Voter Guide (Twitter)</Text>
                   <Text style={styles.modalChoiceDummy}>Your Voter Guide (Facebook)</Text>
-                  <TouchableOpacity onPress={this.hideModal.bind(this)}>
+                  <TouchableOpacity onPress={hide()}>
                     <Text style={styles.modalChoices}>Your Account</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={this.hideModal.bind(this)}>
+                  <TouchableOpacity onPress={hide()}>
                     <Text style={styles.modalChoices}>Sign In</Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={this.signOutAndHideAccountMenu.bind(this)}>
@@ -180,10 +181,10 @@ export default class AccountMenu extends Component {
                   <Text style={styles.modalChoiceDummy}>Donate</Text>
                 </View>
                 <View style={{flex: 0, flexDirection: 'row', paddingTop: 10}} >
-                  <TouchableOpacity onPress={() => {Actions.termsOfService({came_from: 'AccountMenuModal'})}}>
+                  <TouchableOpacity onPress={() => {hide(); Actions.termsOfService()}}>
                     <Text style={styles.modalChoicesSmall}>Terms of Service</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => {Actions.privacy({came_from: 'AccountMenuModal'})}} >
+                  <TouchableOpacity onPress={() => {hide(); Actions.privacy()}} >
                     <Text style={styles.modalChoicesSmall}>Privacy Policy</Text>
                   </TouchableOpacity>
                 </View>

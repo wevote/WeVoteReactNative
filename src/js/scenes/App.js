@@ -40,11 +40,13 @@ export default class App extends Component {
   }
 
   onTabPress(scene) {
-    TabActions.tabStateChanged();
-    console.log('@@@@@@@@@@@@@@ onTabPress,  scene = ', scene);
+    // console.log('App.js onTabPress,  scene.previousScene.key = ' + scene.previousScene.key +
+    //   ',  scene.route.key = ', scene.scene.route.key);
 
-    if (scene.key === RouteConst.KEY_SIGNIN_1)
+    // if on the signin tab, and you click the sign in tab.  A special case.
+    if (scene.previousScene.key === RouteConst.KEY_SIGNIN_1 && scene.previousScene.key === scene.scene.route.key ) {
       TabActions.tabStateChanged();
+    }
 
     return Actions[scene.scene.route.key].call();
   }
