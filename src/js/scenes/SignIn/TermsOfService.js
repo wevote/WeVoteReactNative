@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
 import { Linking, Text, TouchableOpacity, ScrollView, View } from "react-native";
 import { Actions, ActionConst } from 'react-native-router-flux';
 
-import RouteConst  from "../RouteConst";
 import styles from "../../stylesheets/components/baseStyles"
+import TabStore from "../../stores/TabStore";
 const logging = require("../../utils/logging");
 
 
@@ -32,6 +31,20 @@ export default class TermsOfService extends Component {
     Actions.push(destinationScene);
   };
 
+  componentWillMount () {
+    console.log("TermsOfService ++++ MOUNT currentScene = " + Actions.currentScene);
+    this.tabStoreListener = TabStore.addListener(this.onTabStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    console.log("TermsOfService ---- UN mount");
+    this.tabStoreListener.remove();
+  }
+
+  // Scenes on the SignIn stack, respond to clicking the SignIn tab icon, by toggling the AccountMenuModal
+  onTabStoreChange () {
+    Actions.signIn();  //Move to the top of the stack
+  }
 
   render () {
     logging.renderLog("TermsOfService  scene = " + Actions.currentScene);

@@ -5,9 +5,11 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import styles from "../../stylesheets/components/baseStyles"
-const logging = require("../../utils/logging");
-import {we_vote_board, we_vote_staff} from "./team";
+import TabStore from "../../stores/TabStore";
+import {weVoteBoard, weVoteStaff} from "./team";
 import VoterStore from "../../stores/VoterStore";
+const logging = require("../../utils/logging");
+
 //import ImageHandler from "../../components/ImageHandler";
 //import ReactPlayer from "react-player";
 
@@ -42,9 +44,21 @@ export default class About extends Component {
     AnalyticsActions.saveActionAboutMobile(VoterStore.election_id());
   }
 
-  gotoCredits () {
-    Actions.credits({came_from: 'About'});
+  componentWillMount () {
+    console.log("About.js ++++ MOUNT currentScene = " + Actions.currentScene);
+    this.tabStoreListener = TabStore.addListener(this.onTabStoreChange.bind(this));
   }
+
+  componentWillUnmount () {
+    console.log("About.js ---- UN mount");
+    this.tabStoreListener.remove();
+  }
+
+  // Scenes on the SignIn stack, respond to clicking the SignIn tab icon, by toggling the AccountMenuModal
+  onTabStoreChange () {
+    Actions.signIn();  //Move to the top of the stack
+  }
+
 
   render () {
     logging.renderLog("About  scene = " + Actions.currentScene);
@@ -96,7 +110,7 @@ export default class About extends Component {
           <Text style={styles.titleSpaceAbove}>We Vote Board Members & Advisers</Text>
           <View style={styles.aboutPersonContainer}>
           {
-            we_vote_board.map( (item) => <View key={item.name}>
+            weVoteBoard.map( (item) => <View key={item.name}>
               <View style={{flexDirection: 'column', width: 85 }} >
                 <Image source={item.image} style={styles.aboutImage} />
                 <Text style={styles.aboutPersonName}>{item.name}</Text>
@@ -109,7 +123,7 @@ export default class About extends Component {
           <Text style={styles.titleSpaceAbove}>We Vote Staff</Text>
           <View style={styles.aboutPersonContainer}>
             {
-              we_vote_staff.map( (item) => <View key={item.name}>
+              weVoteStaff.map( (item) => <View key={item.name}>
                 <View style={{flexDirection: 'column', width: 85 }} >
                   <Image source={item.image} style={styles.aboutImage} />
                   <Text style={styles.aboutPersonName}>{item.name}</Text>
@@ -129,11 +143,14 @@ export default class About extends Component {
             source, volunteer-driven project means anyone can contribute. Kind of like democracy.
           </Text>
           <Text style={styles.titleSpaceAbove}>Credits & Gratitude</Text>
-          <TouchableOpacity onPress = { this.gotoCredits.bind(this) }>
-            <Text style={styles.hyperLink}> We are thankful for our volunteers, our board of directors, and the organizations</Text>
-          </TouchableOpacity>
-          <Text>that are critical to our work.</Text>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+            <TouchableOpacity onPress = {() => Actions.credits({came_from: 'About'}) }>
+              <Text style={styles.hyperLink}> We are thankful for our volunteers, our board of directors, and the organizations</Text>
+            </TouchableOpacity>
+            <Text>that are critical to our work.</Text>
+          </View>
 
+          <Text>{'\n'}</Text>
           <TouchableOpacity onPress = {() => Linking.openURL('https://help.wevote.us/hc/en-us/articles/115000500868-What-is-We-Vote-')}>
             <Text style={styles.hyperLink}>Visit our help center to learn more about We Vote.</Text>
           </TouchableOpacity>

@@ -61,14 +61,12 @@ export default class SignIn extends Component {
   static onEnter = () => {
     logging.rnrfLog("onEnter to SignIn: currentScene = " + Actions.currentScene);
     // this 'Actions.refresh' triggers componentWillReceiveProps
-    if (Actions.hasOwnProperty("firstTimeToSignInTab")) {
+    if (Actions.prevScene === "") {
       Actions.refresh({
-        dummy:  new Date(),
         firstTimeToSignInTab: true
       });
     } else {
       Actions.refresh({
-        dummy:  new Date(),
         firstTimeToSignInTab: false
       });
     }
@@ -83,11 +81,9 @@ export default class SignIn extends Component {
   componentWillMount () {
     console.log("SignIn ++++ MOUNT currentScene = " + Actions.currentScene);
 
-    // TODO:  November 2017, This assumes that the signin tab is the initial tab, we should move this to a separate
-    //    initialization route that sets up the cookies, we could even go back to Async storage if it would be easier
+    // TODO:  November 2017, This assumes that the signin tab is the initial tab
     this.setState({waiting_for_voter_device_id: true});
     this.getInitialDeviceId();
-
     this._onVoterStoreChange();
     this.tabStoreListener = TabStore.addListener(this.onTabStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
@@ -96,23 +92,10 @@ export default class SignIn extends Component {
 
   componentWillReceiveProps(nextProps) {
     console.log("SignIn componentWillReceiveProps");
-    let signedInTwitter = TwitterStore.get().twitter_sign_in_found === true;
-    let signedInFacebook = FacebookStore.getFacebookAuthResponse().facebook_sign_in_verified === true;
 
-    // TODO: RouteConst.KEY_ACCOUNT_MENU will never be true   11/28/17
-    if (this.props.came_from !== RouteConst.KEY_ACCOUNT_MENU && ( signedInTwitter || signedInFacebook) ) {
-      this.setState({
-        showAccountMenuModal: true,
-        signedInTwitter: signedInTwitter,
-        signedInFacebook: signedInFacebook
-    });
-    }
-
-
-      // October 9, 2017: This is hacky, we need a refresh when we come back from the ballot tab, not sure why.
-    if( nextProps.came_from === RouteConst.KEY_BALLOT) {
-      logging.rnrfLog("SignIn componentWillReceiveProps, forcing update : currentScene = " + Actions.currentScene);
-      // Nov 2, 2017, removed, this.forceUpdate();
+    if (! this.props.firstTimeToSignInTab) {
+      // Show the AccountMenuModal first, every time you come to SignIn, except the first time
+      this.setState({showAccountMenuModal: true});
     }
   }
 
@@ -139,9 +122,15 @@ export default class SignIn extends Component {
   }
 
   onTabStoreChange () {
-    console.log("SignIn, toggle AccountMenuModal due to TabStoreChange, ie we clicked the sign_in_1 tab");
-    if (Actions.currentScene == RouteConst.KEY_SIGNIN) {
-      this.toggleAccountMenuModal();
+    console.log("@@@@@@@@@@@@@@ SignIn, onTabStoreChange currentScene: " + Actions.currentScene +", prevScene: " + Actions.prevScene);
+
+    if( Actions.currentScene === Actions.prevScene &&
+        Actions.currentScene === RouteConst.KEY_SIGNIN &&
+        this.state.showAccountMenuModal === false ) {
+      console.log("@@@@@@@@@@@@@@ SignIn, onTabStoreChange setting showAccountMenuModal true");
+      this.setState({
+        showAccountMenuModal: true
+      });
     }
   }
 
@@ -324,7 +313,7 @@ export default class SignIn extends Component {
               </TouchableOpacity>
               : null
             }
-            {/* Please save these for testing, sends a hard de-authenticate to the auth provider
+            {/* Please save these for testing, they send s a hard de-authenticate to the auth provider
             <SocialSignIn signOut isButton authenticator={'twitter'} buttonText={"Sign Out"} />
             <SocialSignIn signOut isButton authenticator={'facebook'} buttonText={"Sign Out"} />
             */}
