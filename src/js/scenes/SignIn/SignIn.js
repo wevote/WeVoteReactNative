@@ -14,7 +14,6 @@ import AnalyticsActions from "../../actions/AnalyticsActions";
 import CookieStore from "../../stores/CookieStore";
 import FacebookStore from "../../stores/FacebookStore";
 import LoadingWheel from "../../components/LoadingWheel";
-const logging = require("../../utils/logging");
 import RouteConst from "../RouteConst"
 import SocialSignIn from "./SocialSignIn";
 import styles from "../../stylesheets/components/baseStyles"
@@ -24,10 +23,8 @@ import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
-// import HeaderTitle from "../../components/Header/Header"
-// import VoterEmailAddressEntry from "../../components/VoterEmailAddressEntry";
-// import VoterSessionActions from "../../actions/VoterSessionActions";
 
+const logging = require("../../utils/logging");
 const delay_before_user_name_update_api_call = 1200;
 
 
@@ -97,6 +94,15 @@ export default class SignIn extends Component {
       // Show the AccountMenuModal first, every time you come to SignIn, except the first time
       this.setState({showAccountMenuModal: true});
     }
+
+    const isTwitterSignedIn = TwitterStore.get().twitter_sign_in_verified === true;
+
+    console.log("SignIn componentWillReceiveProps twitter = " + isTwitterSignedIn +
+                ", facebook = " + FacebookStore.loggedIn);
+    this.setState( {
+      signedInTwitter: isTwitterSignedIn,
+      signedInFacebook: FacebookStore.loggedIn,
+    });
   }
 
   componentWillUnmount () {
@@ -122,12 +128,12 @@ export default class SignIn extends Component {
   }
 
   onTabStoreChange () {
-    console.log("@@@@@@@@@@@@@@ SignIn, onTabStoreChange currentScene: " + Actions.currentScene +", prevScene: " + Actions.prevScene);
+    // console.log("SignIn, onTabStoreChange currentScene: " + Actions.currentScene +", prevScene: " + Actions.prevScene);
 
     if( Actions.currentScene === Actions.prevScene &&
         Actions.currentScene === RouteConst.KEY_SIGNIN &&
         this.state.showAccountMenuModal === false ) {
-      console.log("@@@@@@@@@@@@@@ SignIn, onTabStoreChange setting showAccountMenuModal true");
+      // console.log("SignIn, onTabStoreChange setting showAccountMenuModal true");
       this.setState({
         showAccountMenuModal: true
       });
@@ -149,28 +155,6 @@ export default class SignIn extends Component {
       console.log("SignIn getInitialDeviceId voter_device_id attempt prefetch", res);
     }.bind(this));
   }
-
-  /*
-  _onFacebookChange () {
-    this.setState({
-      facebook_auth_response: FacebookStore.getFacebookAuthResponse(),
-    });
-  }
-
-  facebookLogOutOnKeyDown (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      FacebookActions.appLogout();
-    }
-  }
-
-  twitterLogOutOnKeyDown (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      TwitterActions.appLogout();
-    }
-  }
-  */
 
   toggleTwitterDisconnectOpen () {
     this.setState({show_twitter_disconnect: true});
@@ -221,7 +205,10 @@ export default class SignIn extends Component {
   signedOut () {
     console.log("signedOut --------------------");
     VoterSessionActions.voterSignOut();
-    this.setState({dummy: !this.state.dummy});
+    this.setState({
+      signedInTwitter: false,
+      signedInFacebook: false,
+    });
   }
 
   toggleAccountMenuModal () {
@@ -229,6 +216,8 @@ export default class SignIn extends Component {
     console.log("ballot toggleAccountMenuModal called with show = " + show + "  and mounted = " + this.state.mounted);
 
     this.setState({
+      signedInTwitter: TwitterStore.get().twitter_sign_in_verified === true,
+      signedInFacebook: FacebookStore.loggedIn,
       showAccountMenuModal: !this.state.showAccountMenuModal
     });
   }

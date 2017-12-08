@@ -1,7 +1,7 @@
-import Dispatcher from "../dispatcher/Dispatcher";
-import FluxMapStore from "flux/lib/FluxMapStore";
+import {ReduceStore} from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
 
-class DonateStore extends FluxMapStore {
+class DonateStore extends ReduceStore {
 
   getInitialState () {
     return {

@@ -1,8 +1,8 @@
-import Dispatcher from "../dispatcher/Dispatcher";
-var FluxMapStore = require("flux/lib/FluxMapStore");
+import {ReduceStore} from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
 import VoterActions from "../actions/VoterActions";
 
-class VoterSessionStore extends FluxMapStore {
+class VoterSessionStore extends ReduceStore {
 
   getInitialState () {
     return {

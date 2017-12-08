@@ -1,7 +1,7 @@
 import CookieStore from '../stores/CookieStore';
 
 const url = require("url");
-const assign = require("object-assign");
+import assign from 'object-assign';
 const webAppConfig = require("../config");
 const logging = require("../utils/logging");
 

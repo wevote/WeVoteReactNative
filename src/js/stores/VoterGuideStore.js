@@ -1,12 +1,12 @@
-var Dispatcher = require("../dispatcher/Dispatcher");
-var FluxMapStore = require("flux/lib/FluxMapStore");
+import {ReduceStore} from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
 import OrganizationActions from "../actions/OrganizationActions";
 import OrganizationStore from "../stores/OrganizationStore";
 import SupportActions from "../actions/SupportActions";
 import VoterGuideActions from "../actions/VoterGuideActions";
 import VoterStore from "../stores/VoterStore";
 
-class VoterGuideStore extends FluxMapStore {
+class VoterGuideStore extends ReduceStore {
 
   // The store keeps nested attributes of voter guides in all_cached_voter_guides, whereas the followed, ignoring, to_follow are just lists of ids.
   getInitialState () {

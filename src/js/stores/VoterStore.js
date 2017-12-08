@@ -1,14 +1,14 @@
-import Dispatcher from "../dispatcher/Dispatcher";
+import {ReduceStore} from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
 import BallotActions from "../actions/BallotActions";
 import CookieStore from "./CookieStore";
-import FluxMapStore from "flux/lib/FluxMapStore";
 import FriendActions from "../actions/FriendActions";
 import VoterGuideActions from "../actions/VoterGuideActions";
 import BookmarkActions from "../actions/BookmarkActions";
 import SupportActions from "../actions/SupportActions";
 import VoterActions from "../actions/VoterActions";
 
-export default class VoterStore extends FluxMapStore {
+export default class VoterStore extends ReduceStore {
 
   getInitialState () {
     return {
