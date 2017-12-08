@@ -1,4 +1,4 @@
-var Dispatcher = require("flux/lib/Dispatcher");
+import Dispatcher from 'flux/lib/Dispatcher';
 
 Dispatcher.prototype.$ajax = require("../utils/service").$ajax;
 

@@ -1,11 +1,11 @@
-import Dispatcher from "../dispatcher/Dispatcher";
-import FluxMapStore from "flux/lib/FluxMapStore";
+import {ReduceStore} from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
 import CandidateActions from "../actions/CandidateActions";
 import OrganizationActions from "../actions/OrganizationActions";
 import TwitterActions from "../actions/TwitterActions";
 import VoterActions from "../actions/VoterActions";
 
-export default class TwitterStore extends FluxMapStore {
+export default class TwitterStore extends ReduceStore {
 
   getInitialState () {
     return {

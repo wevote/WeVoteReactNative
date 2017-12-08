@@ -1,10 +1,10 @@
-import Dispatcher from "../dispatcher/Dispatcher";
-import FluxMapStore from "flux/lib/FluxMapStore";
+import {ReduceStore} from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
 import FriendActions from "../actions/FriendActions";
 import VoterActions from "../actions/VoterActions";
-const assign = require("object-assign");
+import assign from 'object-assign';
 
-class FriendStore extends FluxMapStore {
+class FriendStore extends ReduceStore {
 
   getInitialState () {
     return {

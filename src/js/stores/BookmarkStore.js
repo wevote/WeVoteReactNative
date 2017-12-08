@@ -1,7 +1,7 @@
-var Dispatcher = require("../dispatcher/Dispatcher");
-var FluxMapStore = require("flux/lib/FluxMapStore");
+import {ReduceStore} from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
 
-class BookmarkStore extends FluxMapStore {
+class BookmarkStore extends ReduceStore {
 
   getInitialState () {
     return {
@@ -22,7 +22,7 @@ class BookmarkStore extends FluxMapStore {
       };
     }
 
-    var ballot_item_we_vote_id = action.res.ballot_item_we_vote_id;
+    let ballot_item_we_vote_id = action.res.ballot_item_we_vote_id;
 
     switch (action.type) {
 
