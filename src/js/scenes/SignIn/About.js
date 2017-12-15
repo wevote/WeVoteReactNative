@@ -8,6 +8,7 @@ import styles from "../../stylesheets/components/baseStyles"
 import TabStore from "../../stores/TabStore";
 import {weVoteBoard, weVoteStaff} from "./team";
 import VoterStore from "../../stores/VoterStore";
+import WeVoteButton from "../../components/WeVoteButton";
 const logging = require("../../utils/logging");
 
 //import ImageHandler from "../../components/ImageHandler";
@@ -78,15 +79,11 @@ export default class About extends Component {
               <Icon name={"facebook"} size={24} color="white" style={{textAlign: 'center'}} />
             </TouchableOpacity>
 
-            <TouchableOpacity style = {[styles.button, styles.mail_chimp ]}
-                              onPress = {() => Linking.openURL('http://eepurl.com/cx_frP')}>
-              <View style={styles.buttonInnards}>
-                <View style={{paddingTop:5}} >
-                  <Icon name={'envelope-o'} size={24} color="white" paddingTop={10} />
-                </View>
-                <Text style = {styles.button_text}>Join Newsletter</Text>
-              </View>
-            </TouchableOpacity>
+
+            <WeVoteButton buttonLabel={'Join Newsletter'} iconName={'envelope-o'}
+                          opacityStyles={[styles.buttonBasics, styles.mail_chimp]} trailingPadding={0}
+                          onPress = {() => Linking.openURL('http://eepurl.com/cx_frP')}
+            />
 
             <TouchableOpacity style = {[styles.small_button, styles.medium_color]}
                               onPress = {() => Linking.openURL('https://medium.com/@WeVote')}>
