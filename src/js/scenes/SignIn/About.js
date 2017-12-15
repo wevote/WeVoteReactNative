@@ -80,7 +80,7 @@ export default class About extends Component {
 
             <TouchableOpacity style = {[styles.button, styles.mail_chimp ]}
                               onPress = {() => Linking.openURL('http://eepurl.com/cx_frP')}>
-              <View style={{flex: 1, flexDirection: 'row', justifyContent:'space-between'}}>
+              <View style={styles.buttonInnards}>
                 <View style={{paddingTop:5}} >
                   <Icon name={'envelope-o'} size={24} color="white" paddingTop={10} />
                 </View>

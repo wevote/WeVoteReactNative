@@ -23,6 +23,7 @@ import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import VoterStore from "../../stores/VoterStore";
+import WeVoteButton from "../../components/WeVoteButton"
 
 const logging = require("../../utils/logging");
 const delay_before_user_name_update_api_call = 1200;
@@ -295,12 +296,8 @@ export default class SignIn extends Component {
             : null
             }
             {this.state.signedInTwitter || this.state.signedInFacebook ?
-              <TouchableOpacity style = {[styles.button, styles.signout_button]} onPress={this.signedOut.bind(this)}>
-                <View style={{flex: 1, flexDirection: 'row', justifyContent:'space-between'}}>
-                  <Text style = {styles.button_text}>{"Sign Out"}</Text>
-                </View>
-              </TouchableOpacity>
-              : null
+              <WeVoteButton buttonLabel={'Sign Out'} opacityStyles={[styles.buttonBasics, styles.signOutColors]}
+                            onPress={this.signedOut.bind(this)}/> : null
             }
             {/* Please save these for testing, they send s a hard de-authenticate to the auth provider
             <SocialSignIn signOut isButton authenticator={'twitter'} buttonText={"Sign Out"} />
