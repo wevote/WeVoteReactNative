@@ -1,27 +1,11 @@
-import {
-  StyleSheet,
-} from 'react-native';
-
-// Border Radius
-// * Uses a slightly shifted scale to acknowledge smaller common values
-let radius_none= 0; // for overrides
-let radius_xs = 8;
-let radius_sm = 4;
-let radius_md = 8;
-let radius_rounded = 6;
-let twitter_blue = '#48BBEC';
-let facebook_blue = '#3b5998';
-let signout_blue = '#0000ff';
-let hyperlink_blue = '#1a0aab';
-let mailChimpOrange = 'rgb(240, 173, 78)';
-let darkButtonBorder = 'rgba(0,0,0,0.2)';
-let darkModalText = '#00749e';
+import { StyleSheet } from 'react-native';
+import styleConst from "./styleConst";
 
 // https://www.bountysource.com/issues/39479584-fontfamily-in-theme-js-has-no-effect
 // There is no out-of-the-box sans-serif in iOS, so used Arial instead.  Works fine on Android.
 const base_styles = StyleSheet.create({
   baseText: {
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
   },
   bold: {
     fontWeight: 'bold',
@@ -30,10 +14,10 @@ const base_styles = StyleSheet.create({
     marginRight: 5,
   },
   hyperLink: {
-    color: hyperlink_blue,
+    color: styleConst.hyperlink_blue,
   },
   title_text: {
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
     fontSize: 15,
     fontWeight: 'bold',
   },
@@ -48,16 +32,16 @@ const base_styles = StyleSheet.create({
   },
   button_text: {
     fontSize: 18,
-    color: 'white',
+    color: styleConst.white,
     alignSelf: 'center'
   },
   button: {
     height: 36,
     width: 150,
-    backgroundColor: twitter_blue,
-    borderColor: darkButtonBorder,
+    backgroundColor: styleConst.twitter_blue,
+    borderColor: styleConst.darkButtonBorder,
     borderWidth: 1,
-    borderRadius: radius_rounded,
+    borderRadius: styleConst.radius_rounded,
     marginBottom: 10,
     paddingRight: 16,
     paddingLeft: 5,
@@ -67,62 +51,77 @@ const base_styles = StyleSheet.create({
   small_button: {
     height: 36,
     width: 36,
-    borderColor: darkButtonBorder,
+    borderColor: styleConst.darkButtonBorder,
     borderWidth: 1,
-    borderRadius: radius_rounded,
+    borderRadius: styleConst.radius_rounded,
     marginBottom: 10,
     marginRight: 6,
     alignSelf: 'flex-start',
     justifyContent: 'center',
   },
   twitter_color: {
-    backgroundColor: twitter_blue,
+    backgroundColor: styleConst.twitter_blue,
   },
   facebook_color: {
-    backgroundColor: facebook_blue,
+    backgroundColor: styleConst.facebook_blue,
   },
   medium_color: {
-    backgroundColor: 'white',
+    backgroundColor: styleConst.white,
   },
   mail_chimp: {
-    backgroundColor: mailChimpOrange,
+    backgroundColor: styleConst.mailChimpOrange,
     width: 165,
     marginRight: 6,
   },
-  twitter_button: {
+  buttonBasics: {
     height: 36,
     width: 150,
-    backgroundColor: twitter_blue,
-    borderColor: darkButtonBorder,
     borderWidth: 1,
-    borderRadius: radius_rounded,
+    borderRadius: styleConst.radius_rounded,
     marginBottom: 10,
     paddingRight: 16,
     paddingLeft: 5,
     alignSelf: 'flex-start',
     justifyContent: 'center',
   },
- facebook_button: {
-    height: 36,
-    width: 150,
-    backgroundColor: facebook_blue,
-    borderColor: darkButtonBorder,
-    borderWidth: 1,
-    borderRadius: radius_rounded,
-    marginBottom: 10,
-    paddingRight: 16,
-    paddingLeft: 5,
-    alignSelf: 'flex-start',
-    justifyContent: 'center',
+  twitterColors: {
+    backgroundColor: styleConst.twitter_blue,
+    borderColor: styleConst.darkButtonBorder,
+  },
+  facebookColors: {
+    backgroundColor: styleConst.facebook_blue,
+    borderColor: styleConst.darkButtonBorder,
+  },
+  donateColors: {
+    backgroundColor: styleConst.btn_danger,
+    borderColor: 'red',
+  },
+  mailColors: {
+    backgroundColor: styleConst.btn_email_background,
+    borderColor: styleConst.btn_email_border,
+  },
+  signOutColors: {
+    backgroundColor: styleConst.btn_danger,
+    borderColor: 'red',
+  },
+  buttonInnards: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent:'space-between'
+  },
+  buttonInnardsCentered: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent:'center'
   },
   warning_button: {
     alignItems: 'flex-end',
-    color: 'white'
+    color: styleConst.white
   },
   danger_button: {
     height: 36,
     backgroundColor: 'red',
-    borderColor: twitter_blue,
+    borderColor: styleConst.twitter_blue,
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 10,
@@ -140,7 +139,7 @@ const base_styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor: styleConst.white,
     alignSelf: 'stretch',
     padding: 20
   },
@@ -151,18 +150,18 @@ const base_styles = StyleSheet.create({
     height: 80
   },
   title_padded_text: {
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
     fontSize: 15,
     fontWeight: 'bold',
     paddingBottom: 12
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: styleConst.white,
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: radius_xs,
+    borderRadius: styleConst.radius_xs,
     elevation: 1,
-    shadowColor: darkButtonBorder,
+    shadowColor: styleConst.darkButtonBorder,
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.8,
     shadowRadius: 1,
@@ -170,7 +169,7 @@ const base_styles = StyleSheet.create({
   card_main: {
     padding: 16,
     display: 'flex',
-    backgroundColor: '#fff',
+    backgroundColor: styleConst.white,
     position: 'relative',
   },
   card__no_additional: {
@@ -204,7 +203,7 @@ const base_styles = StyleSheet.create({
   },
   avatar_compressed: {
     maxWidth: 40,
-    borderRadius: radius_xs,
+    borderRadius: styleConst.radius_xs,
   },
   modal_header: {
     paddingLeft: 15,
@@ -214,14 +213,14 @@ const base_styles = StyleSheet.create({
     borderBottomColor: '#ddd',
   },
   candidate_modal: {
-    backgroundColor: 'white',
+    backgroundColor: styleConst.white,
     margin: 20,
   },
   modal_title: {
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#000'
+    color: styleConst.black
   },
   modal_body: {
     position: 'relative',
@@ -234,7 +233,7 @@ const base_styles = StyleSheet.create({
     paddingTop: 50
   },
   grayPromise: {
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
     fontSize: 15,
     fontWeight: 'bold',
     paddingBottom: 20,
@@ -244,23 +243,31 @@ const base_styles = StyleSheet.create({
     paddingLeft: 25,
     paddingTop: 10,
     paddingBottom: 10,
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
     fontSize: 20,
-    color: darkModalText
+    color: styleConst.darkModalText
+  },
+  modalChoicesMediumWhite: {
+    paddingLeft: 25,
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontFamily: styleConst.baseFontFamily,
+    fontSize: 18,
+    color: styleConst.white
   },
   modalChoicesSmall: {
     paddingLeft: 25,
     paddingTop: 10,
     paddingBottom: 10,
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
     fontSize: 15,
-    color: darkModalText
+    color: styleConst.darkModalText
   },
   modalChoiceDummy: {   // Nov 2017, this is temporary for mockups
     paddingLeft: 25,
     paddingTop: 10,
     paddingBottom: 10,
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
     fontSize: 20,
   },
   termsCenteredTitle: {
@@ -272,7 +279,7 @@ const base_styles = StyleSheet.create({
   aboutImage: {
     width: 85,
     height: 85,
-    borderRadius: radius_md,
+    borderRadius: styleConst.radius_md,
     marginBottom: 8,
   },
   aboutPersonContainer: {

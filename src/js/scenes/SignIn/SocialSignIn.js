@@ -14,7 +14,8 @@ import styles from "../../stylesheets/components/baseStyles"
 import TwitterActions from "../../actions/TwitterActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
-const webAppConfig = require("../../config");
+import WeVoteButton from "../../components/WeVoteButton"
+import webAppConfig from "../../config";
 const logging = require("../../utils/logging");
 
 let oauthManager = null;
@@ -244,14 +245,9 @@ export default class SocialSignIn extends Component {
       }
     }
 
-    return <TouchableOpacity style = {isTwitter ? styles.twitter_button : styles.facebook_button}
-                             onPress={onPressFunction}>
-        <View style={{flex: 1, flexDirection: 'row', justifyContent:'space-between'}}>
-          <View style={{paddingTop:5}} >
-            <Icon name={isTwitter ? "twitter" : 'facebook'} size={24} color="white" paddingTop={10} />
-          </View>
-          <Text style = {styles.button_text}>{ buttonText }</Text>
-        </View>
-      </TouchableOpacity>
+    return <WeVoteButton buttonLabel={buttonText} iconName={isTwitter ? 'twitter' : 'facebook'}
+                         opacityStyles={[styles.buttonBasics, isTwitter ? styles.twitterColors : styles.facebookColors]} trailingPadding={1}
+                         onPress={onPressFunction}
+    />
   }
 }
