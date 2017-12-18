@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { TouchableOpacity, View, Text } from 'react-native';
 
 import styles from '../stylesheets/components/baseStyles';
-import styleConst from "../stylesheets/components/styleConst";
+import styleConst from "../stylesheets/styleConst";
 
 
 export default class WeVoteButtons extends Component {
@@ -40,7 +40,7 @@ export default class WeVoteButtons extends Component {
                 <Text style = {styles.button_text}>{this.props.buttonLabel}</Text>
               </View>
               :
-              <View style={styles.buttonInnardsCentered}>
+              <View style={styles.flexRowCentered}>
                 <Text style = {styles.button_text}>{this.props.buttonLabel}</Text>
               </View>
             }

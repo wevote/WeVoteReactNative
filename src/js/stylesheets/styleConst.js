@@ -21,6 +21,7 @@ const styleConst = {
   call_to_action_blue: '#476480',
   background_pale_blue: '#314965',
   backgroundDarkBlue: '#284775',
+  bootstrapBlue: '#00749e',
   header_image_width: '931px',
   hero_section_background_color: 'rgba(255, 255, 255, .75)',
   opaque_grey: 'rgba({gray-dark}, .5)',

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import styleConst from "./styleConst";
+import styleConst from "../styleConst";
 
 // https://www.bountysource.com/issues/39479584-fontfamily-in-theme-js-has-no-effect
 // There is no out-of-the-box sans-serif in iOS, so used Arial instead.  Works fine on Android.
@@ -109,7 +109,7 @@ const base_styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent:'space-between'
   },
-  buttonInnardsCentered: {
+  flexRowCentered: {
     flex: 1,
     flexDirection: 'row',
     justifyContent:'center'

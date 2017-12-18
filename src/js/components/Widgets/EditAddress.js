@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { View, Text } from "react-native";
+import ballotStyles from "../../stylesheets/components/ballotStyles";
+
 //import EditAddressPopover from "./EditAddressPopover";
 
 export default class EditAddress extends Component {
@@ -28,8 +30,8 @@ export default class EditAddress extends Component {
     if (addressString.length) {
       return (
         <View className="ballot__date_location">
-          <Text style={{ fontSize: 15 }}>{ addressString } &nbsp; (
-            <Text style = {{color: '#48BBEC'}} onPress={this.props._toggleSelectAddressModal}>Edit</Text>)
+          <Text style={{ fontSize: 15 }}>{ addressString }    (
+            <Text style = {ballotStyles.ballotEdit} onPress={this.props._toggleSelectAddressModal}>Edit</Text>)
           </Text>
           {/* normalized_line1.length ? <Text>&nbsp;</Text> : <EditAddressPopover popover_off={false} placement={"bottom"} onClick={this.props._toggleSelectAddressModal} /> */}
         </View>

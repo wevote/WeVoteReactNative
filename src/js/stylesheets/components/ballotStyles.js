@@ -1,24 +1,8 @@
 import {
   StyleSheet,
 } from 'react-native';
+import styleConst from "../styleConst";
 
-// ===========================================
-// Colors
-// ===========================================
-
-let white = '#fff';
-let black = '#000';
-
-// Grays
-let gray_pale = '#f8f8f8';
-let gray_lighter = '#eee';
-let gray_border = '#ddd';
-let gray_light = '#ccc';
-let gray_mid = '#999';
-let gray_dark = '#555';
-let gray_darker = '#333';
-
-let brand_blue = '#1c2f4b';
 let candidate_font_size = 15;
 
 // https://www.bountysource.com/issues/39479584-fontfamily-in-theme-js-has-no-effect
@@ -28,38 +12,51 @@ const ballot_styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 10,
     padding: 20,
-    backgroundColor: '#ffffff',
+    backgroundColor: styleConst.white,
   },
   ballot_name: {
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#48BBEC',
+    color: styleConst.bootstrapBlue,
   },
   title_text: {
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
     fontSize: 15,
     fontWeight: 'bold',
-    color: '#48BBEC',
+    color: styleConst.bootstrapBlue,
   },
   candidate_name: {
     fontSize: 15,
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
   },
   candidate_description: {
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
     fontSize: candidate_font_size,
-    color: gray_mid,
+    color: styleConst.gray_mid,
+  },
+  summaryOfBallotItems: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: styleConst.bootstrapBlue,
+    textDecorationLine: 'underline',
+    paddingTop: 15,
+    paddingBottom: 15
+  },
+  ballotEdit: {
+    fontFamily: styleConst.baseFontFamily,
+    fontSize: 15,
+    color: styleConst.bootstrapBlue,
   },
   measure_read_more_link: {
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
     fontSize: 15,
-    color: '#48BBEC',
+    color: styleConst.bootstrapBlue,
   },
   office_read_more_link: {
-    fontFamily: 'Arial',
+    fontFamily: styleConst.baseFontFamily,
     fontSize: 15,
-    color: '#48BBEC',
+    color: styleConst.bootstrapBlue,
   },
   candidate_photo: {
     width: 48,

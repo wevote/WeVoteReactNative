@@ -1,6 +1,7 @@
 import {
   StyleSheet,
 } from 'react-native';
+import styleConst from "./styleConst";
 
 
 // https://www.bountysource.com/issues/39479584-fontfamily-in-theme-js-has-no-effect
@@ -14,25 +15,25 @@ const styles = StyleSheet.create({
   },
   ballot_button_container: {
     paddingTop:5,
-    width:40,
+    width:44,
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   },
   ballot_text: {
-    color:"white",
+    color: styleConst.white,
     fontSize: 12
   },
   tab_bar: {
-    backgroundColor: '#1c2f4b',
+    backgroundColor: styleConst.brand_blue,
     paddingTop: 12,
     paddingBottom: 8
   },
   text_selected: {
-    width: 40,
-    fontSize: 22,
-    color: 'white'
+    width: 44,
+    fontSize: 20,
+    color: styleConst.white
   },
 });
 

@@ -8,6 +8,7 @@ import {
 import PropTypes from 'prop-types';
 
 import styles from "../../stylesheets/components/baseStyles";
+import ballotStyles from "../../stylesheets/components/ballotStyles";
 import { Actions } from 'react-native-router-flux';
 import HeaderTitle from "../../components/Header/Header"
 import BallotActions from "../../actions/BallotActions";
@@ -222,13 +223,12 @@ export default class Ballot extends Component {
   }
 
   _toggleSelectAddressModal () {
-    let show = this.state.showSelectAddressModal;
-    console.log("ballot _toggleSelectAddressModal called with show = " + show + "  and mounted = " + this.state.mounted);
+    console.log("ballot _toggleSelectAddressModal called with show = " + this.state.showSelectAddressModal + "  and mounted = " + this.state.mounted);
 
     this.setState({
       showSelectAddressModal: !this.state.showSelectAddressModal
     });
-    if (show) {
+    if (this.state.showSelectAddressModal) {
       Actions.refresh({
         entryTime: new Date()
       });
@@ -366,7 +366,7 @@ export default class Ballot extends Component {
     let text_for_map_search = VoterStore.getAddressFromObjectOrTextForMapSearch();
     let sign_in_message =  this.props.sign_in_message_type === 'success' ? this.props.sign_in_message : '';
 
-    if (text_for_map_search.length === 0) {
+    if (text_for_map_search.length === 0 || this.state.showSelectAddressModal) {
       return <View className="ballot">{/*     return from here -------------------------------------------------*/}
 
         <View className="ballot__header">
@@ -425,7 +425,7 @@ export default class Ballot extends Component {
     let voter_address_object = VoterStore.getAddressObject();
 
     return <View>{/*     return from here ---------------------------------------------------------------------------*/}
-      <View className="ballot">
+      <View>
         {/*{ this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this._toggleBallotIntroModal} /> : null }*/}
         { this.state.showMeasureModal ? <MeasureModal show={this.state.showMeasureModal} toggleFunction={this._toggleMeasureModal} measure={this.state.measure_for_modal}/> : null }
         { this.state.showCandidateModal ? <CandidateModal show={this.state.showCandidateModal} toggleFunction={this._toggleCandidateModal} candidate={this.state.candidate_for_modal}/> : null }
@@ -434,30 +434,29 @@ export default class Ballot extends Component {
         {/* this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this._toggleBallotSummaryModal} /> : null Removed 10/31/17 -- not needed in native? */}
       </View>
 
-      <View className="ballot__heading u-stack--lg">
+      <View style={{backgroundColor: 'white'}} >
         { election_name ?
           /*<OverlayTrigger placement="top" overlay={electionTooltip} >*/
             <View>
-               <Text style={styles.title}> {election_name} </Text>
+               <Text style={[styles.title,{paddingTop: 15, paddingLeft: 5}]}> {election_name} </Text>
                {this.state.ballotElectionList.length > 1 ? <Image source={require("../../../img/global/icons/gear-icon.png")}/> : null}
           </View> :
           null }
 
-        <View>
+        <View style={{padding: 10}}>
         <EditAddress address={voter_address_object} _toggleSelectAddressModal={this._toggleSelectAddressModal} />
         </View>
         {/*{text_for_map_search ?*/}
             {/*<BallotFilter ballot_type={this.getBallotType()} _toggleBallotIntroModal={this._toggleBallotIntroModal} /> :*/}
           {/*null*/}
         {/*}*/}
-        <View className="visible-xs-block hidden-print">
-          <View className="BallotItemsSummary">
-            <Text style = {{fontSize: 15, color: '#48BBEC'}} onPress={this._toggleBallotSummaryModal}>Summary of Ballot Items</Text>
-          </View>
-        </View>
       </View>
+      <View style={{alignItems: 'center'}}>
+        <Text style={ballotStyles.summaryOfBallotItems} onPress={this._toggleBallotSummaryModal}>Summary of Ballot Items</Text>
+      </View>
+
       {emptyBallot}
-      <ScrollView className="BallotList">
+      <ScrollView>
         { in_ready_to_vote_mode ?
           ballot.map( (item) => <View key={item.we_vote_id}>
             <BallotItemReadyToVote key={item.we_vote_id} {...item} />
