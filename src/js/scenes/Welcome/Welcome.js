@@ -309,7 +309,7 @@ export default class Welcome extends Component {
           />
           <WeVoteButton buttonLabel={'Email'} iconName={'envelope-o'}
                         opacityStyles={[styles.buttonBasics, styles.mailColors]} trailingPadding={0}
-                        onPress={() => Linking.openURL('mailto:info@WeVote.US&subject=\'Check out We Vote\'&body=\'I am using We Vote to discuss what is on my ballot. You can see it at https://WeVote.US too.\'')}
+                        onPress={() => Linking.openURL('mailto:info@WeVote.US?subject=\'Check out We Vote\'&body=\'I am using We Vote to discuss what is on my ballot. You can see it at https://WeVote.US too.\'')}
           />
           {/* TODO: Implement donation in native */}
           <WeVoteButton buttonLabel={'Donate'} iconName={'heart'}
@@ -331,7 +331,7 @@ export default class Welcome extends Component {
             <TouchableOpacity onPress={() => Actions.ballot()}>
               <Text style={styles.modalChoicesMediumWhite}>Get Started</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => Actions.signin()}>
+            <TouchableOpacity onPress={() => Actions.signIn()}>
               <Text style={styles.modalChoicesMediumWhite}>Sign In</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => null}>

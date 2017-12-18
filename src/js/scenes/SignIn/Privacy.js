@@ -65,7 +65,7 @@ export default class Privacy extends React.Component {
           <Text style={styles.title}>How we use your information</Text>
           <Text>When you request your ballot, send messages to friends, donate, join our newsletter, or take any other action on this Site, we may ask you to give us contact information, including your name, address, email address and telephone number. We may also obtain information about you from outside sources and combine it with the information we collect through this Site. We use this information to operate this Site, to sends you news and information about We Vote, to measure the effectiveness of our programs, and to send you timely election reminders.
             You may opt-out of receiving messages from We Vote by sending any email to </Text>
-          <TouchableOpacity onPress = {() => Linking.openURL('mailto:info@WeVote.US&subject=Privacy&body=')}>
+          <TouchableOpacity onPress = {() => Linking.openURL('mailto:info@WeVote.US?subject=Privacy=')}>
             <Text style={styles.hyperLink}>info@WeVote.US</Text>
           </TouchableOpacity>
           <Text> and asking that you not receive future email messages.  You may also opt-out by following the unsubscribe link at the bottom of each email.{'\n'}</Text>
@@ -90,7 +90,7 @@ export default class Privacy extends React.Component {
           <Text>By using and/or visiting our Site, you understand and  agree to be bound by this Privacy Policy.  If you do not agree to this Privacy Policy, please do not use the Site or the Services.{'\n'}</Text>
           <Text style={styles.title}>How to contact us</Text>
           <Text>If you have any questions about this Privacy Policy, you may contact us by sending an e-mail to </Text>
-          <TouchableOpacity onPress = {() => Linking.openURL('mailto:info@WeVote.US&subject=Privacy&body=')}>
+          <TouchableOpacity onPress = {() => Linking.openURL('mailto:info@WeVote.US?subject=Privacy')}>
             <Text style={styles.hyperLink}>info@WeVote.US</Text>
           </TouchableOpacity>
 

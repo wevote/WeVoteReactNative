@@ -120,7 +120,7 @@ export default class TermsOfService extends Component {
 
           <Text style={styles.title}>How to contact us</Text>
           <Text>If you have any questions about the Terms of Service, you may contact us by sending an e-mail to </Text>
-          <TouchableOpacity onPress = {() => Linking.openURL('mailto:info@WeVote.US&subject=Terms%20of%20Service&body=')}>
+          <TouchableOpacity onPress = {() => Linking.openURL('mailto:info@WeVote.US?subject=Terms%20of%20Service')}>
             <Text style={styles.hyperLink}>info@WeVote.US</Text>
           </TouchableOpacity>
           <Text>{'\n'}You can also write to us at the following address:{'\n'}</Text>

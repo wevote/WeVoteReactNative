@@ -102,8 +102,8 @@ export default class AddressBox extends Component {
         alignItems: 'center',
       }}>
          <View>
-          <FormLabel style={{marginTop: height/6}}>Enter address where you are registered to vote</FormLabel>
-          <FormInput style={{marginTop: height/16, marginBottom: height/13, height: height/17, width: width*0.9,
+          <FormLabel style={{marginTop: height/5}}>Enter address where you are registered to vote</FormLabel>
+          <FormInput style={{marginTop: height/14, marginBottom: height/13, height: height/17, width: width*0.9,
                              borderWidth: 1, padding: 5}}
                      onChangeText={text => this.setState({voter_address: text})}
                      onSubmitEditing={this.voterAddressSave}
