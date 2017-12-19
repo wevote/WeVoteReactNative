@@ -42,13 +42,22 @@ export default class App extends Component {
   onTabPress(scene) {
     // console.log('App.js onTabPress,  scene.previousScene.key = ' + scene.previousScene.key +
     //   ',  scene.route.key = ', scene.scene.route.key);
+    
+    let scene_local;
+    if (scene.route) {
+      scene_local = scene;
+    } else if (scene.scene.route) {
+      scene_local = scene.scene;
+    } else {
+      return;
+    }
 
     // if on the signin tab, and you click the sign in tab.  A special case.
-    if (scene.previousScene.key === RouteConst.KEY_SIGNIN_1 && scene.previousScene.key === scene.scene.route.key ) {
+    if (scene_local.previousScene && scene_local.previousScene.key === RouteConst.KEY_SIGNIN_1 && scene_local.previousScene.key === scene_local.route.key ) {
       TabActions.tabStateChanged();
     }
 
-    return Actions[scene.scene.route.key].call();
+    return Actions[scene_local.route.key].call();
   }
 
   render() {
