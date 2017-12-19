@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import AccountMenuModal from "./AccountMenuModal";
 import AnalyticsActions from "../../actions/AnalyticsActions";
@@ -299,6 +300,20 @@ export default class SignIn extends Component {
               <WeVoteButton buttonLabel={'Sign Out'} opacityStyles={[styles.buttonBasics, styles.signOutColors]}
                             onPress={this.signedOut.bind(this)}/> : null
             }
+
+            {this.state.signedInTwitter || this.state.signedInFacebook ?
+              <Text style = {[styles.title,{paddingTop: 10}]}>Currently Signed In</Text>
+              : null
+            }
+            {this.state.signedInTwitter === true ?
+              <SocialSignIn signIn isButton onPress={null} authenticator={'twitter'} buttonText={"@"+TwitterStore.getTwitterHandle()} />
+              : null
+            }
+            {this.state.signedInFacebook === true ?
+              <SocialSignIn signIn isButton onPress={null} authenticator={'facebook'} buttonText={"FB Signed In"} />
+              : null
+            }
+
             {/* Please save these for testing, they send s a hard de-authenticate to the auth provider
             <SocialSignIn signOut isButton authenticator={'twitter'} buttonText={"Sign Out"} />
             <SocialSignIn signOut isButton authenticator={'facebook'} buttonText={"Sign Out"} />

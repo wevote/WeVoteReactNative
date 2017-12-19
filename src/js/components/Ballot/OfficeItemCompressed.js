@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { Actions } from 'react-native-router-flux';
-import { View, Text, Image, Button, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image } from "react-native";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import ImageHandler from "../ImageHandler";
 import ItemActionBar from "../Widgets/ItemActionBar";
@@ -92,7 +92,7 @@ export default class OfficeItemCompressed extends Component {
         { this.props.link_to_ballot_item_page ?
           //<Link to={officeLink}>
           <Text numberOfLines={1} ellipsizeMode='tail' style={[ballot_styles.ballot_name, layout_styles.u_stack__sm]}
-                onPress={() => Actions.office({office_we_vote_id: we_vote_id})}>
+                onPress={() => null}> {/*Actions.office({office_we_vote_id: we_vote_id})*/}
             {ballot_item_display_name}
           </Text> :
           <Text numberOfLines={1} ellipsizeMode='tail' style={[ballot_styles.ballot_name, layout_styles.u_stack__sm]}>

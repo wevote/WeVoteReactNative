@@ -25,6 +25,10 @@ const base_styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 10
   },
+  titleLarge: {
+    fontSize: 24,
+    marginBottom: 10
+  },
   titleSpaceAbove: {
     fontSize: 20,
     marginBottom: 10,

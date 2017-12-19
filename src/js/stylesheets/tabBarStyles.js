@@ -13,9 +13,16 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderRadius: 3
   },
+  networkImage: {
+    width: 24,
+    height: 24,
+    borderWidth: 0,
+    borderRadius: 3
+
+  },
   ballot_button_container: {
     paddingTop:5,
-    width:44,
+    width:65,
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -23,6 +30,11 @@ const styles = StyleSheet.create({
   },
   ballot_text: {
     color: styleConst.white,
+    fontSize: 12
+  },
+  ballotTextWide: {
+    color: styleConst.white,
+    width: 65,
     fontSize: 12
   },
   tab_bar: {

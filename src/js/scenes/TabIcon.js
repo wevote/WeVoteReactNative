@@ -56,6 +56,14 @@ export default class TabIcon extends React.Component {
         <Text style={tabStyles.text_selected}>{this.props.tabBarLabel}</Text>
         : null}
 
+      {(this.props.tabBarLabel === 'Network' ) ?
+        <View style={tabStyles.ballot_button_container}>
+          <Image style={tabStyles.networkImage}
+                 source={require('../../img/global/svg-icons/network-iconHack.png')} />
+          <Text style={tabStyles.ballotTextWide}>{this.props.tabBarLabel}</Text>
+        </View>
+        : null}
+
       {(this.props.tabBarLabel === 'Sign In' && voterImage === "") ?
           <Image style={tabStyles.image} source={require('../../img/global/icons/avatar-generic.png')} />
         : null}
