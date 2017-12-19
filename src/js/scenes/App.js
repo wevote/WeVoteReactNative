@@ -101,6 +101,17 @@ export default class App extends Component {
                      backTitle="Back"
                      back/>
             </Stack>
+           {/* Network Tab */}
+            <Stack key={RouteConst.KEY_NETWORK_1}
+                   hideNavBar
+                   tabBarLabel={RouteConst.TAB_LABEL_NETWORK}
+                   icon={TabIcon}
+            >
+              <Scene key={RouteConst.KEY_BALLOT}
+                     component={Ballot}
+                     type="replace"
+                     initial/>
+             </Stack>
             {/* Sign In Tab */}
             <Stack key={RouteConst.KEY_SIGNIN_1}
                    tabBarLabel={RouteConst.TAB_LABEL_SIGN_IN}

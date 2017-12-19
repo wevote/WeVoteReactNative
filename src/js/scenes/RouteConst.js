@@ -5,6 +5,8 @@ const RouteConst = {
   KEY_BALLOT: "ballot",
   KEY_CREDITS: "credits",
   KEY_LOCATION: "location",
+  KEY_NETWORK_1: "network_1",
+  KEY_NETWORK: "network",
   KEY_PRIVACY: "privacy",
   KEY_ROOT: "root",
   KEY_SIGNIN: "signIn",
@@ -16,6 +18,7 @@ const RouteConst = {
   KEY_WELCOME: "welcome",
   KEY_WE_VOTE_1: 'we_vote_1',
   TAB_LABEL_BALLOT: "Ballot",
+  TAB_LABEL_NETWORK: "Network",
   TAB_LABEL_SIGN_IN: "Sign In",
   TAB_LABEL_WV: "WV",
  };

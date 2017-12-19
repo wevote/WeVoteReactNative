@@ -54,6 +54,10 @@ export default class TwitterStore extends ReduceStore {
     return this.getState().twitter_handle;
   }
 
+  getTwitterHandle (){
+    return this.getState().twitter_handle;
+  }
+
   get status (){
     return this.getState().status;
   }
