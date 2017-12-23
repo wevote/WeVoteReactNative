@@ -1,16 +1,21 @@
 import React, { Component } from "react";
 import {
+  Linking,
   Text,
-  View,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal'
 import { Actions } from 'react-native-router-flux';
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import styles from "../../stylesheets/components/baseStyles";
+import styleConst from "../../stylesheets/styleConst";
 import VoterSessionActions from "../../actions/VoterSessionActions";
+import FacebookStore from "../../stores/FacebookStore";
+import TwitterStore from "../../stores/TwitterStore";
 const logging = require("../../utils/logging");
 
 // import BallotStore from "../../stores/BallotStore";
@@ -139,6 +144,7 @@ export default class AccountMenu extends Component {
     // let accountMenuOpen = this.state.accountMenuOpen ? "account-menu--open" : "";
 
     const hide = () => this.hideModal.bind(this);
+    const isAuthenticated = TwitterStore.get().twitter_sign_in_found || FacebookStore.getFacebookAuthResponse().facebook_sign_in_verified;
 
     return (
 
@@ -158,27 +164,36 @@ export default class AccountMenu extends Component {
               backgroundColor: 'white',
             }}
           >
+            <View style={{alignSelf: 'flex-end', padding: 5}}>
+             <Icon name={"window-close-o"} size={24} color={styleConst.gray_dark} onPress={hide()} />
+            </View>
             <TouchableWithoutFeedback onPress={hide()}>
-              <View style={{padding: 10}}>
+              <View style={{paddingLeft: 10, paddingBottom: 10}}>
                 <View>
                   <Text style={styles.grayPromise}>Our Promise: We'll never sell your email.</Text>
-                  <Text style={styles.modalChoiceDummy}>Your Voter Guide (Twitter)</Text>
-                  <Text style={styles.modalChoiceDummy}>Your Voter Guide (Facebook)</Text>
+                  {/*<Text style={styles.modalChoiceDummy}>Your Voter Guide (Twitter)</Text>*/}
+                  {/*<Text style={styles.modalChoiceDummy}>Your Voter Guide (Facebook)</Text>*/}
                   <TouchableOpacity onPress={hide()}>
                     <Text style={styles.modalChoices}>Your Account</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={hide()}>
-                    <Text style={styles.modalChoices}>Sign In</Text>
+                  {! isAuthenticated &&
+                    <TouchableOpacity onPress={hide()}>
+                      <Text style={styles.modalChoices}>Sign In</Text>
+                    </TouchableOpacity>
+                  }
+                  {isAuthenticated &&
+                    <TouchableOpacity onPress={this.signOutAndHideAccountMenu.bind(this)}>
+                      <Text style={styles.modalChoices}>Sign Out</Text>
+                    </TouchableOpacity>
+                  }
+                  {/*<Text style={styles.modalChoiceDummy}>Your Bookmarked Items</Text>*/}
+                  <TouchableOpacity onPress = {() => Linking.openURL('https://wevote.us/more/howtouse')}>
+                    <Text style={styles.modalChoices}>Getting Started</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={this.signOutAndHideAccountMenu.bind(this)}>
-                    <Text style={styles.modalChoices}>Sign Out</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.modalChoiceDummy}>Your Bookmarked Items</Text>
-                  <Text style={styles.modalChoiceDummy}>Getting Started</Text>
                   <TouchableOpacity onPress={() => {Actions.about({came_from: 'AccountMenuModal'})}} >
                     <Text style={styles.modalChoices}>About We Vote</Text>
                   </TouchableOpacity>
-                  <Text style={styles.modalChoiceDummy}>Donate</Text>
+                  {/*<Text style={styles.modalChoiceDummy}>Donate</Text>*/}
                 </View>
                 <View style={{flex: 0, flexDirection: 'row', paddingTop: 10}} >
                   <TouchableOpacity onPress={() => {hide(); Actions.termsOfService()}}>

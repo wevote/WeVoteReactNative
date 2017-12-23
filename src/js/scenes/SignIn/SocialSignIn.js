@@ -103,10 +103,14 @@ export default class SocialSignIn extends Component {
    }
 
   _onFacebookStoreChange () {
-    // We don't do anything with facebook store
-    // Not sure if this is still necessary October 13, 2017
+    console.log("SocialSignIn onFaceBookStoreChange FacebookStore.getLoggedIn() " + FacebookStore.getLoggedIn() );
+
     let facebook = FacebookStore.getFacebookAuthResponse();
-   }
+    if (FacebookStore.getLoggedIn()) {
+      Actions.signIn();  // First navigate to the initial scene for this stack on this tab
+      Actions.ballot();  // Then navigate to the desired initial scene on another tab
+    }
+  }
 
   componentWillUnmount () {
     console.log("Social Sign In ---- UN mount");

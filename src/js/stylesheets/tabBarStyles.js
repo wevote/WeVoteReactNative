@@ -3,7 +3,6 @@ import {
 } from 'react-native';
 import styleConst from "./styleConst";
 
-
 // https://www.bountysource.com/issues/39479584-fontfamily-in-theme-js-has-no-effect
 // October 2017: There is no out-of-the-box sans-serif in iOS, so used Arial instead.  Works fine on Android.
 const styles = StyleSheet.create({
@@ -35,7 +34,8 @@ const styles = StyleSheet.create({
   ballotTextWide: {
     color: styleConst.white,
     width: 65,
-    fontSize: 12
+    fontSize: 12,
+    textAlign: 'center',
   },
   tab_bar: {
     backgroundColor: styleConst.brand_blue,

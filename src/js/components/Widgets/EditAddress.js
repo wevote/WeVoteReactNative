@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { View, Text } from "react-native";
 import ballotStyles from "../../stylesheets/components/ballotStyles";
-
+import { Actions } from 'react-native-router-flux';
+const logging = require("../../utils/logging");
 //import EditAddressPopover from "./EditAddressPopover";
+
 
 export default class EditAddress extends Component {
   static propTypes = {
@@ -17,6 +19,8 @@ export default class EditAddress extends Component {
   }
 
   render () {
+    logging.renderLog("EditAddress  scene = " + Actions.currentScene);
+
     let normalized_line1 = this.props.address.normalized_line1 || "";
 
     let addressString = this.props.address.text_for_map_search || "";

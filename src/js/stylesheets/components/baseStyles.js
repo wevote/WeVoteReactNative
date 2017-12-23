@@ -108,10 +108,15 @@ const base_styles = StyleSheet.create({
     backgroundColor: styleConst.btn_danger,
     borderColor: 'red',
   },
-  buttonInnards: {
+  flexRowSpaced: {
     flex: 1,
     flexDirection: 'row',
     justifyContent:'space-between'
+  },
+  flexRowWrapped: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   },
   flexRowCentered: {
     flex: 1,

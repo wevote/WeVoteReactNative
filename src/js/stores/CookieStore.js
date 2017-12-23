@@ -17,10 +17,11 @@ class CookieStore {
       urlString: url,
       current_voter_device_id: '',
     };
+    console.log("CookieStore constructor cookie url = " + url);
   };
 
 
-  getCurrentVoterDeviceId(){
+  getCurrentVoterDeviceId () {
     return this.state.current_voter_device_id;
   }
 
@@ -71,10 +72,12 @@ class CookieStore {
         return;
       }
       this.state.current_voter_device_id = value;
+      this.setVoterIdCookieForWebview(value);
     }
 
     if (Platform.OS === 'ios') {
       const domain = new URL(this.state.urlString).hostname;
+      console.log("cookie manager set cookie ios, domain = " + domain);
 
       CookieManager.set({
         name:   key,
@@ -90,6 +93,33 @@ class CookieStore {
     } else {  // 'android'
       CookieManager.setFromResponse(this.state.urlString, cookieString).then(() => {
           logging.httpLog(">>>>Set cookie Android (" + this.state.urlString + ") " + cookieString);
+      });
+    }
+  }
+
+  setVoterIdCookieForWebview (value) {
+    const key = 'voter_device_id';
+    const domain = 'https://wevote.us';
+    cookieString = key + '=' + value + '; domain=' + domain + '; path=/; expires=2025-05-30T12:30:00.00-08:00;';
+
+    console.log("YYYYYYY setVoterIdCookieForWebview " + cookieString);
+
+    if (Platform.OS === 'ios') {
+
+      CookieManager.set({
+        name:   key,
+        value:  value,
+        domain: domain,
+        origin: domain,
+        path: '/',
+        version: '1',
+        expiration: '2025-05-30T12:30:00.00-08:00'
+      }).then((res) => {
+        logging.httpLog(">>>>Set cookie iOS (" + this.state.urlString + ") " + cookieString);
+      });
+    } else {  // 'android'
+      CookieManager.setFromResponse(this.state.urlString, cookieString).then(() => {
+        logging.httpLog(">>>>Set cookie Android (" + this.state.urlString + ") " + cookieString);
       });
     }
   }

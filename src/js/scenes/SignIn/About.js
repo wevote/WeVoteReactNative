@@ -99,7 +99,7 @@ export default class About extends Component {
           <Text>
             We Vote is made of two 501(c)(3) and 501(c)(4) nonpartisan nonprofit organizations based in Oakland, California.
             This site is managed by the 501(c)(4), We Vote USA. Our software is open source, and our work is driven by the nearly 100 volunteers who have contributed so far.
-            Inspired by groups like  http://codeforsanfrancisco.org/ Code for America and the https://www.mozilla.org/en-US/foundation/ Mozilla Foundation
+            Inspired by groups like Code for America and the Mozilla Foundation
             we use technology to make democracy stronger by increasing voter turnout.
           </Text>
 

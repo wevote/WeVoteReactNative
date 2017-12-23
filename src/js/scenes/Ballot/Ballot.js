@@ -366,8 +366,7 @@ export default class Ballot extends Component {
     let text_for_map_search = VoterStore.getAddressFromObjectOrTextForMapSearch();
     let sign_in_message =  this.props.sign_in_message_type === 'success' ? this.props.sign_in_message : '';
 
-    if ((typeof text_for_map_search === 'undefined' || text_for_map_search.length === 0 ) && this.state.showSelectAddressModal) {
-      console.log("ZZZZZZZZZZZZZ text_for_map_search = '" + text_for_map_search +"'");
+    if (this.state.showSelectAddressModal) {
       return <View className="ballot">{/*     return from here -------------------------------------------------*/}
 
         <View className="ballot__header">
