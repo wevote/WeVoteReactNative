@@ -12,6 +12,7 @@ import Ballot from './Ballot/Ballot';
 import Candidate from './Ballot/Candidate';
 import Credits from "./SignIn/Credits";
 import Location from './Settings/Location';
+import Network from './Network/Network';
 import Privacy from "./SignIn/Privacy";
 import SignIn from './SignIn/SignIn';
 import TermsOfService from "./SignIn/TermsOfService";
@@ -61,7 +62,7 @@ export default class App extends Component {
   }
 
   render() {
-    // As of Nov 28, 2017 none of these warnings apply to our code, they apply to library code.  Suppress the yellow boxes in the simulator.
+    // As of December 22, 2017 none of these warnings apply to our code, they only apply to library code.  Suppress these yellow boxes in the simulator.
     console.ignoredYellowBox = [
       'Warning: PropTypes has been moved to a separate package. Accessing React.PropTypes is no longer supported and will be removed completely in React 16. Use the prop-types package on npm instead.',
       'Warning: checkPropTypes has been moved to a separate package. Accessing React.checkPropTypes is no longer supported and will be removed completely in React 16. Use the prop-types package on npm instead.',
@@ -116,8 +117,8 @@ export default class App extends Component {
                    tabBarLabel={RouteConst.TAB_LABEL_NETWORK}
                    icon={TabIcon}
             >
-              <Scene key={RouteConst.KEY_BALLOT}
-                     component={Ballot}
+              <Scene key={RouteConst.KEY_NETWORK}
+                     component={Network}
                      type="replace"
                      initial/>
              </Stack>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, ImageBackground, Linking, Text, TouchableOpacity, ScrollView, View } from "react-native";
+import { Image, ImageBackground, Linking, Text, TouchableOpacity, ScrollView, View, Webview } from "react-native";
 import { Actions } from 'react-native-router-flux';
 
 import styles from "../../stylesheets/components/baseStyles";
@@ -220,6 +220,7 @@ export default class Welcome extends Component {
     let twitterURL = "https://twitter.com/share?url=https%3A%2F%2FWeVote.US%2F%20&text=Check%20out%20https%3A%2F%2FWeVote.US%2F!%20View%20your%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
     // TODO: 12/14/17 The facebookURL needs improvement, if we are logged in, then we should be taken directly to a live share page in Facebook
     let facebookURL = "https://www.facebook.com/v2.8/dialog/share?app_id=1097389196952441&channel_url=https%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2FlY4eZXm_YWu.js%3Fversion%3D42%23cb%3Dffcd6ff839a1b%26domain%3Dwevote.us%26origin%3Dhttps%253A%252F%252Fwevote.us%252Ff7c991c11e2a64%26relation%3Dopener&display=popup&e2e=%7B%7D&href=wevote.us&locale=en_US&mobile_iframe=false&next=https%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2FlY4eZXm_YWu.js%3Fversion%3D42%23cb%3Df31fc16ba0eb3f8%26domain%3Dwevote.us%26origin%3Dhttps%253A%252F%252Fwevote.us%252Ff7c991c11e2a64%26relation%3Dopener%26frame%3Df762c74dac8a08%26result%3D%2522xxRESULTTOKENxx%2522&quote=Check%20out%20https%3A%2F%2FWeVote.US!%20View%20your%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20%40WeVote%20%23Voting%20%23WeVote&sdk=joey&version=v2.8";
+    let donateURL = "https://wevote.us/more/donate";
 
     // TODO: 12/14/17 Almost all of these images need to become touchables that take you somewhere, skipped this for the first pass
 
@@ -242,11 +243,11 @@ export default class Welcome extends Component {
 
             <Text style={[welcomeStyles.textH1,{paddingTop: 40, paddingBottom: 40}]}>Share your vision.</Text>
 
-            <TouchableOpacity onPress = {() => Actions.ballot()} style={[welcomeStyles.getStartedButton, welcomeStyles.callToActionBlue]}>
-              <Text style={welcomeStyles.bigButtonText}>Create Voter Guide</Text>
-            </TouchableOpacity>
+            {/*<TouchableOpacity onPress = {() => Actions.ballot()} style={[welcomeStyles.getStartedButton, welcomeStyles.callToActionBlue]}>*/}
+              {/*<Text style={welcomeStyles.bigButtonText}>Create Voter Guide</Text>*/}
+            {/*</TouchableOpacity>*/}
 
-            <Text style={{paddingBottom: 60}}/>
+            <Text style={{paddingBottom: 30}}/>
           </View>
         </ImageBackground>
 
@@ -314,7 +315,7 @@ export default class Welcome extends Component {
           {/* TODO: Implement donation in native */}
           <WeVoteButton buttonLabel={'Donate'} iconName={'heart'}
                         opacityStyles={[styles.buttonBasics, styles.donateColors]} trailingPadding={0}
-                        onPress={() => null}
+                        onPress={() => Linking.openURL(donateURL)}
           />
 
           <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignSelf: 'center', paddingTop: 20, paddingRight: 20, paddingLeft: 20}}>
@@ -322,22 +323,16 @@ export default class Welcome extends Component {
             <TouchableOpacity onPress={() => Actions.about()}>
               <Text style={styles.modalChoicesMediumWhite}>About</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => Actions.about()}>
-              <Text style={styles.modalChoicesMediumWhite}>Our Vision</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => Actions.about()}>
-              <Text style={styles.modalChoicesMediumWhite}>Our Team</Text>
-            </TouchableOpacity>
             <TouchableOpacity onPress={() => Actions.ballot()}>
               <Text style={styles.modalChoicesMediumWhite}>Get Started</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => Actions.signIn()}>
               <Text style={styles.modalChoicesMediumWhite}>Sign In</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => null}>
+            <TouchableOpacity onPress={() => Linking.openURL('https://wevote.us/more/tools')}>
               <Text style={styles.modalChoicesMediumWhite}>Tools For Your Website</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => null}>
+            <TouchableOpacity onPress={() => Linking.openURL('https://wevote.us/more/elections')}>
               <Text style={styles.modalChoicesMediumWhite}>Supported Elections</Text>
             </TouchableOpacity>
           </View>

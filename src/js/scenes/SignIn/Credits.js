@@ -43,7 +43,7 @@ export default class Credits extends Component {
           <Text style={styles.title}>We are grateful for these organizations that are critical to our work.</Text>
 
           <View>
-            { organizationalDonors.map( (item) => <View style={{flexDirection: 'row'}} key={item.name}>
+            { organizationalDonors.map( (item) => <View style={styles.flexRowWrapped} key={item.name}>
                 <Text style={[styles.bold, styles.indent]}>{`\u2022  `}{item.name}</Text>
                 <Text>- {item.title}</Text>
               </View>)

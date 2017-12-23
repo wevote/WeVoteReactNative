@@ -103,7 +103,7 @@ export default class SignIn extends Component {
                 ", facebook = " + FacebookStore.loggedIn);
     this.setState( {
       signedInTwitter: isTwitterSignedIn,
-      signedInFacebook: FacebookStore.loggedIn,
+      signedInFacebook: FacebookStore.getLoggedIn(),
     });
   }
 
@@ -224,7 +224,6 @@ export default class SignIn extends Component {
     });
   }
 
-
   render () {
     if (Actions.currentScene !== RouteConst.KEY_SIGNIN) {
       logging.renderLog("SignIn when NOT CURRENT, scene  = " + Actions.currentScene);
@@ -233,13 +232,18 @@ export default class SignIn extends Component {
 
     logging.renderLog("SignIn  scene = " + Actions.currentScene);
 
-    if(this.state.waiting_for_voter_device_id  && ! this.state.initialized_voter_device_id) {
+    const isAuthenticatedTwitter = TwitterStore.get().twitter_sign_in_found || false;
+    const isAuthenticatedFacebook = FacebookStore.getFacebookAuthResponse().facebook_sign_in_verified || false;
+    const isAuthenticated = isAuthenticatedTwitter || isAuthenticatedFacebook;
+    const hasDeviceId = CookieStore.getCurrentVoterDeviceId().length > 0;
+
+    if(this.state.waiting_for_voter_device_id  && ! this.state.initialized_voter_device_id && ! hasDeviceId) {
       return <LoadingWheel text={'Device is initializing'}/>;
     }
 
-    if ( this.state.showAccountMenuModal ) {
-      logging.rnrfLog("Tabbed to SignIn, signedInTwitter: " + this.state.signedInTwitter +
-        ", signedInFacebook: " + this.state.signedInFacebook +
+    if (this.state.showAccountMenuModal) {
+      logging.rnrfLog("Tabbed to SignIn, isAuthenticatedTwitter: " + isAuthenticatedTwitter +
+        ", isAuthenticatedFacebook: " + isAuthenticatedFacebook +
         ", current = " + Actions.currentScene);
 
       return <AccountMenuModal toggleFunction={this.toggleAccountMenuModal.bind(this)} showModal={this.state.showAccountMenuModal} />;
@@ -256,23 +260,23 @@ export default class SignIn extends Component {
     }
 
     // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
-    if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
+    if (!isAuthenticated && this.state.facebook_auth_response.facebook_retrieve_attempted) {
       console.log("SignIn.jsx facebook_retrieve_attempted");
       // browserHistory.push("/facebook_sign_in");
       // return <Text>SignIn.jsx facebook_retrieve_attempted</Text>;
-      return <LoadingWheel text={'Waiting for your information to arrive'}/>;
+      return <LoadingWheel text={['Waiting for your information to arrive ','from the We Vote cloud.']}/>;
     }
 
     let {width} = Dimensions.get('window');
     let page_title = "Sign In - We Vote";
     let your_account_title = "Your Account";
     let your_account_explanation = "";
-    if (this.state.voter.is_signed_in) {
+    if (isAuthenticated) {
       page_title = "Your Account - We Vote";
-      if (this.state.voter.signed_in_facebook && !this.state.voter.signed_in_twitter) {
+      if (isAuthenticatedFacebook && !isAuthenticatedTwitter) {
         your_account_title = "Have Twitter Too?";
         your_account_explanation = "By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.";
-      } else if (this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook) {
+      } else if (isAuthenticatedTwitter && !isAuthenticatedFacebook) {
         your_account_title = "Have Facebook Too?";
         your_account_explanation = "By adding Facebook to your We Vote profile, it is easier to invite friends.";
       }
@@ -280,38 +284,40 @@ export default class SignIn extends Component {
 
     return <View style={styles.outer_gray_pane} >
         <View style={styles.inner_white_pane} >
+          <Text style={styles.title}>{page_title}</Text>
           <View>
-            {this.state.voter.is_signed_in ?
-              <Text>{your_account_explanation}</Text> :
-              <Text>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post
-                anything automatically.</Text>
+            {isAuthenticated ?
+              <Text>Before you can share, either publicly or with friends, please sign in. Don't worry, we won't post anything automatically.</Text>
+              :
+              <Text>{your_account_explanation}</Text>
             }
           </View>
           <View style={{flex: 1, flexDirection: 'column', paddingTop: 15}}>
-            {!this.state.signedInTwitter ?
-              <SocialSignIn signIn isButton authenticator={'twitter'} buttonText={"Sign In"} />
-            : null
+            {!isAuthenticatedTwitter && <SocialSignIn signIn isButton authenticator={'twitter'} buttonText={"Sign In"} />}
+            {!isAuthenticatedFacebook && <SocialSignIn signIn isButton authenticator={'facebook'} buttonText={"Sign In"} />}
+            {isAuthenticated &&
+              <WeVoteButton buttonLabel={'Sign Out'} opacityStyles={[styles.buttonBasics, styles.signOutColors]} onPress={this.signedOut.bind(this)}/>
             }
-            {!this.state.signedInFacebook ?
-              <SocialSignIn signIn isButton authenticator={'facebook'} buttonText={"Sign In"} />
-            : null
+            {isAuthenticated && <Text style = {[styles.title,{paddingTop: 10}]}>Currently Signed In</Text>}
+            {isAuthenticatedTwitter &&
+              <View style={[styles.buttonBasics, styles.twitterColors]} >
+                <View style={styles.flexRowSpaced}>
+                  <View style={{paddingTop: 5}}>
+                    <Icon name={"twitter"} size={24} color="white" paddingTop={10}/>
+                  </View>
+                  <Text style={styles.button_text}>@{TwitterStore.getTwitterHandle()}</Text>
+                </View>
+              </View>
             }
-            {this.state.signedInTwitter || this.state.signedInFacebook ?
-              <WeVoteButton buttonLabel={'Sign Out'} opacityStyles={[styles.buttonBasics, styles.signOutColors]}
-                            onPress={this.signedOut.bind(this)}/> : null
-            }
-
-            {this.state.signedInTwitter || this.state.signedInFacebook ?
-              <Text style = {[styles.title,{paddingTop: 10}]}>Currently Signed In</Text>
-              : null
-            }
-            {this.state.signedInTwitter === true ?
-              <SocialSignIn signIn isButton onPress={null} authenticator={'twitter'} buttonText={"@"+TwitterStore.getTwitterHandle()} />
-              : null
-            }
-            {this.state.signedInFacebook === true ?
-              <SocialSignIn signIn isButton onPress={null} authenticator={'facebook'} buttonText={"FB Signed In"} />
-              : null
+            {isAuthenticatedFacebook &&
+              <View style={[styles.buttonBasics, styles.facebookColors]} >
+                <View style={styles.flexRowSpaced}>
+                  <View style={{paddingTop: 5}}>
+                    <Icon name={"twitter"} size={24} color="white" paddingTop={10}/>
+                  </View>
+                  <Text style={styles.button_text}>FB Signed In</Text>
+                </View>
+              </View>
             }
 
             {/* Please save these for testing, they send s a hard de-authenticate to the auth provider

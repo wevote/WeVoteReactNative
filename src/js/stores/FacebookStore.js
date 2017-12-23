@@ -50,6 +50,10 @@ export default class FacebookStore extends ReduceStore {
     };
   }
 
+  getLoggedIn () {
+    return this.getState().facebook_sign_in_verified || false;
+  }
+
   get loggedIn () {
     if (!this.facebookAuthData) {
         return undefined;

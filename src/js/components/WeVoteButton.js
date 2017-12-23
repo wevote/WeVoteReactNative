@@ -33,7 +33,7 @@ export default class WeVoteButtons extends Component {
         <TouchableOpacity style={this.props.opacityStyles}
                           onPress={this.props.onPress}>
             { isDisplayIcon ?
-              <View style={styles.buttonInnards}>
+              <View style={styles.flexRowSpaced}>
                 <View style={{paddingTop:5}} >
                   <Icon name={this.props.iconName} size={iconSize} color={iconColor} paddingTop={10} />
                 </View>

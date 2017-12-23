@@ -138,7 +138,7 @@ exactly the same" as in the WebApp, again not a big deal.
 //   if(options.data) {
 //     options.url += (options.url.indexOf('?') === -1 ? '?' : '&') + queryParams(options.data);
 //   }
-//   console.log("$ajax_twitter_sign_in, ZZZZZZZZZZZ options.url:" + options.url);
+//   console.log("$ajax_twitter_sign_in, options.url:" + options.url);
 //   return fetch(options.url)
 //     .then((response) => response.json())
 //     .then((responseJson) => {
