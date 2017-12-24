@@ -6,45 +6,27 @@ import {
   TouchableOpacity, ScrollView
 } from 'react-native';
 import PropTypes from 'prop-types';
-
-import styles from "../../stylesheets/components/baseStyles";
-import ballotStyles from "../../stylesheets/components/ballotStyles";
 import { Actions } from 'react-native-router-flux';
-import HeaderTitle from "../../components/Header/Header"
+
+import ballotStyles from "../../stylesheets/components/ballotStyles";
 import BallotActions from "../../actions/BallotActions";
+import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
 import BallotStore from "../../stores/BallotStore";
 import CandidateStore from "../../stores/CandidateStore";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateModal from "../../components/Ballot/CandidateModal";
+import CookieStore from "../../stores/CookieStore";
 import EditAddress from "../../components/Widgets/EditAddress";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
+import HeaderTitle from "../../components/Header/Header"
 import LoadingWheel from "../../components/LoadingWheel";
 import RouteConst from "../RouteConst";
-
-import SupportActions from "../../actions/SupportActions";
-import SupportStore from "../../stores/SupportStore";
-import VoterStore from "../../stores/VoterStore";
-import VoterActions from "../../actions/VoterActions";
 import SelectAddressModal from "../../components/Ballot/SelectAddressModal";
-import BallotItemCompressed from "../../components/Ballot/BallotItemCompressed";
-// import BallotItemReadyToVote from "../../components/Ballot/BallotItemReadyToVote";
-// import BallotFilter from "../../components/Navigation/BallotFilter";
-// import VoterConstants from "../../constants/VoterConstants";
-//import { browserHistory, Link } from "react-router-native";
-//import { Modal, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
-//import AddressBox from "../../components/AddressBox";
-//import BallotElectionList from "../../components/Ballot/BallotElectionList";
-//import BallotIntroMission from "../../components/Ballot/BallotIntroMission";
-//import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
-//import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
-//import BallotIntroPositionBar from "../../components/Ballot/BallotIntroPositionBar";
-//import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
-//import GuideList from "../../components/VoterGuide/GuideList";
-//import Helmet from "react-helmet";
-//import ItemSupportOpposeCounts from "../../components/Widgets/ItemSupportOpposeCounts";
-//import ItemTinyPositionBreakdownList from "../../components/Position/ItemTinyPositionBreakdownList";
-//import Slider from "react-slick";
+import styles from "../../stylesheets/components/baseStyles";
+import VoterActions from "../../actions/VoterActions";
+import VoterGuideActions from "../../actions/VoterGuideActions";
+import VoterGuideStore from "../../stores/VoterGuideStore";
+import VoterStore from "../../stores/VoterStore";
+import WeVoteButton from "../../components/WeVoteButton"
 
 const webAppConfig = require("../../config");
 const logging = require("../../utils/logging");
@@ -128,15 +110,18 @@ export default class Ballot extends Component {
         //this.supportStoreListener = SupportStore.addListener(this._onBallotStoreChange.bind(this));
         this._onVoterStoreChange(); // We call this to properly set showBallotIntroModal
         this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-        if (!VoterStore.isVoterFound ())  {
-          VoterActions.voterRetrieve();  // New October 9, 2017
-        }
         // Steve 11/11/17 SupportActions.voterAllPositionsRetrieve();
         // Steve 11/11/17 SupportActions.positionsCountForAllBallotItems();
         // Steve 11/11/17 BallotActions.voterBallotListRetrieve();
         this.setState({waitingForBallot: true});
         console.log("STEVE      waitingForBallot: true    in  componentWillMount")
       }
+    }
+
+    let isDeviceId = CookieStore.getCurrentVoterDeviceId().length > 0;
+    if (!VoterStore.isVoterFound() && isDeviceId)  {
+      console.log("voterRetrieve from Ballot.js componentWillMount with valid cookie, but no voter");
+      VoterActions.voterRetrieve();  // New October 9, 2017, revived 12/23/17
     }
   }
 
@@ -366,6 +351,21 @@ export default class Ballot extends Component {
     let text_for_map_search = VoterStore.getAddressFromObjectOrTextForMapSearch();
     let sign_in_message =  this.props.sign_in_message_type === 'success' ? this.props.sign_in_message : '';
 
+    if (this.state.showAddressSummaryModal || this.state.showBallotSummaryModal) {
+      return <View style={styles.outer_gray_pane} >
+        <View style={styles.inner_white_pane} >
+          <Text style={[styles.title,{paddingTop: 20, paddingBottom: 20}]}>
+            In this early version of the We Vote app, you must Sign In first after installing or reinstalling the app</Text>
+          <View style={styles.flexRowCentered}>
+            <WeVoteButton buttonLabel={'Sign In'} iconName={'address-card-o'}
+                          opacityStyles={[styles.buttonBasics, styles.twitterColors]} trailingPadding={0}
+                          onPress={() => Actions.signIn()}
+            />
+          </View>
+        </View>
+      </View>;
+    }
+
     if (this.state.showSelectAddressModal) {
       return <View className="ballot">{/*     return from here -------------------------------------------------*/}
 
@@ -426,12 +426,12 @@ export default class Ballot extends Component {
 
     return <View>{/*     return from here ---------------------------------------------------------------------------*/}
       <View>
-        {/*{ this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this._toggleBallotIntroModal} /> : null }*/}
-        { this.state.showMeasureModal ? <MeasureModal show={this.state.showMeasureModal} toggleFunction={this._toggleMeasureModal} measure={this.state.measure_for_modal}/> : null }
-        { this.state.showCandidateModal ? <CandidateModal show={this.state.showCandidateModal} toggleFunction={this._toggleCandidateModal} candidate={this.state.candidate_for_modal}/> : null }
-        { this.state.showSelectBallotModal ? <SelectBallotModal show={this.state.showSelectBallotModal} toggleFunction={this._toggleSelectBallotModal} ballotElectionList={this.state.ballotElectionList} /> : null }
-        {/*{ this.state.showSelectAddressModal ? <SelectAddressModal show={this.state.showSelectAddressModal} toggleFunction={this._toggleSelectAddressModal} /> : null }*/}
-        {/* this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this._toggleBallotSummaryModal} /> : null Removed 10/31/17 -- not needed in native? */}
+        {/*{ this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this._toggleBallotIntroModal} /> l }*/}
+        { this.state.showMeasureModal && <MeasureModal show={this.state.showMeasureModal} toggleFunction={this._toggleMeasureModal} measure={this.state.measure_for_modal}/> }
+        { this.state.showCandidateModal && <CandidateModal show={this.state.showCandidateModal} toggleFunction={this._toggleCandidateModal} candidate={this.state.candidate_for_modal}/> }
+        { this.state.showSelectBallotModal && <SelectBallotModal show={this.state.showSelectBallotModal} toggleFunction={this._toggleSelectBallotModal} ballotElectionList={this.state.ballotElectionList} /> }
+        {/*{ this.state.showSelectAddressModal && <SelectAddressModal show={this.state.showSelectAddressModal} toggleFunction={this._toggleSelectAddressModal} />  }*/}
+        { this.state.showBallotSummaryModal && <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this._toggleBallotSummaryModal} /> }
       </View>
 
       <View style={{backgroundColor: 'white'}} >

@@ -45,7 +45,7 @@ export default class SignIn extends Component {
       newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
       notifications_saved_status: "",
       waiting_for_voter_device_id: true,
-      initialized_voter_device_id: false,  // As of November 2017, This SignIn mounts multiple times
+      initialized_voter_device_id: false,
       dummy: false,
       signedInTwitter: null,
       signedInFacebook: null,
