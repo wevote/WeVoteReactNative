@@ -86,6 +86,7 @@ export default class App extends Component {
             <Stack key={RouteConst.KEY_WE_VOTE_1}
                    hideNavBar
                    tabBarLabel={RouteConst.TAB_LABEL_WV}
+                   initial
                    icon={TabIcon}
             >
               <Scene key={RouteConst.KEY_WELCOME}
@@ -126,7 +127,6 @@ export default class App extends Component {
             <Stack key={RouteConst.KEY_SIGNIN_1}
                    tabBarLabel={RouteConst.TAB_LABEL_SIGN_IN}
                    hideNavBar
-                   initial
                    icon={TabIcon}
             >
               <Scene key={RouteConst.KEY_SIGNIN}

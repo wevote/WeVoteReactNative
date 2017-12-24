@@ -3,19 +3,12 @@ import { Image, ImageBackground, Linking, Text, TouchableOpacity, ScrollView, Vi
 import { Actions } from 'react-native-router-flux';
 
 import styles from "../../stylesheets/components/baseStyles";
-import welcomeStyles from "../../stylesheets/components/welcomeStyles";
 import RouteConst from "../RouteConst";
+import VoterActions from "../../actions/VoterActions";
+import VoterStore from "../../stores/VoterStore";
+import welcomeStyles from "../../stylesheets/components/welcomeStyles";
 import WeVoteButton from "../../components/WeVoteButton";
 const logging = require("../../utils/logging");
-
-// import AnalyticsActions from "../../actions/AnalyticsActions";
-// import FacebookStore from "../../stores/FacebookStore";
-// import FacebookActions from "../../actions/FacebookActions";
-// import VoterActions from "../../actions/VoterActions";
-// import VoterConstants from "../../constants/VoterConstants";
-// import VoterStore from "../../stores/VoterStore";
-// import { validateEmail } from "../utils/email-functions";
-// import CookieStore from "../../stores/CookieStore";
 
 // the export line from the WebApp Welcome.jsx:  "export default class Intro extends Component { "
 
@@ -66,6 +59,10 @@ export default class Welcome extends Component {
   // Doesn't work in react-native? // componentDidMount () {
   componentWillMount () {
     console.log("Welcome ++++ MOUNT currentScene = " + Actions.currentScene);
+    if (!VoterStore.isVoterFound())  {
+      console.log("Welcome, voterRetrieve from componentWillMount");
+      VoterActions.voterRetrieve();
+    }
 
     // this._onVoterStoreChange();
     // this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
