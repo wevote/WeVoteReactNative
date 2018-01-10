@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Text, View, Linking } from 'react-native';
+import { Linking, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { Actions } from 'react-native-router-flux';
 
-import AddressBox from "../../components/AddressBox";
+import CookieStore from "../../stores/CookieStore";
 import RouteConst from "../RouteConst"
 const logging = require("../../utils/logging");
 
@@ -30,12 +30,9 @@ export default class Network extends Component {
   render () {
     logging.renderLog("Network, scene = " + Actions.currentScene);
 
-    if(Actions.currentScene === RouteConst.KEY_NETWORK) {
-      Linking.openURL('https://wevote.us/more/network');
+    if (Actions.currentScene === RouteConst.KEY_NETWORK) {
+      Linking.openURL(CookieStore.getJumpURLWithCookie('https://wevote.us/more/network'));
     }
-
-    return <View>
-        <Text>Redirecting to network</Text>
-    </View>;
+    return null;
   }
 }

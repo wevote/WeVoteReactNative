@@ -24,4 +24,4 @@ class TabStore extends ReduceStore {
   }
 }
 
-module.exports = new TabStore(Dispatcher);
+export default new TabStore(Dispatcher);

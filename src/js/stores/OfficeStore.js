@@ -72,4 +72,4 @@ class OfficeStore extends ReduceStore {
 
 }
 
-module.exports = new OfficeStore(Dispatcher);
+export default new OfficeStore(Dispatcher);

@@ -187,7 +187,7 @@ export default class AccountMenu extends Component {
                     </TouchableOpacity>
                   }
                   {/*<Text style={styles.modalChoiceDummy}>Your Bookmarked Items</Text>*/}
-                  <TouchableOpacity onPress = {() => Linking.openURL('https://wevote.us/more/howtouse')}>
+                  <TouchableOpacity onPress = {() => Linking.openURL(CookieStore.getJumpURLWithCookie('https://wevote.us/more/howtouse'))}>
                     <Text style={styles.modalChoices}>Getting Started</Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => {Actions.about({came_from: 'AccountMenuModal'})}} >

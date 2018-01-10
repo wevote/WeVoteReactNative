@@ -100,4 +100,4 @@ class ElectionStore extends ReduceStore {
 
 }
 
-module.exports = new ElectionStore(Dispatcher);
+export default new ElectionStore(Dispatcher);

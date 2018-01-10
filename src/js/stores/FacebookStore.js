@@ -5,7 +5,7 @@ import FacebookActions from "../actions/FacebookActions";
 import FriendActions from "../actions/FriendActions";
 import VoterActions from "../actions/VoterActions";
 
-export default class FacebookStore extends ReduceStore {
+class FacebookStore extends ReduceStore {
   
   getInitialState (){
     return {
@@ -257,4 +257,4 @@ export default class FacebookStore extends ReduceStore {
     }
   }
 
-module.exports = new FacebookStore(Dispatcher);
+export default new FacebookStore(Dispatcher);

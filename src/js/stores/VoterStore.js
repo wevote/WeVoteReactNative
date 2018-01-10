@@ -8,7 +8,7 @@ import BookmarkActions from "../actions/BookmarkActions";
 import SupportActions from "../actions/SupportActions";
 import VoterActions from "../actions/VoterActions";
 
-export default class VoterStore extends ReduceStore {
+class VoterStore extends ReduceStore {
 
   getInitialState () {
     return {
@@ -422,4 +422,4 @@ export default class VoterStore extends ReduceStore {
   }
 }
 
-module.exports = new VoterStore(Dispatcher);
+export default new VoterStore(Dispatcher);

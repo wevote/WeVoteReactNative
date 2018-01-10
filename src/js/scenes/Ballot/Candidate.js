@@ -24,7 +24,8 @@ import VoterStore from "../../stores/VoterStore";
 import SearchAllActions from "../../actions/SearchAllActions";
 import styles from "../../stylesheets/components/baseStyles"
 
-const web_app_config = require("../../config");
+
+import { default as webAppConfig } from '../../config';
 const logging = require("../../utils/logging");
 
 export default class Candidate extends Component {
@@ -154,7 +155,7 @@ export default class Candidate extends Component {
     let title_text = candidate_name + " - We Vote";
     let description_text = "Information about " + candidate_name + ", candidate for " + this.state.candidate.contest_office_name;
     let voter = VoterStore.getVoter();
-    let candidate_admin_edit_url = web_app_config.WE_VOTE_SERVER_ROOT_URL + "c/" + this.state.candidate.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
+    let candidate_admin_edit_url = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "c/" + this.state.candidate.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
 
     return <View>
         <CandidateItem {...this.state.candidate}

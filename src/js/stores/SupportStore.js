@@ -110,10 +110,10 @@ class SupportStore extends ReduceStore {
         };
 
       case "positionsCountForAllBallotItems":
-        var new_oppose_counts = this.parseListToHash("oppose_count", action.res.position_counts_list);
-        var new_support_counts = this.parseListToHash("support_count", action.res.position_counts_list);
-        var existing_oppose_counts = state.oppose_counts !== undefined ? state.oppose_counts : [];
-        var existing_support_counts = state.support_counts !== undefined ? state.support_counts : [];
+        let new_oppose_counts = this.parseListToHash("oppose_count", action.res.position_counts_list);
+        let new_support_counts = this.parseListToHash("support_count", action.res.position_counts_list);
+        let existing_oppose_counts = state.oppose_counts !== undefined ? state.oppose_counts : [];
+        let existing_support_counts = state.support_counts !== undefined ? state.support_counts : [];
 
         // Duplicate values in the second array will overwrite those in the first
         state.oppose_counts = mergeTwoObjectLists(existing_oppose_counts, new_oppose_counts);
@@ -123,10 +123,10 @@ class SupportStore extends ReduceStore {
         };
 
       case "positionsCountForOneBallotItem":
-        var new_one_oppose_count = this.parseListToHash("oppose_count", action.res.position_counts_list);
-        var new_one_support_count = this.parseListToHash("support_count", action.res.position_counts_list);
-        var existing_oppose_counts2 = state.oppose_counts !== undefined ? state.oppose_counts : [];
-        var existing_support_counts2 = state.support_counts !== undefined ? state.support_counts : [];
+        let new_one_oppose_count = this.parseListToHash("oppose_count", action.res.position_counts_list);
+        let new_one_support_count = this.parseListToHash("support_count", action.res.position_counts_list);
+        let existing_oppose_counts2 = state.oppose_counts !== undefined ? state.oppose_counts : [];
+        let existing_support_counts2 = state.support_counts !== undefined ? state.support_counts : [];
 
         // Duplicate values in the second array will overwrite those in the first
         state.oppose_counts = mergeTwoObjectLists(existing_oppose_counts2, new_one_oppose_count);
@@ -193,4 +193,4 @@ class SupportStore extends ReduceStore {
   }
 }
 
-module.exports = new SupportStore(Dispatcher);
+export default new SupportStore(Dispatcher);

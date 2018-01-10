@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Image, ImageBackground, Linking, Text, TouchableOpacity, ScrollView, View, Webview } from "react-native";
+import { Image, ImageBackground, Linking, Text, TouchableOpacity, ScrollView, View, WebView } from "react-native";
 import { Actions } from 'react-native-router-flux';
 
-import styles from "../../stylesheets/components/baseStyles";
+import CookieStore from "../../stores/CookieStore";
 import RouteConst from "../RouteConst";
+import styles from "../../stylesheets/components/baseStyles";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 import welcomeStyles from "../../stylesheets/components/welcomeStyles";
@@ -63,18 +64,6 @@ export default class Welcome extends Component {
       console.log("Welcome, voterRetrieve from componentWillMount");
       VoterActions.voterRetrieve();
     }
-
-    // this._onVoterStoreChange();
-    // this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    // AnalyticsActions.saveActionWelcomeVisit(VoterStore.election_id());
-    // FacebookActions.facebookFriendsAction();
-    // this._onFacebookStoreChange();
-    // this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
-    // let we_vote_branding_off_from_url = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    // let we_vote_branding_off_from_cookie = CookieStore.getItem("we_vote_branding_off");
-    // this.setState({
-    //   we_vote_branding_off: we_vote_branding_off_from_url || we_vote_branding_off_from_cookie,
-    // });
   }
 
   componentWillUnmount () {
@@ -83,141 +72,11 @@ export default class Welcome extends Component {
     // this.facebookStoreListener.remove();
   }
 
-  // _toggleBallotFeature () {
-  //   this.setState({ show_features_ballot: !this.state.show_features_ballot });
-  // }
-  //
-  // _toggleOrganizationsFeature () {
-  //   this.setState({ show_features_organizations: !this.state.show_features_organizations });
-  // }
-  //
-  // _togglePositionsFeature () {
-  //   this.setState({ show_features_positions: !this.state.show_features_positions });
-  // }
-  //
-  // _toggleNetworkFeature () {
-  //   this.setState({ show_features_network: !this.state.show_features_network });
-  // }
-  //
-  // _toggleVisionFeature () {
-  //   this.setState({ show_features_vision: !this.state.show_features_vision });
-  // }
-  //
-  // _toggleVoteFeature () {
-  //   this.setState({ show_features_vote: !this.state.show_features_vote });
-  // }
-  //
-  // _onVoterStoreChange () {
-  //   // console.log("is_verification_email_sent:  " + VoterStore.isVerificationEmailSent());
-  //   this.setState({
-  //     newsletter_opt_in_true: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
-  //     // is_verification_email_sent: VoterStore.isVerificationEmailSent(),
-  //     voter: VoterStore.getVoter(),
-  //   });
-  // }
-  //
-  // _onFacebookStoreChange () {
-  //   this.setState({
-  //     facebook_friends_using_we_vote_list: FacebookStore.facebookFriendsUsingWeVoteList(),
-  //   });
-  // }
-
-  // updateVoterFullName (event) {
-  //   this.setState({
-  //     voter_full_name: event.target.value
-  //   });
-  // }
-
-  // updateVoterEmailAddress (event) {
-  //   let is_email_valid = validateEmail(event.target.value);
-  //   let submit_enabled = false;
-  //   if (is_email_valid) {
-  //     submit_enabled = true;
-  //   }
-  //   this.setState({
-  //     voter_email_address: event.target.value,
-  //     submit_enabled: submit_enabled,
-  //   });
-  // }
-
-  // voterEmailAddressSignUpSave (event) {
-  //   // Only proceed after we have a valid email address, which will enable the submit
-  //   if (this.state.submit_enabled) {
-  //     event.preventDefault();
-  //     let send_link_to_sign_in = true;
-  //     VoterActions.voterEmailAddressSave(this.state.voter_email_address, send_link_to_sign_in);
-  //     VoterActions.voterFullNameSoftSave("", "", this.state.voter_full_name);
-  //     VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
-  //     this.setState({loading: true});
-  //   }
-  // }
-
-  // shareToFacebookButton () {
-  //   window.FB.ui({
-  //     display: "popup",
-  //     redirect_uri: web_app_config.WE_VOTE_HOSTNAME + "/welcome",
-  //     method: "share",
-  //     mobile_iframe: true,
-  //     href: web_app_config.WE_VOTE_HOSTNAME,
-  //     quote: "Check out https://WeVote.US! View your ballot. Learn from friends. Share your vision. @WeVote #Voting #WeVote",
-  //   }, function (response) {
-  //     if ( response === undefined || response.error_code === 4201 ) {
-  //       console.log("Voter Canceled the share request");
-  //     } else if ( response ) {
-  //       //console.log("Successfully Shared", response);
-  //     }
-  //   });
-  // }
-
-  // shareToTwitterButton () {
-  //   let url = "https://twitter.com/share?url=https%3A%2F%2FWeVote.US%2F%20&text=Check%20out%20https%3A%2F%2FWeVote.US%2F!%20View%20your%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
-  //   let title = "Share On Twitter";
-  //   let default_width = 600;
-  //   let default_height = 600;
-  //   let half_screen_width = screen.width / 2;
-  //   let half_default_width = default_width / 2;
-  //   let half_screen_height = screen.height / 2;
-  //   let half_default_height = default_height / 2;
-  //   var left = half_screen_width - half_default_width;
-  //   var top = half_screen_height - half_default_height;
-  //   return window.open(url, title, "toolbar=no, width=" + default_width + ", height=" + default_height + ", top=" + top + " left=" + left);
-  // }
-
-
   render () {
-    // let actual_full_name = "";
-    // let voter_signed_in = false;
-    // let mailto_url = "mailto:" + "?subject=Check out We Vote" + "&body=I am using We Vote to discuss what is on my ballot. You can see it at https://WeVote.US too.";
-    // if (this.state.voter) {
-    //   voter_signed_in = this.state.voter.is_signed_in;
-    //   if (this.state.voter.first_name || this.state.voter.last_name) {
-    //     actual_full_name = this.state.voter.full_name;
-    //     if (actual_full_name.startsWith("voter")) {
-    //       actual_full_name = "";
-    //     }
-    //   }
-    // }
-
-    // let local_counter = 0;
-    // const facebook_friends_using_we_vote_list_for_display = this.state.facebook_friends_using_we_vote_list.map( (friend) => {
-    //   local_counter++;
-    //   if (friend.facebook_profile_image_url_https && local_counter <= this.state.maximum_friends_display) {
-    //     const friendName = friend.facebook_user_name ? <Tooltip id="tooltip">{friend.facebook_user_name}</Tooltip> : <span />;
-    //     return <OverlayTrigger key={friend.facebook_user_id} placement="bottom" overlay={friendName} >
-    //       <img className="friends-list__welcome-image"
-    //            src={friend.facebook_profile_image_url_https}
-    //            height={this.state.facebook_friends_image_height}
-    //            width={this.state.facebook_friends_image_width} />
-    //     </OverlayTrigger>;
-    //   } else {
-    //     return null;
-    //   }
-    // });
 
     let twitterURL = "https://twitter.com/share?url=https%3A%2F%2FWeVote.US%2F%20&text=Check%20out%20https%3A%2F%2FWeVote.US%2F!%20View%20your%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20@WeVote&hashtags=Voting,WeVote";
     // TODO: 12/14/17 The facebookURL needs improvement, if we are logged in, then we should be taken directly to a live share page in Facebook
     let facebookURL = "https://www.facebook.com/v2.8/dialog/share?app_id=1097389196952441&channel_url=https%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2FlY4eZXm_YWu.js%3Fversion%3D42%23cb%3Dffcd6ff839a1b%26domain%3Dwevote.us%26origin%3Dhttps%253A%252F%252Fwevote.us%252Ff7c991c11e2a64%26relation%3Dopener&display=popup&e2e=%7B%7D&href=wevote.us&locale=en_US&mobile_iframe=false&next=https%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2FlY4eZXm_YWu.js%3Fversion%3D42%23cb%3Df31fc16ba0eb3f8%26domain%3Dwevote.us%26origin%3Dhttps%253A%252F%252Fwevote.us%252Ff7c991c11e2a64%26relation%3Dopener%26frame%3Df762c74dac8a08%26result%3D%2522xxRESULTTOKENxx%2522&quote=Check%20out%20https%3A%2F%2FWeVote.US!%20View%20your%20ballot.%20Learn%20from%20friends.%20Share%20your%20vision.%20%40WeVote%20%23Voting%20%23WeVote&sdk=joey&version=v2.8";
-    let donateURL = "https://wevote.us/more/donate";
 
     // TODO: 12/14/17 Almost all of these images need to become touchables that take you somewhere, skipped this for the first pass
 
@@ -226,13 +85,6 @@ export default class Welcome extends Component {
           <View style={welcomeStyles.centeredFlexColumn}>
             <Text style={[welcomeStyles.textH1, {paddingTop: 30}]}>View your ballot.</Text>
             <Text style={[welcomeStyles.textH1,{paddingTop: 10, paddingBottom: 25}]}>Learn from friends.</Text>
-
-                      {/*{ this.state.facebook_friends_using_we_vote_list.length > 0 ?*/}
-                        {/*<div className="u-flex-row friends-list__welcome">*/}
-                          {/*{ facebook_friends_using_we_vote_list_for_display }*/}
-                        {/*</div> :*/}
-                        {/*null*/}
-                      {/*}*/}
 
             <TouchableOpacity onPress={() => Actions.ballot()} style={welcomeStyles.getStartedButton}>
               <Text style={welcomeStyles.bigButtonText}>Get Started</Text>
@@ -312,7 +164,7 @@ export default class Welcome extends Component {
           {/* TODO: Implement donation in native */}
           <WeVoteButton buttonLabel={'Donate'} iconName={'heart'}
                         opacityStyles={[styles.buttonBasics, styles.donateColors]} trailingPadding={0}
-                        onPress={() => Linking.openURL(donateURL)}
+                        onPress={() => Linking.openURL(CookieStore.getJumpURLWithCookie('https://wevote.us/more/donate'))}
           />
 
           <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignSelf: 'center', paddingTop: 20, paddingRight: 20, paddingLeft: 20}}>
@@ -326,10 +178,10 @@ export default class Welcome extends Component {
             <TouchableOpacity onPress={() => Actions.signIn()}>
               <Text style={styles.modalChoicesMediumWhite}>Sign In</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => Linking.openURL('https://wevote.us/more/tools')}>
+            <TouchableOpacity onPress={() => Linking.openURL(CookieStore.getJumpURLWithCookie('https://wevote.us/more/tools'))}>
               <Text style={styles.modalChoicesMediumWhite}>Tools For Your Website</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => Linking.openURL('https://wevote.us/more/elections')}>
+            <TouchableOpacity onPress={() => Linking.openURL(CookieStore.getJumpURLWithCookie('https://wevote.us/more/elections'))}>
               <Text style={styles.modalChoicesMediumWhite}>Supported Elections</Text>
             </TouchableOpacity>
           </View>

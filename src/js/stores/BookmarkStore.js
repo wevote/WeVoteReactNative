@@ -68,4 +68,4 @@ class BookmarkStore extends ReduceStore {
   }
 }
 
-module.exports = new BookmarkStore(Dispatcher);
+export default new BookmarkStore(Dispatcher);

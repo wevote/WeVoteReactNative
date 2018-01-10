@@ -15,7 +15,7 @@ import TwitterActions from "../../actions/TwitterActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 import WeVoteButton from "../../components/WeVoteButton"
-import webAppConfig from "../../config";
+import { default as webAppConfig } from '../../config';
 const logging = require("../../utils/logging");
 
 let oauthManager = null;

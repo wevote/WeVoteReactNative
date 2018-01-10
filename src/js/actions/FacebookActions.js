@@ -9,7 +9,7 @@ const {
   GraphRequest,
   GraphRequestManager,
 } = FBSDK;
-const web_app_config = require("../config");
+// import { default as webAppConfig } from '../config';
 // Including FacebookStore causes problems in the WebApp, and again in the Native App
 
 

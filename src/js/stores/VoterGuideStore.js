@@ -147,7 +147,7 @@ class VoterGuideStore extends ReduceStore {
         }
 
         all_cached_voter_guides = state.all_cached_voter_guides;
-        var organization_we_vote_id_list_from_voter_guides_returned = [];
+        let organization_we_vote_id_list_from_voter_guides_returned = [];
         voter_guides.forEach( one_voter_guide => {
           all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
           organization_we_vote_id_list_from_voter_guides_returned.push(one_voter_guide.organization_we_vote_id);
@@ -271,7 +271,7 @@ class VoterGuideStore extends ReduceStore {
         // and update organization_we_vote_ids_voter_is_following
         voter_guides = action.res.voter_guides;
         all_cached_voter_guides = state.all_cached_voter_guides;
-        var organization_we_vote_ids_voter_is_following = [];
+        let organization_we_vote_ids_voter_is_following = [];
         voter_guides.forEach( one_voter_guide => {
           all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
           organization_we_vote_ids_voter_is_following.push(one_voter_guide.organization_we_vote_id);
@@ -384,4 +384,4 @@ class VoterGuideStore extends ReduceStore {
   }
 }
 
-module.exports = new VoterGuideStore(Dispatcher);
+export default new VoterGuideStore(Dispatcher);

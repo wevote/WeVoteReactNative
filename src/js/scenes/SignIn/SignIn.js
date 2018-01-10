@@ -80,7 +80,8 @@ export default class SignIn extends Component {
   componentWillMount () {
     console.log("SignIn ++++ MOUNT currentScene = " + Actions.currentScene);
 
-    // TODO:  November 2017, This assumes that the signin tab is the initial tab
+    // November 2017, This assumes that the signin tab is the initial tab.
+    // Jan 2018, but still works when welcome is initial, since all root tab classes get initialized on startup
     this.setState({waiting_for_voter_device_id: true});
     this.getInitialDeviceId();
     this._onVoterStoreChange();

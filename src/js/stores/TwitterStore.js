@@ -5,7 +5,7 @@ import OrganizationActions from "../actions/OrganizationActions";
 import TwitterActions from "../actions/TwitterActions";
 import VoterActions from "../actions/VoterActions";
 
-export default class TwitterStore extends ReduceStore {
+class TwitterStore extends ReduceStore {
 
   getInitialState () {
     return {
@@ -182,4 +182,4 @@ export default class TwitterStore extends ReduceStore {
   }
 }
 
-module.exports = new TwitterStore(Dispatcher);
+export default new TwitterStore(Dispatcher);

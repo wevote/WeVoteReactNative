@@ -1,6 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
-module.exports = {
+const IssueActions = {
 
   retrieveIssuesToFollow: function () {
     Dispatcher.loadEndpoint("retrieveIssuesToFollow");
@@ -44,3 +44,5 @@ module.exports = {
     Dispatcher.loadEndpoint("issuesLinkedToOrganization", {organization_we_vote_id: organization_we_vote_id});
   },
 };
+
+export default IssueActions;

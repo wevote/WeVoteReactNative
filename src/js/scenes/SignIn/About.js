@@ -3,6 +3,8 @@ import { Image, Linking, Text, TouchableOpacity, ScrollView, View } from "react-
 import { Actions } from 'react-native-router-flux';
 import Icon from "react-native-vector-icons/FontAwesome";
 
+import CookieStore from "../../stores/CookieStore";
+
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import styles from "../../stylesheets/components/baseStyles"
 import TabStore from "../../stores/TabStore";
