@@ -15,7 +15,8 @@ class CookieStore {
   the URL to the API server via SSL which will accept it as the equivalent to a valid cookie (see on the python side:
   voter_device_id = get_voter_device_id(request)  # We standardize how we take in the voter_device_id ).
 
-  In order to open the WebApp in a WebView or Linking window, we reserve the domain for voter_device_id to wevote.us
+  For the wevote.us webapp, we also will send the cookie payload as a parameter on the URL (see getJumpURLWithCookie),
+  directed to a specific route in the webapp that reassembles the url, uses the cookie to join the sessions.
   */
   constructor() {
     let steve = webAppConfig.WE_VOTE_SERVER_ROOT_URL;
