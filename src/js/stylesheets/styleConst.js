@@ -1,4 +1,4 @@
-const styleConst = {
+export default styleConst = {
   white: '#fff',
   black: '#000',
 
@@ -43,7 +43,4 @@ const styleConst = {
   mailChimpOrange: 'rgb(240, 173, 78)',
   darkButtonBorder: 'rgba(0,0,0,0.2)',
   darkModalText: '#00749e',
-
 };
-
-module.exports = styleConst;

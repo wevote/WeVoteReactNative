@@ -13,7 +13,7 @@ from .../img/global/photos/:
 could not resolve `...Jenifer_Fernandez_Ancona-200x200.jpg'as a folder: it did not contain a package, nor an index file"
 */
 
-const weVoteBoard = [ {
+export const weVoteBoard = [ {
     name: 'Jenifer Fernandez Ancona',
     image: require('../../../img/global/photos/Jenifer_Fernandez_Ancona-200x200.jpg'),
     title: [
@@ -93,7 +93,7 @@ const weVoteBoard = [ {
   }
 ];
 
-const weVoteStaff = [ {
+export const weVoteStaff = [ {
     name: 'Alicia Prevost',
     image: require('../../../img/global/photos/Alicia_Prevost-200x200.jpg'),
     title: [
@@ -198,7 +198,7 @@ const weVoteStaff = [ {
   }
 ];
 
-const organizationalDonors = [ {
+export const organizationalDonors = [ {
     name: 'Ballotpedia',
     title: 'Data',
   }, {
@@ -255,7 +255,7 @@ const organizationalDonors = [ {
   }
 ];
 
-const teamOfVolunteers = [ {
+export const teamOfVolunteers = [ {
     name: 'Dale McGrew',
     title: 'Oakland, CA'
   }, {
@@ -479,6 +479,3 @@ const teamOfVolunteers = [ {
     title: 'Oakland, CA',
   }
 ];
-
-
-module.exports = {weVoteBoard, weVoteStaff, organizationalDonors, teamOfVolunteers};

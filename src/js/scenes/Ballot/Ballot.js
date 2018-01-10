@@ -26,9 +26,8 @@ import VoterActions from "../../actions/VoterActions";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
+import { default as webAppConfig } from '../../config';
 import WeVoteButton from "../../components/WeVoteButton"
-
-const webAppConfig = require("../../config");
 const logging = require("../../utils/logging");
 
 export default class Ballot extends Component {
@@ -456,12 +455,13 @@ export default class Ballot extends Component {
       </View>
 
       {emptyBallot}
+      {console.log(ballot)}
       <ScrollView>
         { in_ready_to_vote_mode ?
-          ballot.map( (item) => <View key={item.we_vote_id}>
+          ballot.map( (item) => <View key={item.we_vote_id}>{console.log("BallotItemReadyToVote " + item.we_vote_id)}
             <BallotItemReadyToVote key={item.we_vote_id} {...item} />
           </View>) :
-          ballot.map( (item) => <View key={item.we_vote_id}>
+          ballot.map( (item) => <View key={item.we_vote_id}>{console.log("BallotItemCompressed " + item.we_vote_id)}
             <BallotItemCompressed _toggleCandidateModal={this._toggleCandidateModal}
                                   _toggleMeasureModal={this._toggleMeasureModal}
                                   key={item.we_vote_id}

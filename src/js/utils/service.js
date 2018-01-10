@@ -2,7 +2,7 @@ import CookieStore from '../stores/CookieStore';
 
 const url = require("url");
 import assign from 'object-assign';
-const webAppConfig = require("../config");
+import { default as webAppConfig } from '../config';
 const logging = require("../utils/logging");
 
 

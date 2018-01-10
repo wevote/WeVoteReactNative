@@ -1,28 +1,52 @@
 import { Platform } from 'react-native';
 import _ from "lodash";
 import CookieManager from 'react-native-cookies';
-const webAppConfig = require("../config");
-const Promise = require("bluebird");
+import { default as webAppConfig } from '../config';
+import Promise from 'bluebird';
 const logging = require("../utils/logging");
 
-/*
-A wrapper class for react-native-cookies, that handles API cookies
-It could be expanded to handle cookies for any url...
-*/
+// A wrapper class for react-native-cookie
 class CookieStore {
 
+  /*
+  January 2018
+  Since the api server is at api.wevoteusa.org and the WebApp is at wevote.us, we can't use the same voter_device_id
+  cookie to go to both domains, since that would be a cross domain cookie.  So we will always send the cookie payload on
+  the URL to the API server via SSL which will accept it as the equivalent to a valid cookie (see on the python side:
+  voter_device_id = get_voter_device_id(request)  # We standardize how we take in the voter_device_id ).
+
+  In order to open the WebApp in a WebView or Linking window, we reserve the domain for voter_device_id to wevote.us
+  */
   constructor() {
-    let url = webAppConfig.WE_VOTE_SERVER_ROOT_URL.substring(0, webAppConfig.WE_VOTE_SERVER_ROOT_URL.length -1);
+    let steve = webAppConfig.WE_VOTE_SERVER_ROOT_URL;
+    console.log("steve steve steve " , steve);
+    let host = new URL(webAppConfig.WE_VOTE_SERVER_ROOT_URL).hostname;
     this.state = {
-      urlString: url,
+      urlString: webAppConfig.WE_VOTE_SERVER_ROOT_URL,
       current_voter_device_id: '',
     };
-    console.log("CookieStore constructor cookie url = " + url);
+    console.log("CookieStore constructor cookie host = " + host);
   };
 
 
   getCurrentVoterDeviceId () {
     return this.state.current_voter_device_id;
+  }
+
+  /*
+  https://wevote.us/more/tools
+  https://wevote.us/more/jump?jump_path=%2Fmore%2Ftools&voter_device_id=G834YIXbfsVB0z
+   */
+  getJumpURLWithCookie(inUrlString) {
+    let url = new URL(inUrlString);
+    let urlSearch = '';
+    if(urlSearch.length > 1) {
+      urlSearch = '&' + url.search.substr(1);  // '?key=value' to '&key=value'
+    }
+    let outUrlString = url.protocol + '//' + url.host + '/more/jump?jump_path=' + encodeURIComponent(url.pathname) +
+      '&voter_device_id=' + this.state.current_voter_device_id + urlSearch;
+    console.log("getJumpURLWithCookie transformed '" + inUrlString + "' to '" + outUrlString + "'");
+    return outUrlString;
   }
 
   getItem(key, url) {
@@ -72,7 +96,6 @@ class CookieStore {
         return;
       }
       this.state.current_voter_device_id = value;
-      this.setVoterIdCookieForWebview(value);
     }
 
     if (Platform.OS === 'ios') {
@@ -97,33 +120,6 @@ class CookieStore {
     }
   }
 
-  setVoterIdCookieForWebview (value) {
-    const key = 'voter_device_id';
-    const domain = 'https://wevote.us';
-    cookieString = key + '=' + value + '; domain=' + domain + '; path=/; expires=2025-05-30T12:30:00.00-08:00;';
-
-    console.log("YYYYYYY setVoterIdCookieForWebview " + cookieString);
-
-    if (Platform.OS === 'ios') {
-
-      CookieManager.set({
-        name:   key,
-        value:  value,
-        domain: domain,
-        origin: domain,
-        path: '/',
-        version: '1',
-        expiration: '2025-05-30T12:30:00.00-08:00'
-      }).then((res) => {
-        logging.httpLog(">>>>Set cookie iOS (" + this.state.urlString + ") " + cookieString);
-      });
-    } else {  // 'android'
-      CookieManager.setFromResponse(this.state.urlString, cookieString).then(() => {
-        logging.httpLog(">>>>Set cookie Android (" + this.state.urlString + ") " + cookieString);
-      });
-    }
-  }
-
   removeItem(key) {
     if (Platform.OS === 'ios') {
       CookieManager.clearByName(key)
@@ -144,24 +140,22 @@ class CookieStore {
         CookieManager.getAll()
           .then((res) => {
             // Please don't delete this logger
-            // logging.httpLog('>>>>All iOS cookies before $ajax call to (' + endpoint + ') =>', res);
+            logging.httpLog('>>>>All iOS cookies before $ajax call to (' + endpoint + ') =>', res);
         });
 
       } else {
         CookieManager.get('https://www.facebook.com')
           .then((res) => {
             // Please don't delete this logger
-            // logging.httpLog('>>>>FACEBOOK Android cookies before $ajax call to (' + endpoint + ') =>', res);
+            logging.httpLog('>>>>FACEBOOK Android cookies before $ajax call to (' + endpoint + ') =>', res);
           });
         CookieManager.get(this.state.urlString)
           .then((res) => {
             // Please don't delete this logger
-            // logging.httpLog('>>>>WeVoteAPI Android cookies before $ajax call to (' + endpoint + ') =>', res);
+            logging.httpLog('>>>>WeVoteAPI Android cookies before $ajax call to (' + endpoint + ') =>', res);
           });
       }
     }
   }
-
 }
-export default cookieStore = new CookieStore();
-
+export default new CookieStore();

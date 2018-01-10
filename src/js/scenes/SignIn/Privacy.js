@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Linking, Text, TouchableOpacity, ScrollView, View } from "react-native";
 import { Actions} from 'react-native-router-flux';
 
+import CookieStore from "../../stores/CookieStore";
 import styles from "../../stylesheets/components/baseStyles"
 import TabStore from "../../stores/TabStore";
 const logging = require("../../utils/logging");
@@ -58,7 +59,7 @@ export default class Privacy extends React.Component {
           <Text style={[styles.title_text, {marginBottom: 10}]}>Last updated: December 26, 2016</Text>
           <Text style={styles.title}>Overview</Text>
           <Text>We Vote USA has created this privacy policy to explain how We Vote (or “we”) uses information that we collect from you while you visit the We Vote websites, currently located at </Text>
-          <TouchableOpacity onPress = {() => Linking.openURL('http://WeVote.US')}>
+          <TouchableOpacity onPress = {() => Linking.openURL(CookieStore.getJumpURLWithCookie('http://WeVote.US'))}>
             <Text style={styles.hyperLink}>WeVote.US</Text>
           </TouchableOpacity>
           <Text>or while you use a portion of We Vote that is embedded on another website (the “Services”).  We Vote may modify this policy from time to time, so we encourage you to check this page when revisiting the Site.  The date of the most recent revision is listed below.{'\n'}</Text>

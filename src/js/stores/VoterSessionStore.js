@@ -29,4 +29,4 @@ class VoterSessionStore extends ReduceStore {
     }
   }
 
-module.exports = new VoterSessionStore(Dispatcher);
+export default new VoterSessionStore(Dispatcher);

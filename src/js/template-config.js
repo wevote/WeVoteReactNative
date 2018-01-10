@@ -18,7 +18,7 @@ const SERVER_API_ROOT_URL = LIVE_SERVER ? "https://api.wevoteusa.org/apis/v1/" :
 const URL_PROTOCOL = LIVE_SERVER ? "https://" : "http://";
 const HOSTNAME = LIVE_SERVER ? "WeVote.US" : "localhost:3000";
 
-module.exports = {
+const webAppConfig = {
   WE_VOTE_URL_PROTOCOL: URL_PROTOCOL,
   WE_VOTE_HOSTNAME: HOSTNAME,
 
@@ -50,3 +50,5 @@ module.exports = {
   SOCIAL_AUTH_TWITTER_KEY:        "",
   SOCIAL_AUTH_TWITTER_SECRET:     "",
 };
+
+export default webAppConfig;

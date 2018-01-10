@@ -45,4 +45,4 @@ class AnalyticsStore extends ReduceStore {
   }
 }
 
-module.exports = new AnalyticsStore(Dispatcher);
+export default new AnalyticsStore(Dispatcher);

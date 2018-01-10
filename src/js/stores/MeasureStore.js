@@ -151,6 +151,6 @@ class MeasureStore extends ReduceStore {
         };
     }
   }
-}
+};
 
-module.exports = new MeasureStore(Dispatcher);
+export default new MeasureStore(Dispatcher);

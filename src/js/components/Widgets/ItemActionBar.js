@@ -13,10 +13,11 @@ import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle"
 import item_action_bar_styles from "../../stylesheets/components/itemActionBar";
 import flex_box_styles from "../../stylesheets/utilities/flexBoxStyles";
 import layout_styles from "../../stylesheets/utilities/layoutStyles";
+import { default as webAppConfig } from '../../config';
 
 //var Icon = require("react-svg-icons");
 
-const web_app_config = require("../../config");
+
 
 export default class ItemActionBar extends Component {
   static propTypes = {
@@ -110,9 +111,9 @@ export default class ItemActionBar extends Component {
     var oppose_icon_color = is_oppose ? "white" : "#999";
     var url_being_shared;
     if (this.props.type === "CANDIDATE") {
-      url_being_shared = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/candidate/" + this.props.ballot_item_we_vote_id;
+      url_being_shared = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/candidate/" + this.props.ballot_item_we_vote_id;
     } else {
-      url_being_shared = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + "/measure/" + this.props.ballot_item_we_vote_id;
+      url_being_shared = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/measure/" + this.props.ballot_item_we_vote_id;
     }
     const share_icon = (<Icon name="share" size={24} color="lightgray"/>);
 

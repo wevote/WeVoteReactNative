@@ -227,4 +227,4 @@ class BallotStore extends ReduceStore {
   }
 }
 
-module.exports = new BallotStore(Dispatcher);
+export default new BallotStore(Dispatcher);

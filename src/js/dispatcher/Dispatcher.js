@@ -13,5 +13,4 @@ Dispatcher.prototype.loadEndpoint = function (endpoint, data = {}) {
   });
 };
 
-
-module.exports = new Dispatcher();
+export default dispatcher = new Dispatcher();

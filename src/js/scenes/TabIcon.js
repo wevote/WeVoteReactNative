@@ -52,32 +52,32 @@ export default class TabIcon extends React.Component {
     return <View onPress={() => {
       console.log("You tapped the ICON ICON ICON!");
     }}>
-      {(this.props.tabBarLabel === 'WV' ) ?
+      {(this.props.tabBarLabel === 'WV' ) &&
         <Text style={tabStyles.text_selected}>{this.props.tabBarLabel}</Text>
-        : null}
+      }
 
-      {(this.props.tabBarLabel === 'Network' ) ?
+      {(this.props.tabBarLabel === 'Network' ) &&
         <View style={tabStyles.ballot_button_container}>
           <Image style={tabStyles.networkImage}
                  source={require('../../img/global/svg-icons/network-iconHack.png')} />
           <Text style={tabStyles.ballotTextWide}>{this.props.tabBarLabel}</Text>
         </View>
-        : null}
+      }
 
-      {(this.props.tabBarLabel === 'Sign In' && voterImage === "") ?
+      {(this.props.tabBarLabel === 'Sign In' && voterImage === "") &&
           <Image style={tabStyles.image} source={require('../../img/global/icons/avatar-generic.png')} />
-        : null}
+      }
 
-      {(this.props.tabBarLabel === 'Sign In' && voterImage !== "") ?
+      {(this.props.tabBarLabel === 'Sign In' && voterImage !== "") &&
           <Image style={tabStyles.image} source={{uri: voterImage}} />
-        : null}
+      }
 
-      {(this.props.tabBarLabel === 'Ballot' ) ?
+      {(this.props.tabBarLabel === 'Ballot' ) &&
         <View style={tabStyles.ballot_button_container}>
           <Icon name="list-alt" size={22} color="white" width={10} />
           <Text style={tabStyles.ballot_text}>{this.props.tabBarLabel}</Text>
         </View>
-        : null}
+      }
     </View>
   }
 }
