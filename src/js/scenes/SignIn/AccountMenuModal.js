@@ -11,6 +11,7 @@ import Modal from 'react-native-modal'
 import { Actions } from 'react-native-router-flux';
 import Icon from "react-native-vector-icons/FontAwesome";
 
+import CookieStore from "../../stores/CookieStore";
 import styles from "../../stylesheets/components/baseStyles";
 import styleConst from "../../stylesheets/styleConst";
 import VoterSessionActions from "../../actions/VoterSessionActions";
@@ -173,9 +174,12 @@ export default class AccountMenu extends Component {
                   <Text style={styles.grayPromise}>Our Promise: We'll never sell your email.</Text>
                   {/*<Text style={styles.modalChoiceDummy}>Your Voter Guide (Twitter)</Text>*/}
                   {/*<Text style={styles.modalChoiceDummy}>Your Voter Guide (Facebook)</Text>*/}
-                  <TouchableOpacity onPress={hide()}>
-                    <Text style={styles.modalChoices}>Your Account</Text>
-                  </TouchableOpacity>
+
+                  {isAuthenticated &&
+                    <TouchableOpacity onPress={hide()}>
+                      <Text style={styles.modalChoices}>Your Account</Text>
+                    </TouchableOpacity>
+                  }
                   {! isAuthenticated &&
                     <TouchableOpacity onPress={hide()}>
                       <Text style={styles.modalChoices}>Sign In</Text>
