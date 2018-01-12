@@ -1,8 +1,9 @@
 import { Platform } from 'react-native';
 import _ from "lodash";
 import CookieManager from 'react-native-cookies';
-import { default as webAppConfig } from '../config';
 import Promise from 'bluebird';
+import url from 'url';
+import { default as webAppConfig } from '../config';
 const logging = require("../utils/logging");
 
 // A wrapper class for react-native-cookie
@@ -19,9 +20,7 @@ class CookieStore {
   directed to a specific route in the webapp that reassembles the url, uses the cookie to join the sessions.
   */
   constructor() {
-    let steve = webAppConfig.WE_VOTE_SERVER_ROOT_URL;
-    console.log("steve steve steve " , steve);
-    let host = new URL(webAppConfig.WE_VOTE_SERVER_ROOT_URL).hostname;
+    let host = url.parse(webAppConfig.WE_VOTE_SERVER_ROOT_URL).host;
     this.state = {
       urlString: webAppConfig.WE_VOTE_SERVER_ROOT_URL,
       current_voter_device_id: '',
@@ -39,12 +38,12 @@ class CookieStore {
   https://wevote.us/more/jump?jump_path=%2Fmore%2Ftools&voter_device_id=G834YIXbfsVB0z
    */
   getJumpURLWithCookie(inUrlString) {
-    let url = new URL(inUrlString);
+    let urlObject = url.parse(inUrlString);
     let urlSearch = '';
     if(urlSearch.length > 1) {
-      urlSearch = '&' + url.search.substr(1);  // '?key=value' to '&key=value'
+      urlSearch = '&' + urlObject.search.substr(1);  // '?key=value' to '&key=value'
     }
-    let outUrlString = url.protocol + '//' + url.host + '/more/jump?jump_path=' + encodeURIComponent(url.pathname) +
+    let outUrlString = urlObject.protocol + '//' + urlObject.host + '/more/jump?jump_path=' + encodeURIComponent(urlObject.pathname) +
       '&voter_device_id=' + this.state.current_voter_device_id + urlSearch;
     console.log("getJumpURLWithCookie transformed '" + inUrlString + "' to '" + outUrlString + "'");
     return outUrlString;

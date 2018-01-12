@@ -2,7 +2,8 @@
 
 [Go back to Working with react-native-router-flux](WORKING_WITH_REACT_NATIVE_ROUTER_FLUX.md)
 
-In the iOS simulator press Command+D to get the simulator debugger window (Command+M for Android)
+In the iOS simulator press Command+D to get the simulator debug menu (Command+M for Android).  On a physical iPhone
+attached via a USB cord, shake the device to bring up the debug menu.
 
 <img src="https://github.com/wevote/WeVoteReactNative/blob/develop/docs/images/iOS%20Debugger%20Menu.png" alt="alt text" width="400" >
 
