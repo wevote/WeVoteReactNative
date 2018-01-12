@@ -301,7 +301,7 @@ export default class SignIn extends Component {
             }
             {isAuthenticated && <Text style = {[styles.title,{paddingTop: 10}]}>Currently Signed In</Text>}
             {isAuthenticatedTwitter &&
-              <View style={[styles.buttonBasics, styles.twitterColors]} >
+              <View style={[styles.buttonBasics, styles.twitterColors, {width: 250}]} >
                 <View style={styles.flexRowSpaced}>
                   <View style={{paddingTop: 5}}>
                     <Icon name={"twitter"} size={24} color="white" paddingTop={10}/>
@@ -311,7 +311,7 @@ export default class SignIn extends Component {
               </View>
             }
             {isAuthenticatedFacebook &&
-              <View style={[styles.buttonBasics, styles.facebookColors]} >
+              <View style={[styles.buttonBasics, styles.facebookColors, {width: 250}]} >
                 <View style={styles.flexRowSpaced}>
                   <View style={{paddingTop: 5}}>
                     <Icon name={"twitter"} size={24} color="white" paddingTop={10}/>
