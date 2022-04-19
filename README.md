@@ -1,3 +1,7 @@
+# WeVoteReactNative has been deprecated in favor of WebApp
+For our mobile apps, we bundle https://github.com/wevote/WebApp with https://github.com/wevote/WeVoteCordova.
+
+
 # Running the app:
 
 From within the root directory after cloning,
